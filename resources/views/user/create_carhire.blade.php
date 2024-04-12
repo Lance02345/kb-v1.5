@@ -21,7 +21,7 @@
                     <div class="col-lg-6">
                         
                         <h6 class="font-weight-bold pt-4 pb-1">Select Ad Category:</h6>
-                        <select name="category" id="inputGroupSelect" class="form-control ">
+                        <select name="category_id" id="inputGroupSelect" class="form-control ">
                             <option value="">Select category</option>
                             <option value="4" selected>CarHire</option>
                     
@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-lg-6">
                         <h6 class="font-weight-bold pt-4 pb-1">Select Your City</h6>
-                        <select name="city" data-label="Select City" id="inputGroupSelect" class="form-control">
+                        <select name="city_id" data-label="Select City" id="inputGroupSelect" class="form-control">
                             <option value="">Select City</option>
                             
                             
@@ -153,29 +153,6 @@
           @enderror
           </div>
           <div class="col-lg-6">
-          <h6 class="font-weight-bold pt-4 pb-1">Select Condition</h6>
-          <select name="condition" id="inputGroupSelect" class="form-control">
-              <option value="{{ old('condition')}}" {{(old('condition'))? 'selected':''}}> {{ old('condition')}} </option>     
-              <option >Foreign Used</option>     
-              <option>Local Used</option>    
-          </select>
-          @error('condition')
-            <span class="invalid" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-          @enderror
-          </div>
-          <div class="col-lg-6">
-          <h6 class="font-weight-bold pt-4 pb-1">Mileage:</h6>
-          <input type="number" name="mileage" class="border w-100 p-2 bg-white text-capitalize" 
-            value="{{ old('mileage')}}" placeholder="Mileage go There">
-          @error('mileage')
-          <span class="invalid" role="alert">
-              <strong>{{ $message }}</strong>
-          </span>
-          @enderror
-          </div>
-          <div class="col-lg-6">
           <h6 class="font-weight-bold pt-4 pb-1">Select Transmission</h6>
           <select name="transmission"  id="inputGroupSelect" class="form-control">
             <option value="{{ old('transmission')}}" {{(old('transmission'))? 'selected':''}}> {{ old('transmission')}} </option>   
@@ -199,19 +176,6 @@
                 <span class="invalid"  role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
-          @enderror
-          </div>
-          <div class="col-lg-6">
-          <h6 class="font-weight-bold pt-4 pb-1">Select Exchange</h6>
-          <select name="exchange" id="inputGroupSelect" class="form-control">
-          <option value="{{ old('exchange')}}" {{(old('exchange'))? 'selected':''}}> {{ old('exchange')}} </option> 
-            <option>Yes</option>     
-            <option>No</option>    
-        </select>
-          @error('exchange')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
           @enderror
           </div>
           <div class="col-lg-6">

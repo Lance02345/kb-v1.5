@@ -17,13 +17,13 @@
                 <div class="package-content bg-light border text-center p-5 my-2 my-lg-0">
                     <div class="package-content-heading border-bottom">
                         <i class="fa fa-car"></i>
-                        <h2>Garage</h2>
+                        <h2>Car Hire</h2>
                      
                     </div>
                     <ul>
                         <li class="my-4"> <i class="fa fa-check"></i> Click the "choose" to countinue with listing process</li>
                     </ul>
-                    <a href="{{ route('user.garage_create')}}" class="btn btn-primary">Choose</a>
+                    <a href="{{ route('user.create_carhire')}}" class="btn btn-primary">Choose</a>
                 </div>
             </div>
 

@@ -195,9 +195,9 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
     Route::resource('payment', PaymentController::class);
     Route::post('/v1/mpesatest/stk/push', [MpesaSTKPUSHController::class, 'STKPush']);
     Route::post('v1/confirm', [MpesaSTKPUSHController::class, 'STKConfirm'])->name('mpesa.confirm');
-    Route::post('register-urls', [MPESAC2BController::class, 'registerURLS']);
-    Route::post('validation', [MPESAC2BController::class, 'validation'])->name('c2b.validate');
-    Route::post('confirmation', [MPESAC2BController::class, 'confirmation'])->name('c2b.confirm');
+    // Route::post('register-urls', [MPESAC2BController::class, 'registerURLS']);
+    // Route::post('validation', [MPESAC2BController::class, 'validation'])->name('c2b.validate');
+    // Route::post('confirmation', [MPESAC2BController::class, 'confirmation'])->name('c2b.confirm');
 
 
 

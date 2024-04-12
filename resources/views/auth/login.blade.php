@@ -63,7 +63,7 @@
                       <div class="grid--50-50">
                         <label for="password">Password</label>
                         <div class="reset-pass">
-                          <a href="{{route(forget.password.get)}}">Forgot your password?</a>
+                          <a href="#">Forgot your password?</a>
                         </div>
                       </div>
                       <input type="password"  @error('password') is-invalid @enderror" name="password" placeholder="Password" 
