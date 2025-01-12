@@ -250,36 +250,42 @@ public function showFavoriteVehicles()
      */
     private function processImage($image)
     {
-        // Get the real file path
-        $realPath = $image->getRealPath();
-        
-        // Check if the image is accessible
-        if (!file_exists($realPath)) {
-            Log::error('Image source not found', ['file_path' => $realPath]);
-            throw new \Exception("Image source not found");
+        try {
+            // Get the real file path
+            $realPath = $image->getRealPath();
+    
+            if (!file_exists($realPath)) {
+                throw new \Exception("Image source not found at: $realPath");
+            }
+    
+            // Extract image details
+            $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $extension = $image->getClientOriginalExtension();
+            $imageStore = $imagename . '_' . time() . '.' . $extension;
+    
+            // Open the image using Intervention Image
+            $img = Image::make($realPath);
+    
+            // Verify watermark existence
+            $watermarkPath = public_path('watermark/king2.png');
+            if (!file_exists($watermarkPath)) {
+                throw new \Exception("Watermark file missing: $watermarkPath");
+            }
+    
+            // Load and apply watermark
+            $watermark = Image::make($watermarkPath);
+            $img->insert($watermark, 'bottom-right', 10, 10);
+    
+            // Save the processed image
+            $img->save(public_path('storage/photos/' . $imageStore));
+    
+            return $imageStore;
+        } catch (\Exception $e) {
+            Log::error('Error processing image', ['error' => $e->getMessage()]);
+            throw $e;
         }
-    
-        // Get image info
-        $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-        $extension = $image->getClientOriginalExtension();
-        $imageStore = $imagename . '_' . time() . '.' . $extension;
-    
-        // Open the image using Intervention Image
-        $img = Image::make($realPath);
-    
-        // Load watermark image
-        $watermark = Image::make(public_path('watermark/king2.png'));
-    
-        // Apply watermark to the image
-        $img->insert($watermark, 'bottom-right', 10, 10);
-    
-        // Save the watermarked image
-        $img->save(public_path('storage/photos/' . $imageStore));
-    
-        Log::info('Image processed and saved', ['image_store' => $imageStore]);
-        return $imageStore;
     }
-            public function show_vehiclesale(Listing $listing, Vehicle $vehicle){
+                public function show_vehiclesale(Listing $listing, Vehicle $vehicle){
         $arr['categories'] = Category::all();
         $arr['cities'] = City::all();
         $arr['makes'] = Carmake::all();
