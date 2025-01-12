@@ -267,7 +267,7 @@ public function showFavoriteVehicles()
             $img = Image::make($realPath);
     
             // Verify watermark existence
-            $watermarkPath = public_path('watermark/king2.png');
+            $watermarkPath = public_path('watermark/KINGSBRIDGE.png');
             if (!file_exists($watermarkPath)) {
                 throw new \Exception("Watermark file missing: $watermarkPath");
             }
