@@ -250,13 +250,22 @@ public function showFavoriteVehicles()
      */
     private function processImage($image)
     {
+        // Get the real file path
+        $realPath = $image->getRealPath();
+        
+        // Check if the image is accessible
+        if (!file_exists($realPath)) {
+            Log::error('Image source not found', ['file_path' => $realPath]);
+            throw new \Exception("Image source not found");
+        }
+    
         // Get image info
         $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
         $extension = $image->getClientOriginalExtension();
         $imageStore = $imagename . '_' . time() . '.' . $extension;
     
         // Open the image using Intervention Image
-        $img = Image::make($image);
+        $img = Image::make($realPath);
     
         // Load watermark image
         $watermark = Image::make(public_path('watermark/king2.png'));
@@ -270,7 +279,7 @@ public function showFavoriteVehicles()
         Log::info('Image processed and saved', ['image_store' => $imageStore]);
         return $imageStore;
     }
-        public function show_vehiclesale(Listing $listing, Vehicle $vehicle){
+            public function show_vehiclesale(Listing $listing, Vehicle $vehicle){
         $arr['categories'] = Category::all();
         $arr['cities'] = City::all();
         $arr['makes'] = Carmake::all();
