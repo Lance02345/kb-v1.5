@@ -189,6 +189,7 @@ class ListingController extends Controller
         $listing->user_id = $request->user_id;
         $listing->ads_status = 'Pending';
 
+        $listing->save();
 
         $currentId = $listing->id;
 
