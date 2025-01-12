@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Expr\List_;
 use App\Models\User;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Log;
 
 
 class ListingController extends Controller
@@ -138,78 +139,79 @@ public function showFavoriteVehicles()
         return view('user.create_listing2')->with($arr);
     } 
 
-  public function store_vehiclesale(Request $request, Listing $listing, Vehicle $vehicle)
-{
-    $this->validate($request, [
-        'category' => 'required',
-        'city' => 'required',
-        'model_id' => 'required',
-        'year_of_build' => 'required',
-        'condition' => 'required',
-        'mileage' => '',
-        'transmission' => 'required',
-        'fuel_type' => 'required',
-        'exchange' => 'required',
-        'price' => 'required',
-        'description' => 'required',
-        'body_type' => 'required',
-        'duty_type' => 'required',
-        'interior_type' => 'required',
-        'engine_size' => 'required',
-        'front_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-        'back_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-        'right_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-        'left_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-        'interiorf_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-        'interiorb_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-        'opt_img1' => '|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-        'opt_img2' => 'image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-        'opt_img3' => 'image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-        'vehicle_type' => 'required',
-        'color' => 'required',
-    ]);
 
-
-      $listing->category_id = $request->category;
-      $listing->city_id = $request->city;
-      $listing->user_id = $request->user_id;
-      $listing->ads_status = 'Pending';
+    public function store_vehiclesale(Request $request, Listing $listing, Vehicle $vehicle)
+    {
+        // Validate the request inputs
+        $this->validate($request, [
+            'category' => 'required',
+            'city' => 'required',
+            'model_id' => 'required',
+            'year_of_build' => 'required',
+            'condition' => 'required',
+            'mileage' => '',
+            'transmission' => 'required',
+            'fuel_type' => 'required',
+            'exchange' => 'required',
+            'price' => 'required',
+            'description' => 'required',
+            'body_type' => 'required',
+            'duty_type' => 'required',
+            'interior_type' => 'required',
+            'engine_size' => 'required',
+            'front_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
+            'back_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
+            'right_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
+            'left_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
+            'interiorf_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
+            'interiorb_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
+            'opt_img1' => 'image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
+            'opt_img2' => 'image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
+            'opt_img3' => 'image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
+            'vehicle_type' => 'required',
+            'color' => 'required',
+        ]);
     
-
+        // Log request data for debugging
+        Log::info('Received vehicle sale request', ['request' => $request->all()]);
+    
+        // Assign listing details
+        $listing->category_id = $request->category;
+        $listing->city_id = $request->city;
+        $listing->user_id = $request->user_id;
+        $listing->ads_status = 'Pending';
+        $listing->save();
+        Log::info('Listing details saved', ['listing_id' => $listing->id]);
+    
         $currentId = $listing->id;
-
-
- $imageFields = ['front_img', 'back_img', 'right_img', 'left_img', 'interiorf_img', 'interiorb_img', 'engine_img', 'opt_img1', 'opt_img2', 'opt_img3'];
-        
+    
+        // Define image fields to process
+        $imageFields = [
+            'front_img', 'back_img', 'right_img', 'left_img', 
+            'interiorf_img', 'interiorb_img', 'engine_img', 
+            'opt_img1', 'opt_img2', 'opt_img3'
+        ];
+    
+        // Process and save images with watermark
         foreach ($imageFields as $fieldName) {
             if ($request->hasFile($fieldName)) {
-                $image = $request->file($fieldName);
-                $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                $extension = $image->getClientOriginalExtension();
-                $imageStore = $imagename . '_' . time() . '.' . $extension;
-        
-                // Open the image using Intervention/Image
-                $img = Image::make($image);
-        
-                // Load the watermark image
-                $watermark = Image::make(public_path('watermark/king2.png'));
-        
-                // Add the watermark to the image
-                $img->insert($watermark, 'bottom-right', 10, 10); // You can adjust the position and size of the watermark
-        
-                // Save the watermarked image with the user's name
-                $img->save(public_path('storage/photos/' . $imageStore));
-        
-                // Assign the image store path to the corresponding model field
-                $vehicle->$fieldName = $imageStore;
+                try {
+                    Log::info('Processing image', ['field' => $fieldName]);
+                    $imageStore = $this->processImage($request->file($fieldName));
+                    $vehicle->$fieldName = $imageStore;
+                    Log::info('Image processed successfully', ['field' => $fieldName, 'image_store' => $imageStore]);
+                } catch (\Exception $e) {
+                    Log::error('Error processing image', ['field' => $fieldName, 'error' => $e->getMessage()]);
+                    return back()->with('error', 'Error processing the image: ' . $e->getMessage());
+                }
             }
         }
-        
-                $price = str_replace(',', '', $request->input('price'));
-
-        // Rest of your code to save the vehicle details
-        $default_view = 0;
-
+    
+        // Clean price input
+        $price = str_replace(',', '', $request->input('price'));
+        Log::info('Price cleaned', ['price' => $price]);
+    
+        // Save vehicle details
         $vehicle->listing_id = $currentId;
         $vehicle->model_id = $request->model_id;
         $vehicle->year_of_build = $request->year_of_build;
@@ -227,39 +229,48 @@ public function showFavoriteVehicles()
         $vehicle->engine_size = $request->engine_size;
         $vehicle->vehicle_type = $request->vehicle_type;
         $vehicle->color = $request->color;
-        $vehicle->views = $default_view;
-        
+        $vehicle->views = 0; // Default views count
         $vehicle->save();
-        
-        $listing->vehicle_id = $vehicle->id;
-
-        $listing->save();
-
-       
-
-
-   /*   if ($request->hasFile('images')) 
-      {
-          $photos = $request->file('images');
-          $i = 1;
-         foreach ($photos as $image) {
-             $name = time().'-'.$image->getClientOriginalName();
-             $name = str_replace('','-',$name);
-             $image->storeAs('public/photos', $name);
-           
-            #$vehicle_photo->photo = $name;
-            #$vehicle_photo->vehicle_id = $vehicle->id;
-            #$vehicle_photo->save();
+        Log::info('Vehicle details saved', ['vehicle_id' => $vehicle->id]);
     
-            $vehicle->vehiclephotos()->create(['photo' => $name, 'photo_postion' => $i++]);
- 
-          }     
-        } */
-  
-    return redirect() -> route('user.packages',$listing->id)->with('success','Added'); 
-     
+        // Link the vehicle to the listing
+        $listing->vehicle_id = $vehicle->id;
+        $listing->save();
+        Log::info('Listing linked to vehicle', ['listing_id' => $listing->id, 'vehicle_id' => $vehicle->id]);
+    
+        return redirect()->route('user.packages', $listing->id)
+                         ->with('success', 'Added successfully!');
     }
-    public function show_vehiclesale(Listing $listing, Vehicle $vehicle){
+    
+    /**
+     * Process an image, apply a watermark, and save it.
+     *
+     * @param  \Illuminate\Http\UploadedFile  $image
+     * @return string $imageStore
+     */
+    private function processImage($image)
+    {
+        // Get image info
+        $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension = $image->getClientOriginalExtension();
+        $imageStore = $imagename . '_' . time() . '.' . $extension;
+    
+        // Open the image using Intervention Image
+        $img = Image::make($image);
+    
+        // Load watermark image
+        $watermark = Image::make(public_path('watermark/king2.png'));
+    
+        // Apply watermark to the image
+        $img->insert($watermark, 'bottom-right', 10, 10);
+    
+        // Save the watermarked image
+        $img->save(public_path('storage/photos/' . $imageStore));
+    
+        Log::info('Image processed and saved', ['image_store' => $imageStore]);
+        return $imageStore;
+    }
+        public function show_vehiclesale(Listing $listing, Vehicle $vehicle){
         $arr['categories'] = Category::all();
         $arr['cities'] = City::all();
         $arr['makes'] = Carmake::all();
@@ -717,9 +728,6 @@ if($request->hasFile('opt_img3')){
         $package_id = $request->input('package_id');
         $package_duration = $current->addDays($request->input('package_duration'))->format('Y-m-d');
  
-        /*$data=array('first_name'=>$first_name,"last_name"=>$last_name,"city_name"=>$city_name,"email"=>$email);*/
-        /*DB::table('student')->update($data);*/
-        /* DB::table('student')->whereIn('id', $id)->update($request->all());*/
         DB::update('update listings set package_id = ?, ads_duration = ? where id = ?',[$package_id, $package_duration, $listing]);
         echo "Record updated successfully.
         ";
