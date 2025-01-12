@@ -268,7 +268,7 @@ class ListingController extends Controller
                }     
              } */
 
-        return redirect()->route('user.packages', $listing->id)->with('success', 'Added');
+        return redirect()->route('user.packages', $currentId)->with('success', 'Added');
     }
     public function show_vehiclesale(Listing $listing, Vehicle $vehicle)
     {
