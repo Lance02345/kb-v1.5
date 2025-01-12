@@ -245,9 +245,6 @@ class ListingController extends Controller
 
         $vehicle->save();
 
-        // $listing->vehicle_id = $vehicle->id;
-
-        $listing->save();
 
 
 
