@@ -15,23 +15,25 @@ class GarageController extends Controller
         return view('pages.garages', compact('garages'));
     }
 
-    public function create_garage(){
+    public function create_garage()
+    {
 
-        $garage = Garage::where('user_id',Auth::id())->get();
-       return view ('user.create_garage', compact('garage'));
-    
-    
+        $garage = Garage::where('user_id', Auth::id())->get();
+        return view('user.create_garage', compact('garage'));
+
+
     }
 
-   public function store_garage(Request $request)
+    public function store_garage(Request $request)
     {
         $request->validate([
             'garage_title' => 'required',
             'garage_location' => 'required',
             'garage_description' => 'required',
-            'front_img' => 'required',
-            'back_img' => 'required',
-            'right_img' => 'required',
+            'front_img' => 'required|image|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff', // Example rules; customize as needed
+            'back_img' => 'image|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'right_img' => 'image|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+
         ]);
         $garage = new Garage();
 
