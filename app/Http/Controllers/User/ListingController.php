@@ -152,8 +152,12 @@ class ListingController extends Controller
     }
 
 
+    use Illuminate\Support\Facades\Log;
+
     public function store_vehiclesale(Request $request, Listing $listing, Vehicle $vehicle)
     {
+        Log::info('Starting store_vehiclesale process.');
+    
         $this->validate($request, [
             'category' => 'required',
             'city' => 'required',
@@ -182,49 +186,59 @@ class ListingController extends Controller
             'vehicle_type' => 'required',
             'color' => 'required',
         ]);
-
-
+    
+        Log::info('Validation successful.');
+    
         $listing->category_id = $request->category;
         $listing->city_id = $request->city;
         $listing->user_id = $request->user_id;
         $listing->ads_status = 'Pending';
-
+    
         $listing->save();
-
+        Log::info('Listing saved successfully.', ['listing_id' => $listing->id]);
+    
         $currentId = $listing->id;
-
-
+    
         $imageFields = ['front_img', 'back_img', 'right_img', 'left_img', 'interiorf_img', 'interiorb_img', 'engine_img', 'opt_img1', 'opt_img2', 'opt_img3'];
-
+    
         foreach ($imageFields as $fieldName) {
             if ($request->hasFile($fieldName)) {
-                $image = $request->file($fieldName);
-                $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                $extension = $image->getClientOriginalExtension();
-                $imageStore = $imagename . '_' . time() . '.' . $extension;
-
-                // Open the image using Intervention/Image
-                $img = Image::make($image);
-
-                // Load the watermark image
-                $watermark = Image::make(public_path('watermark/king.png'));
-
-                // Add the watermark to the image
-                $img->insert($watermark, 'bottom-right', 10, 10); // You can adjust the position and size of the watermark
-
-                // Save the watermarked image with the user's name
-                $img->save(public_path('storage/photos/' . $imageStore));
-
-                // Assign the image store path to the corresponding model field
-                $vehicle->$fieldName = $imageStore;
+                try {
+                    $image = $request->file($fieldName);
+                    $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                    $extension = $image->getClientOriginalExtension();
+                    $imageStore = $imagename . '_' . time() . '.' . $extension;
+    
+                    // Open the image using Intervention/Image
+                    $img = Image::make($image);
+    
+                    // Load the watermark image
+                    $watermark = Image::make(public_path('watermark/king.png'));
+    
+                    // Add the watermark to the image
+                    $img->insert($watermark, 'bottom-right', 10, 10);
+    
+                    // Save the watermarked image
+                    $img->save(public_path('storage/photos/' . $imageStore));
+    
+                    // Assign the image store path to the corresponding model field
+                    $vehicle->$fieldName = $imageStore;
+    
+                    Log::info('Image processed and saved.', ['field' => $fieldName, 'filename' => $imageStore]);
+                } catch (\Exception $e) {
+                    Log::error('Error processing image.', [
+                        'field' => $fieldName,
+                        'message' => $e->getMessage(),
+                    ]);
+                }
             }
         }
-
+    
         $price = str_replace(',', '', $request->input('price'));
-
+    
         // Rest of your code to save the vehicle details
         $default_view = 0;
-
+    
         $vehicle->listing_id = $currentId;
         $vehicle->model_id = $request->model_id;
         $vehicle->year_of_build = $request->year_of_build;
@@ -243,33 +257,13 @@ class ListingController extends Controller
         $vehicle->vehicle_type = $request->vehicle_type;
         $vehicle->color = $request->color;
         $vehicle->views = $default_view;
-
+    
         $vehicle->save();
-
-
-
-
-
-        /*   if ($request->hasFile('images')) 
-           {
-               $photos = $request->file('images');
-               $i = 1;
-              foreach ($photos as $image) {
-                  $name = time().'-'.$image->getClientOriginalName();
-                  $name = str_replace('','-',$name);
-                  $image->storeAs('public/photos', $name);
-                
-                 #$vehicle_photo->photo = $name;
-                 #$vehicle_photo->vehicle_id = $vehicle->id;
-                 #$vehicle_photo->save();
-         
-                 $vehicle->vehiclephotos()->create(['photo' => $name, 'photo_postion' => $i++]);
-      
-               }     
-             } */
-
+        Log::info('Vehicle saved successfully.', ['vehicle_id' => $vehicle->id]);
+    
         return redirect()->route('user.packages', $currentId)->with('success', 'Added');
     }
+    
     public function show_vehiclesale(Listing $listing, Vehicle $vehicle)
     {
         $arr['categories'] = Category::all();
