@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Exports\UsersExport;
 use App\Exports\PackagesExport;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Carmake;
 use App\Models\Carmodel;
@@ -26,7 +27,7 @@ use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Expr\List_;
 use App\Models\User;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\Log;
+
 
 
 class ListingController extends Controller
@@ -152,12 +153,12 @@ class ListingController extends Controller
     }
 
 
-    use Illuminate\Support\Facades\Log;
+
 
     public function store_vehiclesale(Request $request, Listing $listing, Vehicle $vehicle)
     {
         Log::info('Starting store_vehiclesale process.');
-    
+
         $this->validate($request, [
             'category' => 'required',
             'city' => 'required',
@@ -186,21 +187,21 @@ class ListingController extends Controller
             'vehicle_type' => 'required',
             'color' => 'required',
         ]);
-    
+
         Log::info('Validation successful.');
-    
+
         $listing->category_id = $request->category;
         $listing->city_id = $request->city;
         $listing->user_id = $request->user_id;
         $listing->ads_status = 'Pending';
-    
+
         $listing->save();
         Log::info('Listing saved successfully.', ['listing_id' => $listing->id]);
-    
+
         $currentId = $listing->id;
-    
+
         $imageFields = ['front_img', 'back_img', 'right_img', 'left_img', 'interiorf_img', 'interiorb_img', 'engine_img', 'opt_img1', 'opt_img2', 'opt_img3'];
-    
+
         foreach ($imageFields as $fieldName) {
             if ($request->hasFile($fieldName)) {
                 try {
@@ -208,22 +209,22 @@ class ListingController extends Controller
                     $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
                     $extension = $image->getClientOriginalExtension();
                     $imageStore = $imagename . '_' . time() . '.' . $extension;
-    
+
                     // Open the image using Intervention/Image
                     $img = Image::make($image);
-    
+
                     // Load the watermark image
                     $watermark = Image::make(public_path('watermark/king.png'));
-    
+
                     // Add the watermark to the image
                     $img->insert($watermark, 'bottom-right', 10, 10);
-    
+
                     // Save the watermarked image
                     $img->save(public_path('storage/photos/' . $imageStore));
-    
+
                     // Assign the image store path to the corresponding model field
                     $vehicle->$fieldName = $imageStore;
-    
+
                     Log::info('Image processed and saved.', ['field' => $fieldName, 'filename' => $imageStore]);
                 } catch (\Exception $e) {
                     Log::error('Error processing image.', [
@@ -233,12 +234,12 @@ class ListingController extends Controller
                 }
             }
         }
-    
+
         $price = str_replace(',', '', $request->input('price'));
-    
+
         // Rest of your code to save the vehicle details
         $default_view = 0;
-    
+
         $vehicle->listing_id = $currentId;
         $vehicle->model_id = $request->model_id;
         $vehicle->year_of_build = $request->year_of_build;
@@ -257,13 +258,13 @@ class ListingController extends Controller
         $vehicle->vehicle_type = $request->vehicle_type;
         $vehicle->color = $request->color;
         $vehicle->views = $default_view;
-    
+
         $vehicle->save();
         Log::info('Vehicle saved successfully.', ['vehicle_id' => $vehicle->id]);
-    
+
         return redirect()->route('user.packages', $currentId)->with('success', 'Added');
     }
-    
+
     public function show_vehiclesale(Listing $listing, Vehicle $vehicle)
     {
         $arr['categories'] = Category::all();
@@ -440,7 +441,7 @@ class ListingController extends Controller
 
         $vehicle->update();
 
-        /* if ($request->hasFile('images')) 
+        /* if ($request->hasFile('images'))
          {
              $photos = $request->file('images');
              $i = 1;
@@ -450,9 +451,9 @@ class ListingController extends Controller
                 $image->storeAs('public/photos', $name);
                #$vehicle_photo->photo = $name;
                #$vehicle_photo->vehicle_id = $vehicle->id;
-               #$vehicle_photo->save(); 
+               #$vehicle_photo->save();
                $vehicle->vehiclephotos()->update(['photo' => $name,'photo_postion' => $i++]);
-             }     
+             }
            }  */
 
         return redirect()->route('user.edit_vehiclesale', [$listing->id, $vehicle->id])->with('success', 'Updated');
@@ -478,7 +479,7 @@ class ListingController extends Controller
         );
 
         /* $vehicle_photos = Vehicle_photo::where('vehicle_id', $vehicle->id)->get();
-         foreach ($vehicle_photos as $vehicle_photo){       
+         foreach ($vehicle_photos as $vehicle_photo){
                  Storage::delete('public/photos/'.$vehicle_photo->photo);
                  $vehicle_photo->delete();
          } */
@@ -849,13 +850,13 @@ class ListingController extends Controller
         return redirect()->route('user.invoice.show', $invoice->id)->with('success', 'Added');
 
 
-        /*    
+        /*
             $invoice->bill_to
             $invoice->generate_date
             $invoice->due_date
             $invoice->subtotal
             $invoice->tax
-            $invoice->total 
+            $invoice->total
             $invoice->bill_to
 
             */
