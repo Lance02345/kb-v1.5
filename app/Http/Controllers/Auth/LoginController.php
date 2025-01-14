@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
+
 class LoginController extends Controller
 {
     /*
@@ -42,7 +43,7 @@ class LoginController extends Controller
     }
     public function redirectPath()
     {
-        /** 
+        /**
         *if (auth()->user()->user_type == 'admin') {
         *    return route('admin.dashboard');
        * }
@@ -81,7 +82,7 @@ class LoginController extends Controller
             $user->avatar = $data->avatar;
             $user->save();
         }
-        
+
         Auth::login($user);
     }
 
@@ -133,5 +134,5 @@ class LoginController extends Controller
         return redirect()->route('user.my_list');
     }
 
-    
+
 }
