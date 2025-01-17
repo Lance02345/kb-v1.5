@@ -152,7 +152,6 @@ class ListingController extends Controller
     }
 
 
-    use Illuminate\Support\Facades\Log;
 
     public function store_vehiclesale(Request $request, Listing $listing, Vehicle $vehicle)
     {
