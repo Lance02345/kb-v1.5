@@ -19,7 +19,7 @@
 					</div>
 					<div class="short-popular-category-list text-center">
 						<h2>Popular Category</h2>
-					
+
 						<ul class="list-inline">
 							<li class="list-inline-item">
 								<a href="{{ route('vehicleslist') }}"><i class="fa fa-car"></i> Vehicles</a>
@@ -33,7 +33,7 @@
 
 						</ul>
 					</div>
-					
+
 				</div>
 				<!-- Advance Search -->
 				<div class="advance-search">
@@ -91,7 +91,7 @@
         </div>
     </div>
 </div>
-				
+
 			</div>
 		</div>
 	</div>
@@ -156,14 +156,14 @@
 									<div class="thumb-content">
 										<!--<div class="price">{{ $listing->package->package_name}} </div>-->
 										<a href="{{ route('vehicle', [$listing->id, $vehicle->id])}}">
-											
+
 											<img class="card-img-top category-img-fluid" src="/storage/photos/{{ $vehicle->front_img }}" alt=""style="max-height: 400px;">
-											
+
 										</a>
 									<div class="img-count">
-										<svg style="color:#d4af37;" 
-										xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-										class="bi bi-camera-fill" viewBox="0 0 16 16"> 
+										<svg style="color:#d4af37;"
+										xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+										class="bi bi-camera-fill" viewBox="0 0 16 16">
 										<path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" fill="#ffd040">
 											</path>
 											 <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" fill="#ffd040">
@@ -187,14 +187,14 @@
 												<li ><b>Trans:</b><span >{{ $vehicle->transmission}}</span></li>
 												<li ><b>Miles:</b><span>{{ number_format($vehicle->mileage, 0, '.', ',') }} Km</span></li>
 												<li ><b>Fuel:</b><span>{{ $vehicle->fuel_type}}</span></li>
-				
+
 											</ul>
 											</div>
 											<div class="property-price">
 											<p class="badge-sale">For Sale</p>
 											<p class="price">Ksh {{ $vehicle->price}}</p>
 											</div>
-											
+
 											</div>
 										</div>
                                 <!-- Your card content here -->
@@ -223,7 +223,7 @@
     </a>
 </div>
 
-	
+
 				</div>
 
 </div>
@@ -257,14 +257,14 @@
 								<div class="card">
 									<div class="thumb-content">
 										<a href="{{ route('vehicle', [$listing->id, $vehicle->id])}}">
-											
+
 											<img class="card-img-top category-img-fluid" src="/storage/photos/{{ $vehicle->front_img }}" alt=""style="max-height: 400px;">
-											
+
 										</a>
 									<div class="img-count">
-										<svg style="color:#d4af37;" 
-										xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-										class="bi bi-camera-fill" viewBox="0 0 16 16"> 
+										<svg style="color:#d4af37;"
+										xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+										class="bi bi-camera-fill" viewBox="0 0 16 16">
 										<path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" fill="#ffd040">
 											</path>
 											 <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" fill="#ffd040">
@@ -283,21 +283,26 @@
 											</li>
 										</ul>
 										<a href="{{ route('vehicle', [$listing->id, $vehicle->id])}}">
-											<ul class="styled-list">
-												<li ><b>Engine Size:</b><span>{{ $vehicle->engine_size}}</span></li>
-												<li ><b>Trans:</b><span >{{ $vehicle->transmission}}</span></li>
-												<li ><b>Miles:</b><span>{{ number_format($vehicle->mileage, 0, '.', ',') }} Km</span></li>
-												<li ><b>Fuel:</b><span>{{ $vehicle->fuel_type}}</span></li>
-				
-											</ul>
+                                            <ul class="">
+                                                <div class="row align-items-start">
+                                                    <div class="col-6 col-md-6">
+                                                        <li><b>Engine Size:</b><span>{{ $vehicle->engine_size}}</span></li>
+                                                        <li><b>Trans:</b><span>{{ $vehicle->transmission}}</span></li>
+                                                    </div>
+                                                    <div class="col-6 col-md-6 align-items-start ml-auto">
+                                                        <li><b>Miles:</b><span>{{ $vehicle->mileage}}Km</span></li>
+                                                        <li><b>Fuel:</b><span>{{ $vehicle->fuel_type}}</span></li>
+                                                    </div>
+                                                </div>
+                                            </ul>
 											</div>
 											<div class="property-price">
 											<p class="badge-sale">For Sale</p>
 											<p class="price">Ksh {{ $vehicle->price}}</p>
 											</div>
 											<div>
-											
-											
+
+
 												</div>
 											</div>
 										</div>
@@ -424,7 +429,7 @@
 			<div class="card-bodyy">
 			  <h5 class="why-title">Why us?</h5>
 			  <p class="why-text">
-				At KingsBridge, we take pride in being more than just an online car selling platform. 
+				At KingsBridge, we take pride in being more than just an online car selling platform.
 				We are your automotive hub, a comprehensive destination where car enthusiasts and sellers unite.
 				Here's why you should choose us:
 			  </p>
@@ -438,8 +443,8 @@
 			  <h5 class="why-title">Flexible Options for All</h5>
                 <p class="why-text" style="text-align: justify;">
                     At KingsBridge, we offer flexible pricing options to cater to your unique needs.
-                    Whether you're a car seller, a garage owner, or a car event organizer, we have a solution tailored just for you. 
-                    Explore the possibilities:			  
+                    Whether you're a car seller, a garage owner, or a car event organizer, we have a solution tailored just for you.
+                    Explore the possibilities:
                     </p>
 				<li class="why-btn-alighn"><a class="btn btn-main" href="{{ route('about_us')}}">Learn more</a></li>
 			</div>
@@ -488,7 +493,7 @@
 <!--====================================
 =            Call to Action            =
 =====================================-->
- 
+
 
 <section class="call-to-action overly bg-3 section-sm">
 	<!-- Container Start -->
@@ -498,7 +503,7 @@
 				<div class="content-holder">
 					<h2>Join the largest community of vehicle enthusiasts</h2>
 					<ul class="list-inline mt-30">
-						<li class="list-inline-item"><a class="btn btn-main" href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">Add Listing</a></li>						
+						<li class="list-inline-item"><a class="btn btn-main" href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">Add Listing</a></li>
 						<li class="list-inline-item"><a class="btn btn-secondary" href="{{ route('vehicleslist')}}">Browser Listing</a></li>
 					</ul>
 				</div>
@@ -507,7 +512,7 @@
 	</div>
 
 
-	
+
 	<!-- Container End -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
@@ -527,12 +532,12 @@ $.ajax({
 		for(var i=0;i<data.length;i++)
 		{
 			option+='<option value="'+data[i].id+'">'+data[i].model+'</option>';
-			
+
 		}
 			div.find('.model').html(" ");
 			div.find('.model').append(option);
 	},
-	
+
 	error:function(){    }
 });
 });
@@ -551,37 +556,37 @@ $(document).ready(function(){
 </script>
 	<script type="text/javascript">
     let thumbnails = document.getElementsByClassName('thumbnail')
-    
+
     let activeImages = document.getElementsByClassName('active')
-    
+
     for (var i=0; i < thumbnails.length; i++){
-    
+
         thumbnails[i].addEventListener('click', function(){
             console.log(activeImages)
-            
+
             if (activeImages.length > 1){
                 activeImages[0].classList.remove('active')
             }
-            
-    
+
+
             this.classList.add('active')
             document.getElementById('featured').src = this.src
         })
-    }        
+    }
 
-	
+
 		// List of sentences
-var _CONTENT = [ 
-"Buy and Sell", 
-"Advertising a Purpose, a Car at a Time,", 
-"With KingsBridge you get your money’s worth!!!.", 
+var _CONTENT = [
+"Buy and Sell",
+"Advertising a Purpose, a Car at a Time,",
+"With KingsBridge you get your money’s worth!!!.",
 "You're in control, choose the right package to sell your car ."
 ];
 
 // Current sentence being processed
 var _PART = 0;
 
-// Character number of the current sentence being processed 
+// Character number of the current sentence being processed
 var _PART_INDEX = 0;
 
 // Holds the handle returned from setInterval
@@ -590,11 +595,11 @@ var _INTERVAL_VAL;
 // Element that holds the text
 var _ELEMENT = document.querySelector("#text");
 
-// Cursor element 
+// Cursor element
 var _CURSOR = document.querySelector("#cursor");
 
 // Implements typing effect
-function Type() { 
+function Type() {
 // Get substring with 1 characater added
 var text =  _CONTENT[_PART].substring(0, _PART_INDEX + 1);
 _ELEMENT.innerHTML = text;
@@ -652,9 +657,9 @@ window.onload=function(){
   centerMode:true,
   slidesToShow:3,
   slidesToScroll:2
-  
+
   });
-  
+
 };
 
 
@@ -668,30 +673,30 @@ for (var i=0; i < thumbnails.length; i++){
 
 	thumbnails[i].addEventListener('click', function(){
 		console.log(activeImages)
-		
+
 		if (activeImages.length > 1){
 			activeImages[0].classList.remove('active')
 		}
-		
+
 
 		this.classList.add('active')
 		document.getElementById('featured').src = this.src
 	})
-}        
+}
 
 
 	// List of sentences
-var _CONTENT = [ 
-"The largest community of car enthusiasts.", 
-"From Car hiring services,,", 
-"selling of vehicles and selling of vehicles parts. ", 
+var _CONTENT = [
+"The largest community of car enthusiasts.",
+"From Car hiring services,,",
+"selling of vehicles and selling of vehicles parts. ",
 "All under one roof."
 ];
 
 // Current sentence being processed
 var _PART = 0;
 
-// Character number of the current sentence being processed 
+// Character number of the current sentence being processed
 var _PART_INDEX = 0;
 
 // Holds the handle returned from setInterval
@@ -700,11 +705,11 @@ var _INTERVAL_VAL;
 // Element that holds the text
 var _ELEMENT = document.querySelector("#text");
 
-// Cursor element 
+// Cursor element
 var _CURSOR = document.querySelector("#cursor");
 
 // Implements typing effect
-function Type() { 
+function Type() {
 // Get substring with 1 characater added
 var text =  _CONTENT[_PART].substring(0, _PART_INDEX + 1);
 _ELEMENT.innerHTML = text;
@@ -786,7 +791,7 @@ for (var i=0;i<minPerSlide;i++) {
 	if (!next.length) {
 		next = $(this).siblings(':first');
 	  }
-	
+
 	next.children(':first-child').clone().appendTo($(this));
   }
 });
@@ -800,7 +805,7 @@ for (var i=0;i<minPerSlide;i++) {
   new Glide('.glide').mount()
 </script>
 
-	
+
 </section>
 
  @endsection
