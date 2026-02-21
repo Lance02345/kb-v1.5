@@ -6,42 +6,42 @@
 =            Hero Area            =
 ================================-->
 
-<section class="hero-area bg-1 text-center overly">
+<section class="hero-area bg-1 overly landing-hero">
 	<!-- Container Start -->
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
-				<!-- Header Contetnt -->
-				<div class="content-block" >
-					<h1>Buy & Sell Near You </h1>
-					<div id="autotext">
-						<div id="text"></div><div id="cursor"></div>
-					</div>
-					<div class="short-popular-category-list text-center">
-						<h2>Popular Category</h2>
-					
-						    <ul class="list-inline">
-								<li class="list-inline-item">
-									<a href="{{ route('vehicleslist') }}">Vehicles</a>
-								</li>
-															<li class="list-inline-item">
-									<a href="{{ route('spareparts') }}">Vehicle Parts</a>
-								</li>
-	                            <li class="list-inline-item">
-									<a href="{{ route('carhire') }}">Car Hire</a>
-								</li>
+				<div class="col-md-12">
+					<!-- Header Contetnt -->
+					<div class="content-block landing-hero-content">
+						<p class="landing-kicker">Kenya's automotive marketplace</p>
+						<h1>Buy, sell, and scale your automotive business</h1>
+						<div id="autotext" class="landing-autotext">
+							<div id="text"></div><div id="cursor"></div>
+						</div>
+						<div class="short-popular-category-list">
+							<h2>Start with what you need</h2>
+						
+							    <ul class="list-inline">
+									<li class="list-inline-item">
+										<a href="{{ route('vehicleslist') }}">Vehicles</a>
+									</li>
+									<li class="list-inline-item">
+										<a href="{{ route('spareparts') }}">Vehicle Parts</a>
+									</li>
+		                            <li class="list-inline-item">
+										<a href="{{ route('carhire') }}">Car Hire</a>
+									</li>
 
-						</ul>
-					</div>
+							</ul>
+						</div>
 					
 				</div>
 				<!-- Advance Search -->
-				<div class="advance-search">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-12 col-md-12 align-content-center sale">
-                <form action="{{ route('vehicle_search') }}" method="get" id="vehicleSearchForm">
-                    <div class="form-row">
+					<div class="advance-search landing-search-shell">
+	        <div class="row justify-content-center">
+	            <div class="col-lg-12 col-md-12 align-content-center sale">
+	                <form action="{{ route('vehicle_search') }}" method="get" id="vehicleSearchForm">
+	                    <div class="form-row">
                         <div class="form-group col-md-2">
                             <select name="make" id="make" class="make form-control">
                                 <option value="" data-live-search="true">Choose a Make</option>
@@ -82,14 +82,13 @@
                             <input type="text" name="max_price" placeholder="Max Price" class="form-control">
                         </div>
 
-                        <div class="form-group col-md-2">
-                            <button type="submit" class="btn btn-primary" style="padding: 8px; 30px;">Search Now</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+	                        <div class="form-group col-md-2">
+	                            <button type="submit" class="btn btn-primary btn-landing-search">Search Now</button>
+	                        </div>
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
 </div>
 				
 			</div>
@@ -98,34 +97,7 @@
 	<!-- Container End -->
 </section>
 
-<style>
-					    @media (max-width: 767px) {
-        .product-item {
-            margin-bottom: 15px; /* Adjust vertical space between items */
-        }
-        .product-grid-list .row > div[class*="col-"] {
-            padding-left: 5px; /* Adjust left padding */
-            padding-right: 5px; /* Adjust right padding */
-        }
-    }
-    /* Set a fixed height for the card bodies */
-    .card-body {
-        height: 150px; /* Adjust this value to your preferred fixed height */
-        overflow: hidden; /* Hide content that exceeds the fixed height */
-    }
-
-	.styled-list {
-        list-style: none;
-        padding: 0;
-    }
-
-    .styled-list li {
-        display: flex;
-        align-items: center;
-        margin-bottom: 5px;
-    }
-
-</style>
+<section class="landing-section landing-trending">
 <div class="Hdrive text-center my-3">
 	<div class = "container">
 	<div class="col-md-12">
@@ -133,7 +105,7 @@
 			<h2>Trending Ads</h2>
 		</div>
 	</div>
-	<div id="productCarousel" class="carousel slide" data-ride="carousel">
+		<div id="featuredCarousel" class="carousel slide landing-carousel" data-ride="carousel">
     <div class="carousel-inner">
         @php $slideNumber = 0; @endphp
         @foreach ($listings as $listing)
@@ -204,33 +176,34 @@
     </div>
 
     <!-- Carousel navigation controls -->
-    <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+	    <a class="carousel-control-prev" href="#featuredCarousel" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
     </a>
-    <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+	    <a class="carousel-control-next" href="#featuredCarousel" role="button" data-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
-    </a>
+	    </a>
 </div>
 
-	
-				</div>
+		
+					</div>
 
 </div>
+</section>
 <!--===========================================
 --===========================================
 =            Popular deals section            =
 ============================================-->
 
-<section class="product">
+<section class="product landing-section landing-drive">
 	<div class="container">
 			<div class="col-md-12">
 				<div class="section-title">
 					<h2>Find Your Drive</h2>
 				</div>
 		</div>
-	<div id="productCarousel" class="carousel slide" data-ride="carousel">
+		<div id="browseCarousel" class="carousel slide landing-carousel" data-ride="carousel">
     <div class="carousel-inner">
         @php $slideNumber = 0; @endphp
   @foreach ($listings as $listing )
@@ -300,11 +273,11 @@
     </div>
 
     <!-- Carousel navigation controls -->
-    <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+	    <a class="carousel-control-prev" href="#browseCarousel" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
     </a>
-    <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+	    <a class="carousel-control-next" href="#browseCarousel" role="button" data-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
@@ -312,26 +285,18 @@
 
 </section>
 
+<section class="landing-section landing-events">
 <div class="Hdrive text-center my-3">
-	<div class = "container">
-	<div class="col-md-12">
-		<div class="section-title">
-			<h2>Events</h2>
+		<div class = "container">
+		<div class="col-md-12">
+			<div class="section-title">
+				<h2>Events</h2>
+			</div>
 		</div>
-	</div>
-	<div id="eventCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-        @foreach ($carevents as $index => $carevent)
-            <li data-target="#eventCarousel" data-slide-to="{{ $index }}" @if ($index === 0) class="active" @endif></li>
-        @endforeach
-    </ol>
-
-    <!-- Slides -->
-<div id="eventCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-        @foreach ($carevents as $index => $carevent)
+<div id="eventCarousel" class="carousel slide landing-carousel" data-ride="carousel">
+	    <!-- Indicators -->
+	    <ol class="carousel-indicators">
+	        @foreach ($carevents as $index => $carevent)
             <li data-target="#eventCarousel" data-slide-to="{{ $index }}" @if ($index === 0) class="active" @endif></li>
         @endforeach
     </ol>
@@ -394,10 +359,11 @@
 
 </div>
 </div>
+</section>
 <!--==========================================
 =          Why KingsBridge            =
 ===========================================-->
-<div class="container">
+<div class="container landing-why">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="section-title section-why-title">
@@ -438,7 +404,7 @@
 <!--==========================================
 =        Join the Largest car community  =
 ===========================================-->
-<section class="section-join">
+<section class="section-join landing-join">
 	<!-- Container Start -->
 	<div class="container">
 		<div class="row">
@@ -462,7 +428,7 @@
 =           Our Partners           =
 ====================================-->
 
-<section class="product">
+<section class="product landing-partners">
 	<p style="font-weight: 450; font-size:20px; text-align: center;"> <b>Our Partners</b></p>
 	<div class="slider ">
 		<div><img src="../images/GarageGallery Logo.jpg" alt="" style="max-height: 150px;">
@@ -475,7 +441,7 @@
 =====================================-->
  
 
-<section class="call-to-action overly bg-3 section-sm">
+<section class="call-to-action overly bg-3 section-sm landing-cta">
 	<!-- Container Start -->
 	<div class="container">
 		<div class="row justify-content-md-center text-center">
@@ -484,7 +450,7 @@
 					<h2>Join the largest community of vehicle enthusiasts</h2>
 					<ul class="list-inline mt-30">
 						<li class="list-inline-item"><a class="btn btn-main" href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">Add Listing</a></li>						
-						<li class="list-inline-item"><a class="btn btn-secondary" href="{{ route('vehicleslist')}}">Browser Listing</a></li>
+						<li class="list-inline-item"><a class="btn btn-secondary" href="{{ route('vehicleslist')}}">Browse Listings</a></li>
 					</ul>
 				</div>
 			</div>
