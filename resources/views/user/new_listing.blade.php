@@ -1,79 +1,56 @@
 @extends('layouts.kingsbridge')
 @section('content')
 
-<!--==================================
-=            User Profile            =
-===================================-->
-<section class="section-sm">
-    <div class="container ">
-        <div class="row  m-auto" style="margin: auto;">
-            <div class="col-lg-12">
-                <div class="heading text-center pb-5">
-                    <h2 class="font-weight-bold">Featured Categories</h2>
-                </div>
-            </div>
-           
-            <div class="col-lg-3 col-md-6">
-                <div class="package-content bg-light border text-center p-5 my-2 my-lg-0">
-                    <div class="package-content-heading border-bottom">
-                        <i class="fa fa-car"></i>
-                        <h2>Car Hire</h2>
-                     
-                    </div>
-                    <ul>
-                        <li class="my-4"> <i class="fa fa-check"></i> Click the "choose" to countinue with listing process</li>
-                    </ul>
-                    <a href="{{ route('user.create_carhire')}}" class="btn btn-primary">Choose</a>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="package-content bg-light border text-center my-2 my-lg-0 p-5">
-                    <div class="package-content-heading border-bottom">
-                            <i class="fa fa-car"></i>
-                        <h2>Sale Vehicle </h2>
-                 
-                    </div>
-                    <ul>
-                        <li class="my-4"> <i class="fa fa-check"></i> Click the "choose" to countinue with listing process</li>
-                
-                    </ul>
-                    <a href="{{ route('user.create_vehiclesale')}}" class="btn btn-primary">Choose</a>
-                </div>
-            </div>
- 
-            <div class="col-lg-3 col-md-6">
-                <div class="package-content bg-light border text-center my-2 my-lg-0 p-5">
-                    <div class="package-content-heading border-bottom">
-                            <i class="fa fa-car"></i>
-                        <h2> Car Event</h2>
-                 
-                    </div>
-                    <ul>
-                        <li class="my-4"> <i class="fa fa-check"></i> Click the "choose" to countinue with listing process</li>
-                
-                    </ul>
-                    <a href="{{ route('user.create_carevent')}}" class="btn btn-primary">Choose</a>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-                <div class="package-content bg-light border text-center my-2 my-lg-0 p-5">
-                    <div class="package-content-heading border-bottom">
-                            <i class="fa fa-car"></i>
-                        <h2>Spare Parts</h2>
-                 
-                    </div>
-                    <ul>
-                        <li class="my-4"> <i class="fa fa-check"></i> Click the "choose" to countinue with listing process</li>
-                
-                    </ul>
-                    <a href="{{ route('user.sparepartscreate')}}" class="btn btn-primary">Choose</a>
-                </div>
-            </div>
-
-
-        </div>
+<section class="section-sm seller-create-hub">
+  <div class="container">
+    <div class="seller-dashboard-head mb-4">
+      <div>
+        <h2>Start a New Listing</h2>
+        <p>Select what you want to list. You can always manage everything from your listings dashboard.</p>
+      </div>
+      <div class="seller-dashboard-actions">
+        <a href="{{ route('user.index_vehiclesale') }}" class="btn btn-outline-main">My Listings</a>
+        <a href="{{ route('user.user_profile', Auth::user()->id ) }}" class="btn btn-main">Profile</a>
+      </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="seller-option-card">
+          <div class="seller-option-icon"><i class="fa fa-car"></i></div>
+          <h4>Vehicle Sale</h4>
+          <p>Post a car for sale with photos, specs, and pricing.</p>
+          <a href="{{ route('user.create_vehiclesale') }}" class="btn btn-main btn-sm">Choose</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="seller-option-card">
+          <div class="seller-option-icon"><i class="fa fa-key"></i></div>
+          <h4>Car Hire</h4>
+          <p>List vehicles available for short or long-term hire.</p>
+          <a href="{{ route('user.create_carhire') }}" class="btn btn-main btn-sm">Choose</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="seller-option-card">
+          <div class="seller-option-icon"><i class="fa fa-flag-checkered"></i></div>
+          <h4>Car Event</h4>
+          <p>Promote your event to enthusiasts across the platform.</p>
+          <a href="{{ route('user.create_carevent') }}" class="btn btn-main btn-sm">Choose</a>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-3 mb-3">
+        <div class="seller-option-card">
+          <div class="seller-option-icon"><i class="fa fa-cogs"></i></div>
+          <h4>Spare Parts</h4>
+          <p>Advertise spare parts and accessories to buyers.</p>
+          <a href="{{ route('user.sparepartscreate') }}" class="btn btn-main btn-sm">Choose</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 @endsection

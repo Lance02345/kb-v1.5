@@ -41,16 +41,16 @@
                 <a class="nav-link" href="{{ route('index') }}">Home</a>
               </li>
               <li class="nav-item {{ request()->routeIs('vehicleslist') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('vehicleslist') }}">Buy a Vehicle</a>
+                <a class="nav-link" href="{{ route('vehicleslist') }}"><i class="fa fa-car"></i> Buy a Vehicle</a>
               </li>
               <li class="nav-item {{ request()->routeIs('spareparts') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('spareparts') }}">Vehicle Parts</a>
+                <a class="nav-link" href="{{ route('spareparts') }}"><i class="fa fa-cogs"></i> Vehicle Parts</a>
               </li>
               <li class="nav-item {{ request()->routeIs('carevent') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('carevent') }}">Car Events</a>
+                <a class="nav-link" href="{{ route('carevent') }}"><i class="fa fa-flag-checkered"></i> Car Events</a>
               </li>
               <li class="nav-item {{ request()->routeIs('about_us') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('about_us') }}">About Us</a>
+                <a class="nav-link" href="{{ route('about_us') }}"><i class="fa fa-users"></i> About Us</a>
               </li>
             </ul>
 

@@ -98,6 +98,45 @@
 	<!-- Container End -->
 </section>
 
+<section class="home-quick-links section-sm">
+	<div class="container">
+		<div class="section-title text-center mb-4">
+			<h2>Explore Kingsbridge</h2>
+			<p>Start where you want: shop, list, discover parts, or join events.</p>
+		</div>
+		<div class="row">
+			<div class="col-6 col-md-3 mb-3">
+				<a href="{{ route('vehicleslist') }}" class="quick-link-card">
+					<span class="quick-link-icon"><i class="fa fa-car"></i></span>
+					<span class="quick-link-title">Buy a Vehicle</span>
+					<span class="quick-link-text">Browse verified listings</span>
+				</a>
+			</div>
+			<div class="col-6 col-md-3 mb-3">
+				<a href="{{ route('spareparts') }}" class="quick-link-card">
+					<span class="quick-link-icon"><i class="fa fa-cogs"></i></span>
+					<span class="quick-link-title">Vehicle Parts</span>
+					<span class="quick-link-text">Find trusted spare parts</span>
+				</a>
+			</div>
+			<div class="col-6 col-md-3 mb-3">
+				<a href="{{ route('carevent') }}" class="quick-link-card">
+					<span class="quick-link-icon"><i class="fa fa-flag-checkered"></i></span>
+					<span class="quick-link-title">Car Events</span>
+					<span class="quick-link-text">See upcoming auto events</span>
+				</a>
+			</div>
+			<div class="col-6 col-md-3 mb-3">
+				<a href="{{ route('about_us') }}" class="quick-link-card">
+					<span class="quick-link-icon"><i class="fa fa-users"></i></span>
+					<span class="quick-link-title">About Us</span>
+					<span class="quick-link-text">Learn our mission</span>
+				</a>
+			</div>
+		</div>
+	</div>
+</section>
+
 <style>
 					    @media (max-width: 767px) {
         .product-item {

@@ -145,6 +145,7 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
     Route :: put ('update_vehiclesale/{listing}/{vehicle}',  [ListingController::class, 'update_vehiclesale'])->name('update_vehiclesale');
     Route :: get ('show_vehiclesale/{listing}/{vehicle}',  [ListingController::class, 'show_vehiclesale'])->name('show_vehiclesale');
     Route :: delete ('delete_vehiclesale/{listing}/{vehicle}',  [ListingController::class, 'delete_vehiclesale'])->name('delete_vehiclesale');
+    Route::post('listing/{listing}/quick-action', [ListingController::class, 'quickAction'])->name('listing.quick_action');
     Route::post('/add-to-favorites', [PagesController::class, 'addToFavorites'])->name('addtofavourites');
 
 

@@ -23,6 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use PhpParser\Node\Expr\List_;
 use App\Models\User;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -38,44 +39,26 @@ class ListingController extends Controller
     }
     public function my_list()
     {
-        $arr['listings'] = Listing::where('user_id', Auth::id())->get();
-        $arr['vehicles'] = Vehicle::all();
-        $arr['vehiclephotos'] = Vehicle_photo::where('photo_postion', 1)->get();
-        $current = Carbon::now();
-        // $arr['exp_date'] = DB::table('listings')->whereRaw('DATEDIFF(created_at, current_date) > 60')->get();
-
-
-        return view('user.my_list')->with($arr);
-
-
+        return $this->index_vehiclesale();
     }
 
 
     public function pending_list()
     {
-        $listings = Listing::where('ads_status', 'pending')->where('user_id', Auth::id())->get();
-        $vehicles = Vehicle::all();
-        $vehiclephotos = Vehicle_photo::where('photo_postion', 1)->get();
-        return view('user.pending_list', compact('listings', 'vehicles', 'vehiclephotos'));
+        return $this->renderSellerListings('Pending', 'Pending Listings');
     }
 
     public function active_list()
     {
-        $listings = Listing::where('ads_status', 'Active')->where('user_id', Auth::id())->get();
-        $vehicles = Vehicle::all();
-        return view('user.active_list', compact('listings', 'vehicles'));
+        return $this->renderSellerListings('Approved', 'Active Listings');
     }
     public function sold_list()
     {
-        $listings = Listing::where('ads_status', 'Sold')->where('user_id', Auth::id())->get();
-        $vehicles = Vehicle::all();
-        return view('user.sold_list', compact('listings', 'vehicles'));
+        return $this->renderSellerListings('Sold', 'Sold Listings');
     }
     public function expired_list()
     {
-        $listings = Listing::where('ads_status', 'Expired')->where('user_id', Auth::id())->get();
-        $vehicles = Vehicle::all();
-        return view('user.expired_list', compact('listings', 'vehicles'));
+        return $this->renderSellerListings('Expired', 'Expired Listings');
     }
     public function archived_list()
     {
@@ -123,14 +106,235 @@ class ListingController extends Controller
     }
     public function index_vehiclesale()
     {
-        $arr['listings'] = Listing::where('user_id', Auth::id())->get();
-        $arr['vehicles'] = Vehicle::all();
-        $arr['vehiclephotos'] = Vehicle_photo::where('photo_postion', 1)->get();
-        $current = Carbon::now();
-        // $arr['exp_date'] = DB::table('listings')->whereRaw('DATEDIFF(created_at, current_date) > 60')->get();
+        return $this->renderSellerListings();
+    }
 
+    public function quickAction(Request $request, Listing $listing)
+    {
+        if ((int) $listing->user_id !== (int) Auth::id()) {
+            abort(403);
+        }
 
-        return view('user.index_vehiclesale')->with($arr);
+        $validated = $request->validate([
+            'action' => ['required', Rule::in(['mark_sold', 'mark_active', 'renew_30d'])],
+        ]);
+
+        $message = 'Listing updated successfully.';
+        switch ($validated['action']) {
+            case 'mark_sold':
+                $listing->ads_status = 'Sold';
+                $message = 'Listing marked as sold.';
+                break;
+            case 'mark_active':
+                $listing->ads_status = 'Approved';
+                $message = 'Listing marked as active.';
+                break;
+            case 'renew_30d':
+                $baseDate = Carbon::now();
+                if (!empty($listing->ads_duration)) {
+                    try {
+                        $existing = Carbon::parse($listing->ads_duration);
+                        if ($existing->isFuture()) {
+                            $baseDate = $existing;
+                        }
+                    } catch (\Throwable $e) {
+                    }
+                }
+                $listing->ads_duration = $baseDate->copy()->addDays(30)->format('Y-m-d');
+                $message = 'Listing renewed for 30 days.';
+                break;
+        }
+
+        $listing->save();
+
+        return back()->with('success', $message)->with('action_success', true);
+    }
+
+    private function renderSellerListings(?string $statusFilter = null, string $pageTitle = 'My Listings Dashboard')
+    {
+        $allListings = Listing::with(['category', 'city'])
+            ->where('user_id', Auth::id())
+            ->orderByDesc('created_at')
+            ->get();
+
+        $allVehicles = Vehicle::with('carmodel.carmake')
+            ->whereIn('listing_id', $allListings->pluck('id'))
+            ->get();
+
+        $listings = $allListings->values();
+        if (!empty($statusFilter)) {
+            $targetStatus = strtolower($statusFilter);
+            $listings = $allListings->filter(function ($listing) use ($targetStatus) {
+                return strtolower((string) $listing->ads_status) === $targetStatus;
+            })->values();
+        }
+
+        $search = trim((string) request('q', ''));
+        if ($search !== '') {
+            $needle = mb_strtolower($search);
+            $listings = $listings->filter(function ($listing) use ($allVehicles, $needle) {
+                $vehicle = $allVehicles->firstWhere('listing_id', $listing->id);
+                if (!$vehicle) {
+                    return false;
+                }
+
+                $haystack = implode(' ', [
+                    $vehicle->carmodel->carmake->make ?? '',
+                    $vehicle->carmodel->model ?? '',
+                    $vehicle->year_of_build ?? '',
+                    $vehicle->vehicle_type ?? '',
+                    optional($listing->city)->city ?? '',
+                    $listing->id ?? '',
+                ]);
+
+                return mb_stripos($haystack, $needle) !== false;
+            })->values();
+        }
+
+        $sort = (string) request('sort', 'newest');
+        $listings = $listings->sort(function ($a, $b) use ($sort, $allVehicles) {
+            $vehicleA = $allVehicles->firstWhere('listing_id', $a->id);
+            $vehicleB = $allVehicles->firstWhere('listing_id', $b->id);
+            $priceA = (float) ($vehicleA->price ?? 0);
+            $priceB = (float) ($vehicleB->price ?? 0);
+            $viewsA = (int) ($vehicleA->views ?? 0);
+            $viewsB = (int) ($vehicleB->views ?? 0);
+
+            switch ($sort) {
+                case 'oldest':
+                    return $a->created_at <=> $b->created_at;
+                case 'price_low':
+                    return $priceA <=> $priceB;
+                case 'price_high':
+                    return $priceB <=> $priceA;
+                case 'views_high':
+                    return $viewsB <=> $viewsA;
+                case 'newest':
+                default:
+                    return $b->created_at <=> $a->created_at;
+            }
+        })->values();
+
+        $vehicles = $allVehicles->whereIn('listing_id', $listings->pluck('id'))->values();
+
+        $expiringSoon = $allListings->filter(function ($listing) {
+            if (empty($listing->ads_duration)) {
+                return false;
+            }
+
+            try {
+                $expiryDate = Carbon::parse($listing->ads_duration);
+                return $expiryDate->isFuture() && $expiryDate->lte(Carbon::now()->copy()->addDays(7));
+            } catch (\Throwable $e) {
+                return false;
+            }
+        })->count();
+
+        $alerts = [
+            'pending' => $allListings->where('ads_status', 'Pending')->count(),
+            'low_views' => $allVehicles->where('views', '<', 20)->count(),
+            'expiring_soon' => $expiringSoon,
+        ];
+
+        $totalViews = (int) $allVehicles->sum('views');
+        $avgViews = $allVehicles->count() > 0 ? round($totalViews / $allVehicles->count(), 1) : 0;
+        $topVehicles = $allVehicles->sortByDesc('views')->take(3)->values();
+        $topListings = $topVehicles->map(function ($vehicle) use ($allListings) {
+            return [
+                'vehicle' => $vehicle,
+                'listing' => $allListings->firstWhere('id', $vehicle->listing_id),
+            ];
+        })->filter(fn ($item) => !empty($item['listing']))->values();
+
+        $recommendations = [];
+        $quality = [];
+        foreach ($listings as $listing) {
+            $vehicle = $vehicles->firstWhere('listing_id', $listing->id);
+            if (!$vehicle) {
+                $recommendations[$listing->id] = [];
+                $quality[$listing->id] = ['score' => 0, 'missing' => ['Vehicle data missing']];
+                continue;
+            }
+
+            $tips = [];
+            $missing = [];
+            $imageFields = [
+                'front_img',
+                'back_img',
+                'right_img',
+                'left_img',
+                'interiorf_img',
+                'interiorb_img',
+                'engine_img',
+                'opt_img1',
+                'opt_img2',
+                'opt_img3',
+            ];
+
+            $imageCount = 0;
+            foreach ($imageFields as $field) {
+                if (!empty($vehicle->{$field})) {
+                    $imageCount++;
+                }
+            }
+
+            if ($imageCount < 6) {
+                $tips[] = 'Add more photos to increase buyer trust.';
+                $missing[] = 'More photos';
+            }
+            if ((int) $vehicle->views < 20) {
+                $tips[] = 'Low views detected. Consider boosting this listing.';
+            }
+            if (strtolower((string) $listing->ads_status) === 'pending') {
+                $tips[] = 'This listing is pending review.';
+            }
+            if (empty($vehicle->price) || (float) $vehicle->price <= 0) {
+                $missing[] = 'Valid price';
+            }
+            if (empty($vehicle->mileage) && $vehicle->mileage !== 0) {
+                $missing[] = 'Mileage';
+            }
+            if (mb_strlen(trim(strip_tags((string) $vehicle->description))) < 80) {
+                $missing[] = 'Detailed description';
+                $tips[] = 'Add a richer description (features, service history, condition).';
+            }
+            if (empty($listing->city_id)) {
+                $missing[] = 'City';
+            }
+
+            $checks = 5;
+            $met = $checks - count(array_unique($missing));
+            if ($met < 0) {
+                $met = 0;
+            }
+            $score = (int) round(($met / $checks) * 100);
+
+            $recommendations[$listing->id] = $tips;
+            $quality[$listing->id] = [
+                'score' => $score,
+                'missing' => array_values(array_unique($missing)),
+            ];
+        }
+
+        $analytics = [
+            'total_views' => $totalViews,
+            'average_views' => $avgViews,
+            'top_listings' => $topListings,
+        ];
+
+        return view('user.index_vehiclesale', [
+            'listings' => $listings,
+            'vehicles' => $vehicles,
+            'allListings' => $allListings,
+            'statusFilter' => $statusFilter,
+            'pageTitle' => $pageTitle,
+            'alerts' => $alerts,
+            'analytics' => $analytics,
+            'recommendations' => $recommendations,
+            'quality' => $quality,
+            'searchQuery' => $search,
+            'sortBy' => $sort,
+        ]);
     }
     public function create_vehiclesale(Request $request)
     {

@@ -9,13 +9,25 @@
        <span> {{ session('success') }} </span>
       </div>
       @endif     
-      <form action="{{ route('user.update_vehiclesale', [$listing->id, $vehicle->id])}}" method="POST" id="step-form-horizontal" class="step-form-horizontal" enctype="multipart/form-data">     
+      <div class="vehicle-sale-hero">
+        <h1>Edit Vehicle Sale Listing</h1>
+        <p>Update key details, improve listing quality, and keep your listing fresh.</p>
+      </div>
+
+      <ul class="vehicle-sale-steps">
+        <li>1. Location</li>
+        <li class="active">2. Vehicle Details</li>
+        <li>3. Pricing</li>
+        <li>4. Photos</li>
+      </ul>
+
+      <form action="{{ route('user.update_vehiclesale', [$listing->id, $vehicle->id])}}" method="POST" id="step-form-horizontal" class="step-form-horizontal vehicle-sale-form" enctype="multipart/form-data">     
         @csrf
         @method('put')
             <!-- Post Your ad start -->
-            <a href="{{ route('user.index_vehiclesale')}}" class="btn btn-primary  mb-2">Back</a>
-            <fieldset class="border border-gary p-4 mb-5">
-              <h3 style=" text-align: center;">Location Details</h3>
+            <a href="{{ route('user.index_vehiclesale')}}" class="btn btn-primary mb-2">Back to Listings</a>
+            <fieldset class="border border-gary p-4 mb-5 sale-form-section">
+              <h3 class="sale-section-title">Location Details</h3>
               <section>
               <div class="row">
                  
@@ -43,8 +55,8 @@
           </fieldset>
             
 <!-- Post Your ad start -->
-<fieldset class="border border-gary p-4 mb-5">
-  <h3 style=" text-align: center;">Edit Your Vehicle <!--  $currentId --></h3>
+<fieldset class="border border-gary p-4 mb-5 sale-form-section">
+  <h3 class="sale-section-title">Edit Your Vehicle</h3>
   <div class="row">
 
     <div class="col-lg-4"> 
@@ -239,8 +251,8 @@
       </div>
   </div>
 </fieldset>
-<fieldset class="border border-gary p-4 mb-5">
-  <h4 style=" text-align: center;">Upload your cars image</h4>
+<fieldset class="border border-gary p-4 mb-5 sale-form-section">
+  <h4 class="sale-section-title">Upload your vehicle images</h4>
   <h6 class="font-weight-bold pt-4 pb-1">Kindly follow the below processes</h6>
   <div class="row">
     <div class="space column">
@@ -379,10 +391,9 @@
 
 
 
-<button type="submit" class="btn btn-primary d-block mt-2">Update Your Listing</button>
+<button type="submit" class="btn btn-primary btn-sale-submit d-block mt-2">Save Listing Updates</button>
 </form>
-    
-        </form>
+
     </div>
 </section>
 

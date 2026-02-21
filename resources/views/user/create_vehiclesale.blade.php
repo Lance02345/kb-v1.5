@@ -3,19 +3,31 @@
 
 <section class="section-sm">
     <div class="container">
-      <form action="{{ route('user.store_vehiclesale')}}" method="POST" id="step-form-horizontal" class="step-form-horizontal" enctype="multipart/form-data">     
+      <div class="vehicle-sale-hero">
+        <h1>Create Vehicle Sale Listing</h1>
+        <p>Complete all sections below to publish a high-quality listing faster.</p>
+      </div>
+
+      <ul class="vehicle-sale-steps">
+        <li class="active">1. Location</li>
+        <li>2. Vehicle Details</li>
+        <li>3. Pricing</li>
+        <li>4. Photos</li>
+      </ul>
+
+      <form action="{{ route('user.store_vehiclesale')}}" method="POST" id="step-form-horizontal" class="step-form-horizontal vehicle-sale-form" enctype="multipart/form-data">     
         @csrf
            <!-- Post Your ad start -->
-           <fieldset class="border border-gary p-4 mb-5">
+           <fieldset class="border border-gary p-4 mb-5 sale-form-section">
             <div class="row">
               <div class="col-lg-12">
-                <h1 style=" text-align: center;">Post your Vehicle for sale</h1>
+                <h2 class="sale-section-title">Post your vehicle for sale</h2>
               </div>
             </div>
            </fieldset>
 
-           <fieldset class="border border-gary p-4 mb-5">
-            <h3 style=" text-align: center;">Location Details</h3>
+           <fieldset class="border border-gary p-4 mb-5 sale-form-section">
+            <h3 class="sale-section-title">Location Details</h3>
             <section>
             <div class="row">
                 
@@ -56,7 +68,7 @@
             </section>
         </fieldset>
 <!-- Post Your ad start -->
-<fieldset class="border border-gary p-4 mb-5">
+<fieldset class="border border-gary p-4 mb-5 sale-form-section">
   <div class="row">
 
           <div class="col-lg-4"> 
@@ -315,10 +327,10 @@
 
 
 
-<fieldset class="border border-gary p-4 mb-5">
+<fieldset class="border border-gary p-4 mb-5 sale-form-section">
   <div class="row">
       <div class="col-lg-12">
-          <h3 style=" text-align: center;">Listing Pricing Information</h3>
+          <h3 class="sale-section-title">Listing Pricing Information</h3>
       </div>
 
 <div class="col-lg-6">
@@ -350,8 +362,8 @@
   </div>
 
 </fieldset>
-<fieldset class="border border-gary p-4 mb-5">
-  <h4 style=" text-align: center;">Upload your cars image</h4>
+<fieldset class="border border-gary p-4 mb-5 sale-form-section">
+  <h4 class="sale-section-title">Upload your vehicle images</h4>
   <h6 class="font-weight-bold pt-4 pb-1">First image must be the front of the vehicle, the rest can come in any order.</h6>
   <div class="row">
     <div class="space column">
@@ -443,10 +455,9 @@
     </div>
   </div>
 </fieldset>
-<button type="submit" class="btn btn-primary d-block mt-2 float-right">Next to choose Package</button>
+<button type="submit" class="btn btn-primary btn-sale-submit d-block mt-2 float-right">Continue to Package Selection</button>
 </form>
-    
-        </form>
+
     </div>
 </section>
 <script src="{{ asset('js/gsdk-bootstrap-wizard.js')}}"></script>
