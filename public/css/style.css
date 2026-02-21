@@ -6322,7 +6322,7 @@ a:focus {
   color: #fff;
 }
 
-.hero-area .advance-search.landing-search-shell {
+.landing-search-shell {
   max-width: 1040px;
   margin: 24px auto 0;
   padding: 16px;
@@ -6334,11 +6334,11 @@ a:focus {
   margin-bottom: 0;
 }
 
-.hero-area .advance-search.landing-search-shell .form-group {
+.landing-search-shell .form-group {
   margin-bottom: 0;
 }
 
-.hero-area .advance-search.landing-search-shell .form-control {
+.landing-search-shell .form-control {
   height: 46px;
   border-radius: 10px;
   border: 1px solid #c8d5e6;
@@ -6690,7 +6690,7 @@ a:focus {
     grid-template-columns: 1fr;
   }
 
-  .hero-area .advance-search.landing-search-shell .form-group {
+  .landing-search-shell .form-group {
     margin-bottom: 10px;
   }
 
@@ -6726,7 +6726,7 @@ a:focus {
     padding-top: 74px;
   }
 
-  .hero-area .advance-search.landing-search-shell {
+  .landing-search-shell {
     padding: 12px;
   }
 

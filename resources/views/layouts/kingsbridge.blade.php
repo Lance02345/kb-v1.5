@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ @filemtime(public_path('css/style.css')) }}">
   @stack('styles')
 </head>
 
@@ -188,7 +188,7 @@
 <script src="{{ asset('plugins/smoothscroll/SmoothScroll.min.js') }}"></script>
 <script src="{{ asset('plugins/conditional-field/conditional-field.min.js') }}"></script>
 <script src="{{ asset('plugins/google-map/gmap.js') }}"></script>
-<script src="{{ asset('js/script.js') }}"></script>
+<script src="{{ asset('js/script.js') }}?v={{ @filemtime(public_path('js/script.js')) }}"></script>
 
 <script>
   function addCommas(numberText) {

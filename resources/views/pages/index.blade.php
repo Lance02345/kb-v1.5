@@ -21,7 +21,7 @@
           </div>
         </div>
 
-        <div class="advance-search landing-search-shell">
+        <div class="landing-search-shell">
           <div class="row justify-content-center">
             <div class="col-lg-12 col-md-12 align-content-center sale">
               <form action="{{ route('vehicle_search') }}" method="get" id="vehicleSearchForm">
