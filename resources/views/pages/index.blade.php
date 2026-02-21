@@ -94,29 +94,29 @@
                 @endif
 
                 <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
-                  <article class="product-item landing-vehicle-card">
-                    <div class="card">
-                      <a class="thumb-content" href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">
-                        <img class="card-img-top category-img-fluid" src="/storage/photos/{{ $vehicle->front_img }}" alt="{{ $vehicle->title ?? 'Vehicle image' }}">
+                  <article class="landing-vehicle-card">
+                    <div class="landing-card-shell">
+                      <a class="landing-card-media" href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">
+                        <img class="landing-card-image" src="/storage/photos/{{ $vehicle->front_img }}" alt="{{ $vehicle->title ?? 'Vehicle image' }}">
                         <span class="landing-card-badge">Featured</span>
                       </a>
-                      <div class="card-body">
-                        <h4 class="card-title">
+                      <div class="landing-card-body">
+                        <h4 class="landing-card-title">
                           <a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ $vehicle->carmodel->carmake->make }} {{ $vehicle->carmodel->model }} {{ $vehicle->year_of_build }}</a>
                         </h4>
-                        <ul class="list-inline product-meta">
-                          <li class="list-inline-item"><a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ $listing->category->category_name }}</a></li>
-                          <li class="list-inline-item"><a href="#">{{ $listing->city->city }}</a></li>
+                        <ul class="landing-meta">
+                          <li><a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ $listing->category->category_name }}</a></li>
+                          <li><a href="#">{{ $listing->city->city }}</a></li>
                         </ul>
-                        <ul class="styled-list">
+                        <ul class="landing-spec-list">
                           <li><b>Engine</b><span>{{ $vehicle->engine_size }}</span></li>
                           <li><b>Trans</b><span>{{ $vehicle->transmission }}</span></li>
                           <li><b>Miles</b><span>{{ number_format($vehicle->mileage, 0, '.', ',') }} Km</span></li>
                           <li><b>Fuel</b><span>{{ $vehicle->fuel_type }}</span></li>
                         </ul>
-                        <div class="property-price">
-                          <p class="badge-sale">For Sale</p>
-                          <p class="price">Ksh {{ $vehicle->price }}</p>
+                        <div class="landing-price-row">
+                          <p class="landing-sale-tag">For Sale</p>
+                          <p class="landing-price-value">Ksh {{ number_format((float) $vehicle->price) }}</p>
                         </div>
                       </div>
                     </div>
@@ -170,29 +170,29 @@
               @endif
 
               <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
-                <article class="product-item landing-vehicle-card">
-                  <div class="card">
-                    <a class="thumb-content" href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">
-                      <img class="card-img-top category-img-fluid" src="/storage/photos/{{ $vehicle->front_img }}" alt="{{ $vehicle->title ?? 'Vehicle image' }}">
+                <article class="landing-vehicle-card">
+                  <div class="landing-card-shell">
+                    <a class="landing-card-media" href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">
+                      <img class="landing-card-image" src="/storage/photos/{{ $vehicle->front_img }}" alt="{{ $vehicle->title ?? 'Vehicle image' }}">
                       <span class="landing-card-badge">Live</span>
                     </a>
-                    <div class="card-body">
-                      <h4 class="card-title">
+                    <div class="landing-card-body">
+                      <h4 class="landing-card-title">
                         <a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ $vehicle->carmodel->carmake->make }} {{ $vehicle->carmodel->model }} {{ $vehicle->year_of_build }}</a>
                       </h4>
-                      <ul class="list-inline product-meta">
-                        <li class="list-inline-item"><a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ $listing->category->category_name }}</a></li>
-                        <li class="list-inline-item"><a href="#">{{ $listing->city->city }}</a></li>
+                      <ul class="landing-meta">
+                        <li><a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ $listing->category->category_name }}</a></li>
+                        <li><a href="#">{{ $listing->city->city }}</a></li>
                       </ul>
-                      <ul class="styled-list">
+                      <ul class="landing-spec-list">
                         <li><b>Engine</b><span>{{ $vehicle->engine_size }}</span></li>
                         <li><b>Trans</b><span>{{ $vehicle->transmission }}</span></li>
                         <li><b>Miles</b><span>{{ number_format($vehicle->mileage, 0, '.', ',') }} Km</span></li>
                         <li><b>Fuel</b><span>{{ $vehicle->fuel_type }}</span></li>
                       </ul>
-                      <div class="property-price">
-                        <p class="badge-sale">For Sale</p>
-                        <p class="price">Ksh {{ $vehicle->price }}</p>
+                      <div class="landing-price-row">
+                        <p class="landing-sale-tag">For Sale</p>
+                        <p class="landing-price-value">Ksh {{ number_format((float) $vehicle->price) }}</p>
                       </div>
                     </div>
                   </div>
@@ -257,15 +257,15 @@
               <div class="row mt-10">
                 @for ($j = $i; $j < min($i + 3, $eventCount); $j++)
                   <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
-                    <article class="product-item landing-event-card">
-                      <div class="card">
-                        <a class="thumb-content" href="{{ route('carevent') }}">
-                          <img class="card-img-top category-img-fluid" src="/storage/photos/{{ $carevents[$j]->event_image }}" alt="{{ $carevents[$j]->event_title }}">
+                    <article class="landing-event-card">
+                      <div class="landing-card-shell">
+                        <a class="landing-card-media" href="{{ route('carevent') }}">
+                          <img class="landing-card-image" src="/storage/photos/{{ $carevents[$j]->event_image }}" alt="{{ $carevents[$j]->event_title }}">
                           <span class="landing-card-badge">Event</span>
                         </a>
-                        <div class="card-body">
-                          <h4 class="card-title">{{ $carevents[$j]->event_title }}</h4>
-                          <ul class="list-horizontal landing-event-meta">
+                        <div class="landing-card-body">
+                          <h4 class="landing-card-title">{{ $carevents[$j]->event_title }}</h4>
+                          <ul class="landing-event-meta">
                             <li><b>Location:</b> <span>{{ $carevents[$j]->event_location }}</span></li>
                             <li><b>Date:</b> <span>{{ $carevents[$j]->event_date }}</span></li>
                             <li><b>Time:</b> <span>{{ $carevents[$j]->event_time }}</span></li>

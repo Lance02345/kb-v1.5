@@ -6322,7 +6322,7 @@ a:focus {
   color: #fff;
 }
 
-.landing-search-shell {
+.hero-area .advance-search.landing-search-shell {
   max-width: 1040px;
   margin: 24px auto 0;
   padding: 16px;
@@ -6331,13 +6331,14 @@ a:focus {
   background: rgba(7, 12, 19, 0.56);
   backdrop-filter: blur(8px);
   box-shadow: 0 20px 36px rgba(0, 0, 0, 0.3);
-}
-
-.landing-search-shell .form-group {
   margin-bottom: 0;
 }
 
-.landing-search-shell .form-control {
+.hero-area .advance-search.landing-search-shell .form-group {
+  margin-bottom: 0;
+}
+
+.hero-area .advance-search.landing-search-shell .form-control {
   height: 46px;
   border-radius: 10px;
   border: 1px solid #c8d5e6;
@@ -6397,25 +6398,13 @@ a:focus {
   height: 16px;
 }
 
-.landing-section .product-item.bg-light {
-  background: transparent !important;
-}
-
-.landing-section .product-item .card {
-  border-radius: 20px;
-}
-
-.landing-section .card-body {
-  min-height: 172px;
-}
-
-.landing-section .styled-list {
+.landing-spec-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.landing-section .styled-list li {
+.landing-spec-list li {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -6425,7 +6414,7 @@ a:focus {
   color: #4a5d79;
 }
 
-.landing-section .styled-list li b {
+.landing-spec-list li b {
   color: #25344d;
 }
 
@@ -6470,22 +6459,27 @@ a:focus {
   font-weight: 500;
 }
 
-.landing-vehicle-card .card,
-.landing-event-card .card {
+.landing-card-shell {
   border-radius: 22px;
   overflow: hidden;
   border: 1px solid #d3dceb;
   background: #fff;
+  box-shadow: 0 16px 34px rgba(10, 19, 30, 0.11);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
 }
 
-.landing-vehicle-card .thumb-content,
-.landing-event-card .thumb-content {
+.landing-vehicle-card:hover .landing-card-shell,
+.landing-event-card:hover .landing-card-shell {
+  transform: translateY(-5px);
+  box-shadow: 0 24px 42px rgba(10, 19, 30, 0.16);
+}
+
+.landing-card-media {
   position: relative;
   display: block;
 }
 
-.landing-vehicle-card .card-img-top,
-.landing-event-card .card-img-top {
+.landing-card-image {
   height: 230px;
   width: 100%;
   object-fit: cover;
@@ -6508,39 +6502,71 @@ a:focus {
   padding: 5px 10px;
 }
 
-.landing-vehicle-card .card-body,
-.landing-event-card .card-body {
+.landing-card-body {
   min-height: 208px;
   padding: 15px 15px 14px;
   background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
 }
 
-.landing-vehicle-card .card-title,
-.landing-event-card .card-title {
+.landing-card-title {
   margin-bottom: 8px;
+  font-size: 23px;
+  line-height: 1.2;
 }
 
-.landing-vehicle-card .card-title a {
+.landing-card-title a {
   color: #1a2437;
 }
 
-.landing-vehicle-card .product-meta {
-  margin-bottom: 10px;
+.landing-meta {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.landing-vehicle-card .product-meta a {
+.landing-meta li a {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid #dbe4f1;
+  padding: 4px 9px;
+  font-size: 11px;
   color: #4c607f;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.landing-vehicle-card .property-price {
+.landing-price-row {
   margin-top: 10px;
   border-top: 1px solid #e4ebf5;
   padding-top: 10px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+  align-items: center;
 }
 
-.landing-vehicle-card .badge-sale {
-  margin-bottom: 2px;
+.landing-sale-tag {
+  margin-bottom: 10px;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #d4af37;
+  color: #fff;
+  font-weight: 700;
+  margin: 0;
+}
+
+.landing-price-value {
+  margin: 0;
+  color: #1f2d45;
+  font-size: 18px;
+  font-weight: 800;
+  text-align: right;
 }
 
 .landing-event-meta {
@@ -6656,12 +6682,11 @@ a:focus {
     grid-template-columns: 1fr;
   }
 
-  .landing-search-shell .form-group {
+  .hero-area .advance-search.landing-search-shell .form-group {
     margin-bottom: 10px;
   }
 
-  .landing-vehicle-card .card-img-top,
-  .landing-event-card .card-img-top {
+  .landing-card-image {
     height: 210px;
   }
 }
@@ -6693,7 +6718,7 @@ a:focus {
     padding-top: 74px;
   }
 
-  .landing-search-shell {
+  .hero-area .advance-search.landing-search-shell {
     padding: 12px;
   }
 
@@ -6713,8 +6738,7 @@ a:focus {
     font-size: 1.75rem;
   }
 
-  .landing-vehicle-card .card-body,
-  .landing-event-card .card-body {
+  .landing-card-body {
     min-height: 0;
   }
 
