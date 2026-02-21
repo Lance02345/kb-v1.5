@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="{{ asset('plugins/fancybox/jquery.fancybox.pack.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/jquery-nice-select/css/nice-select.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/font-awesome/css/font-awesome.min.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   @stack('styles')
 </head>
@@ -41,16 +44,16 @@
                 <a class="nav-link" href="{{ route('index') }}">Home</a>
               </li>
               <li class="nav-item {{ request()->routeIs('vehicleslist') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('vehicleslist') }}"><i class="fa fa-car"></i> Buy a Vehicle</a>
+                <a class="nav-link" href="{{ route('vehicleslist') }}">Buy a Vehicle</a>
               </li>
               <li class="nav-item {{ request()->routeIs('spareparts') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('spareparts') }}"><i class="fa fa-cogs"></i> Vehicle Parts</a>
+                <a class="nav-link" href="{{ route('spareparts') }}">Vehicle Parts</a>
               </li>
               <li class="nav-item {{ request()->routeIs('carevent') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('carevent') }}"><i class="fa fa-flag-checkered"></i> Car Events</a>
+                <a class="nav-link" href="{{ route('carevent') }}">Car Events</a>
               </li>
               <li class="nav-item {{ request()->routeIs('about_us') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('about_us') }}"><i class="fa fa-users"></i> About Us</a>
+                <a class="nav-link" href="{{ route('about_us') }}">About Us</a>
               </li>
             </ul>
 
@@ -78,9 +81,7 @@
                     <a class="dropdown-item" href="{{ route('user.userevent') }}">Events</a>
                     <a class="dropdown-item" href="{{ route('user.invoice.index') }}">Invoices</a>
                     <a class="dropdown-item" href="{{ route('user.user_profile', Auth::user()->id) }}">User Profile</a>
-                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                      <i class="icon-key"></i> <span>Logout</span>
-                    </a>
+                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
 
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                       @csrf
@@ -88,7 +89,7 @@
                   </div>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-white add-button" href="{{ route('user.new_listing') }}"><i class="fa fa-plus-circle"></i> Add Listing</a>
+                  <a class="nav-link text-white add-button" href="{{ route('user.new_listing') }}">Add Listing</a>
                 </li>
               @endguest
             </ul>
@@ -112,10 +113,10 @@
           </a>
           <p>Kingsbridge Motors Kenya</p>
           <p>The leading online platform for buying and selling vehicles, promoting car events, and supporting garage owners.</p>
-          <ul class="ftco-footer-social float-md-left float-lft mt-5">
-            <li class="ftco-animate"><a href="#" aria-label="Twitter"><span class="fa fa-twitter"></span></a></li>
-            <li class="ftco-animate"><a href="#" aria-label="Facebook"><span class="fa fa-facebook"></span></a></li>
-            <li class="ftco-animate"><a href="#" aria-label="Instagram"><span class="fa fa-instagram"></span></a></li>
+          <ul class="ftco-footer-social float-md-left float-lft mt-5 footer-social-links">
+            <li class="ftco-animate"><a href="#" aria-label="Twitter">Twitter</a></li>
+            <li class="ftco-animate"><a href="#" aria-label="Facebook">Facebook</a></li>
+            <li class="ftco-animate"><a href="#" aria-label="Instagram">Instagram</a></li>
           </ul>
         </div>
       </div>
@@ -150,9 +151,9 @@
         <div class="block block-23 mb-3">
           <h4>Have a question?</h4>
           <ul>
-            <li><span class="icon fa fa-map-marker"></span><span class="text">Nandi Road, Karen, Nairobi, Kenya</span></li>
-            <li><span class="icon fa fa-phone"></span><span class="text">+254 703126261</span></li>
-            <li><span class="icon fa fa-envelope-o"></span><span class="text">info@kingsbridgeke.com</span></li>
+            <li><span class="text">Nandi Road, Karen, Nairobi, Kenya</span></li>
+            <li><span class="text">+254 703126261</span></li>
+            <li><span class="text">info@kingsbridgeke.com</span></li>
           </ul>
         </div>
       </div>
@@ -171,7 +172,7 @@
     </div>
   </div>
   <div class="top-to">
-    <a id="top" href="#" aria-label="Back to top"><i class="fa fa-angle-up"></i></a>
+    <a id="top" href="#" aria-label="Back to top">Top</a>
   </div>
 </footer>
 

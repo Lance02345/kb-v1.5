@@ -17,7 +17,6 @@
     <div class="row">
       <div class="col-md-6 col-lg-3 mb-3">
         <div class="seller-option-card">
-          <div class="seller-option-icon"><i class="fa fa-car"></i></div>
           <h4>Vehicle Sale</h4>
           <p>Post a car for sale with photos, specs, and pricing.</p>
           <a href="{{ route('user.create_vehiclesale') }}" class="btn btn-main btn-sm">Choose</a>
@@ -26,7 +25,6 @@
 
       <div class="col-md-6 col-lg-3 mb-3">
         <div class="seller-option-card">
-          <div class="seller-option-icon"><i class="fa fa-key"></i></div>
           <h4>Car Hire</h4>
           <p>List vehicles available for short or long-term hire.</p>
           <a href="{{ route('user.create_carhire') }}" class="btn btn-main btn-sm">Choose</a>
@@ -35,7 +33,6 @@
 
       <div class="col-md-6 col-lg-3 mb-3">
         <div class="seller-option-card">
-          <div class="seller-option-icon"><i class="fa fa-flag-checkered"></i></div>
           <h4>Car Event</h4>
           <p>Promote your event to enthusiasts across the platform.</p>
           <a href="{{ route('user.create_carevent') }}" class="btn btn-main btn-sm">Choose</a>
@@ -44,7 +41,6 @@
 
       <div class="col-md-6 col-lg-3 mb-3">
         <div class="seller-option-card">
-          <div class="seller-option-icon"><i class="fa fa-cogs"></i></div>
           <h4>Spare Parts</h4>
           <p>Advertise spare parts and accessories to buyers.</p>
           <a href="{{ route('user.sparepartscreate') }}" class="btn btn-main btn-sm">Choose</a>

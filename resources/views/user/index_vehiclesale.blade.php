@@ -24,7 +24,7 @@
         <p>Manage your listings, track performance, and publish faster.</p>
       </div>
       <div class="seller-dashboard-actions">
-        <a href="{{ route('user.new_listing') }}" class="btn btn-main"><i class="fa fa-plus-circle"></i> New Listing</a>
+        <a href="{{ route('user.new_listing') }}" class="btn btn-main">New Listing</a>
         @if(!empty($statusFilter))
           <a href="{{ route('user.index_vehiclesale') }}" class="btn btn-outline-main">Back to All</a>
         @else
@@ -37,21 +37,18 @@
       <div class="seller-alerts-wrap mb-4">
         @if(($alerts['pending'] ?? 0) > 0)
           <a href="{{ route('user.pending_list') }}" class="seller-alert-item">
-            <i class="fa fa-clock-o"></i>
             <span>{{ $alerts['pending'] }} pending listing(s) need review follow-up.</span>
           </a>
         @endif
 
         @if(($alerts['low_views'] ?? 0) > 0)
           <a href="{{ route('user.index_vehiclesale') }}" class="seller-alert-item">
-            <i class="fa fa-line-chart"></i>
             <span>{{ $alerts['low_views'] }} listing(s) have low views. Consider better photos or boosting.</span>
           </a>
         @endif
 
         @if(($alerts['expiring_soon'] ?? 0) > 0)
           <a href="{{ route('user.expired_list') }}" class="seller-alert-item">
-            <i class="fa fa-calendar"></i>
             <span>{{ $alerts['expiring_soon'] }} listing(s) are expiring within 7 days.</span>
           </a>
         @endif
@@ -148,7 +145,7 @@
       </div>
       <div class="col-6 col-md-2 mb-3">
         <div class="seller-stat-card seller-stat-card-link">
-          <a href="{{ route('user.new_listing') }}">Add Listing <i class="fa fa-arrow-right"></i></a>
+          <a href="{{ route('user.new_listing') }}">Add Listing</a>
         </div>
       </div>
     </div>
@@ -216,7 +213,7 @@
               @if(count($tips) > 0)
                 <div class="seller-recommendations mb-2">
                   @foreach($tips as $tip)
-                    <p><i class="fa fa-lightbulb-o"></i> {{ $tip }}</p>
+                    <p>{{ $tip }}</p>
                   @endforeach
                 </div>
               @endif

@@ -20,16 +20,16 @@
 					<div class="short-popular-category-list text-center">
 						<h2>Popular Category</h2>
 					
-						<ul class="list-inline">
-							<li class="list-inline-item">
-								<a href="{{ route('vehicleslist') }}"><i class="fa fa-car"></i> Vehicles</a>
-							</li>
-														<li class="list-inline-item">
-								<a href="{{ route('spareparts') }}"><i class="fa fa-car"></i> Vehicle Parts</a>
-							</li>
-                            <li class="list-inline-item">
-								<a href="{{ route('carhire') }}"><i class="fa fa-car"></i> Car Hire</a>
-							</li>
+						    <ul class="list-inline">
+								<li class="list-inline-item">
+									<a href="{{ route('vehicleslist') }}">Vehicles</a>
+								</li>
+															<li class="list-inline-item">
+									<a href="{{ route('spareparts') }}">Vehicle Parts</a>
+								</li>
+	                            <li class="list-inline-item">
+									<a href="{{ route('carhire') }}">Car Hire</a>
+								</li>
 
 						</ul>
 					</div>
@@ -105,34 +105,30 @@
 			<p>Start where you want: shop, list, discover parts, or join events.</p>
 		</div>
 		<div class="row">
-			<div class="col-6 col-md-3 mb-3">
-				<a href="{{ route('vehicleslist') }}" class="quick-link-card">
-					<span class="quick-link-icon"><i class="fa fa-car"></i></span>
-					<span class="quick-link-title">Buy a Vehicle</span>
-					<span class="quick-link-text">Browse verified listings</span>
-				</a>
-			</div>
-			<div class="col-6 col-md-3 mb-3">
-				<a href="{{ route('spareparts') }}" class="quick-link-card">
-					<span class="quick-link-icon"><i class="fa fa-cogs"></i></span>
-					<span class="quick-link-title">Vehicle Parts</span>
-					<span class="quick-link-text">Find trusted spare parts</span>
-				</a>
-			</div>
-			<div class="col-6 col-md-3 mb-3">
-				<a href="{{ route('carevent') }}" class="quick-link-card">
-					<span class="quick-link-icon"><i class="fa fa-flag-checkered"></i></span>
-					<span class="quick-link-title">Car Events</span>
-					<span class="quick-link-text">See upcoming auto events</span>
-				</a>
-			</div>
-			<div class="col-6 col-md-3 mb-3">
-				<a href="{{ route('about_us') }}" class="quick-link-card">
-					<span class="quick-link-icon"><i class="fa fa-users"></i></span>
-					<span class="quick-link-title">About Us</span>
-					<span class="quick-link-text">Learn our mission</span>
-				</a>
-			</div>
+				<div class="col-6 col-md-3 mb-3">
+					<a href="{{ route('vehicleslist') }}" class="quick-link-card">
+						<span class="quick-link-title">Buy a Vehicle</span>
+						<span class="quick-link-text">Browse verified listings</span>
+					</a>
+				</div>
+				<div class="col-6 col-md-3 mb-3">
+					<a href="{{ route('spareparts') }}" class="quick-link-card">
+						<span class="quick-link-title">Vehicle Parts</span>
+						<span class="quick-link-text">Find trusted spare parts</span>
+					</a>
+				</div>
+				<div class="col-6 col-md-3 mb-3">
+					<a href="{{ route('carevent') }}" class="quick-link-card">
+						<span class="quick-link-title">Car Events</span>
+						<span class="quick-link-text">See upcoming auto events</span>
+					</a>
+				</div>
+				<div class="col-6 col-md-3 mb-3">
+					<a href="{{ route('about_us') }}" class="quick-link-card">
+						<span class="quick-link-title">About Us</span>
+						<span class="quick-link-text">Learn our mission</span>
+					</a>
+				</div>
 		</div>
 	</div>
 </section>
@@ -164,9 +160,6 @@
         margin-bottom: 5px;
     }
 
-    .styled-list li i {
-        margin-right: 5px;
-    }
 </style>
 <div class="Hdrive text-center my-3">
 	<div class = "container">
@@ -199,27 +192,21 @@
 											<img class="card-img-top category-img-fluid" src="/storage/photos/{{ $vehicle->front_img }}" alt=""style="max-height: 400px;">
 											
 										</a>
-									<div class="img-count">
-										<svg style="color:#d4af37;" 
-										xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-										class="bi bi-camera-fill" viewBox="0 0 16 16"> 
-										<path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" fill="#ffd040">
-											</path>
-											 <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" fill="#ffd040">
-												</path> </svg>
-										 <h2 class="text-white"> {{$listings->count()}}</h2>
-									</div>
+										<div class="img-count">
+											<p class="img-count-text">Featured</p>
+											<h2 class="text-white"> {{$listings->count()}}</h2>
+										</div>
 									</div>
 									<div class="card-body">
 										<h4 class="card-title"><a href="{{ route('vehicle', [$listing->id, $vehicle->id])}}">{{ $vehicle->carmodel->carmake->make}} {{ $vehicle->carmodel->model}} {{ $vehicle->year_of_build}}</a></h4>
-										<ul class="list-inline product-meta">
-											<li class="list-inline-item">
-												<a href="{{ route('vehicle', [$listing->id, $vehicle->id])}}"><i class="fa fa-folder-open-o"></i>{{ $listing->category->category_name}}</a>
-											</li>
-											<li class="list-inline-item">
-												<a href="#"><i class="fa fa-location-arrow"></i>{{ $listing->city->city}} </a>
-											</li>
-										</ul>
+											<ul class="list-inline product-meta">
+												<li class="list-inline-item">
+													<a href="{{ route('vehicle', [$listing->id, $vehicle->id])}}">{{ $listing->category->category_name}}</a>
+												</li>
+												<li class="list-inline-item">
+													<a href="#">{{ $listing->city->city}} </a>
+												</li>
+											</ul>
 										<a href="{{ route('vehicle', [$listing->id, $vehicle->id])}}">
 											<ul class="styled-list">
 												<li ><b>Engine Size:</b><span>{{ $vehicle->engine_size}}</span></li>
@@ -300,27 +287,21 @@
 											<img class="card-img-top category-img-fluid" src="/storage/photos/{{ $vehicle->front_img }}" alt=""style="max-height: 400px;">
 											
 										</a>
-									<div class="img-count">
-										<svg style="color:#d4af37;" 
-										xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-										class="bi bi-camera-fill" viewBox="0 0 16 16"> 
-										<path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" fill="#ffd040">
-											</path>
-											 <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z" fill="#ffd040">
-												</path> </svg>
-										 <h2 class="text-white"> {{$listings->count()}}</h2>
-									</div>
+										<div class="img-count">
+											<p class="img-count-text">Live</p>
+											<h2 class="text-white"> {{$listings->count()}}</h2>
+										</div>
 									</div>
 									<div class="card-body">
 										<h4 class="card-title"><a href="{{ route('vehicle', [$listing->id, $vehicle->id])}}">{{ $vehicle->carmodel->carmake->make}} {{ $vehicle->carmodel->model}} {{ $vehicle->year_of_build}}</a></h4>
-										<ul class="list-inline product-meta">
-											<li class="list-inline-item">
-												<a href="{{ route('vehicle', [$listing->id, $vehicle->id])}}"><i class="fa fa-folder-open-o"></i>{{ $listing->category->category_name}}</a>
-											</li>
-											<li class="list-inline-item">
-												<a href="#"><i class="fa fa-location-arrow"></i>{{ $listing->city->city}} </a>
-											</li>
-										</ul>
+											<ul class="list-inline product-meta">
+												<li class="list-inline-item">
+													<a href="{{ route('vehicle', [$listing->id, $vehicle->id])}}">{{ $listing->category->category_name}}</a>
+												</li>
+												<li class="list-inline-item">
+													<a href="#">{{ $listing->city->city}} </a>
+												</li>
+											</ul>
 										<a href="{{ route('vehicle', [$listing->id, $vehicle->id])}}">
 											<ul class="styled-list">
 												<li ><b>Engine Size:</b><span>{{ $vehicle->engine_size}}</span></li>
