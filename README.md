@@ -1,62 +1,96 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Kingsbridge Motors (kb-v1.5)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Kingsbridge Motors is a Laravel 8 marketplace for vehicle sales, spare parts, car hire, and events.
 
-## About Laravel
+## Tech Stack
+- PHP 8.x / Laravel 8
+- MySQL (default), with optional Sail services for PostgreSQL, MariaDB, and Redis
+- Blade templates + jQuery + Bootstrap 4
+- Laravel Mix for frontend asset builds
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Quick Start (Local)
+1. Install dependencies:
+```bash
+composer install
+npm install
+```
+2. Create environment file:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+3. Configure database in `.env` (`DB_*` values).
+4. Run migrations and seeders:
+```bash
+php artisan migrate --seed
+```
+5. Build frontend assets:
+```bash
+npm run dev
+```
+6. Start the app:
+```bash
+php artisan serve
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The app will be available at `http://127.0.0.1:8000` by default.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Quick Start (Laravel Sail)
+1. Install dependencies and create environment:
+```bash
+composer install
+cp .env.example .env
+./vendor/bin/sail up -d
+./vendor/bin/sail artisan key:generate
+```
+2. Run migrations and seeders:
+```bash
+./vendor/bin/sail artisan migrate --seed
+```
+3. Build frontend assets:
+```bash
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run dev
+```
 
-## Learning Laravel
+## Common Commands
+```bash
+php artisan route:list
+php artisan migrate
+php artisan db:seed
+php artisan test
+npm run watch
+npm run prod
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Core Areas
+- Public pages and search: `app/Http/Controllers/PagesController.php`
+- User listing flows: `app/Http/Controllers/User/ListingController.php`
+- Admin dashboards/resources: `app/Http/Controllers/Admin/*`
+- Main web routes: `routes/web.php`
+- Shared layout: `resources/views/layouts/kingsbridge.blade.php`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Environment Variables
+Minimum required variables for local use:
+- `APP_NAME`, `APP_ENV`, `APP_KEY`, `APP_URL`
+- `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`
 
-## Laravel Sponsors
+Optional integrations in this project:
+- Google social login: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
+- M-Pesa: `MPESA_*`, `SAFARICOM_PASSKEY`
+- Twilio: `TWILIO_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER`
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Troubleshooting
+- `Target class ... does not exist` on route listing:
+  - Run `composer dump-autoload` and re-check `routes/web.php` imports.
+- Missing frontend styles/scripts:
+  - Run `npm run dev` and verify `public/mix-manifest.json` exists.
+- Seeder errors:
+  - Confirm DB credentials and run `php artisan migrate:fresh --seed` in non-production environments.
 
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Current Improvement Focus
+This repository contains legacy Blade pages with mixed inline scripts and duplicated frontend includes. Stabilization work should prioritize:
+1. Route/controller consistency.
+2. Shared asset management via the main layout.
+3. Query/load optimizations on listing-heavy pages.
+4. Feature tests for critical public/user/admin paths.

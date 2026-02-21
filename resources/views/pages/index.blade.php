@@ -509,298 +509,90 @@
 
 	
 	<!-- Container End -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+@push('scripts')
 <script>
-$(document).ready(function(){
-$(document).on('change','.make',function(){
-// console.log("hmm its change");
-var make_id=$(this).val();
-// console.log(cat_id);
-var div=$("div.carmodel").parent();
-var option=" ";
-$.ajax({
-	type:'get',
-	url:'{!!URL::to('carmodel')!!}',
-	data:{'id':make_id},
-	success:function(data)
-	{
-		for(var i=0;i<data.length;i++)
-		{
-			option+='<option value="'+data[i].id+'">'+data[i].model+'</option>';
-			
-		}
-			div.find('.model').html(" ");
-			div.find('.model').append(option);
-	},
-	
-	error:function(){    }
-});
-});
-});
-$(document).ready(function(){
-    new ConditionalField({
-          control: ' .select-field',
-          visibility: {
-            'sale': '.sale',
-            'hire': '.hire',
-            'parts': '.parts'
+  $(function () {
+    $(document).on('change', '.make', function () {
+      var makeId = $(this).val();
+      var modelContainer = $('div.carmodel').parent();
+      var option = '<option value=\"\" disabled selected>Choose a model</option>';
+
+      $.ajax({
+        type: 'get',
+        url: '{{ url("carmodel") }}',
+        data: { id: makeId },
+        success: function (data) {
+          for (var i = 0; i < data.length; i++) {
+            option += '<option value=\"' + data[i].id + '\">' + data[i].model + '</option>';
           }
-        });
+          modelContainer.find('.model').html(option);
+        }
+      });
+    });
 
-});
-</script>
-	<script type="text/javascript">
-    let thumbnails = document.getElementsByClassName('thumbnail')
-    
-    let activeImages = document.getElementsByClassName('active')
-    
-    for (var i=0; i < thumbnails.length; i++){
-    
-        thumbnails[i].addEventListener('click', function(){
-            console.log(activeImages)
-            
-            if (activeImages.length > 1){
-                activeImages[0].classList.remove('active')
-            }
-            
-    
-            this.classList.add('active')
-            document.getElementById('featured').src = this.src
-        })
-    }        
+    var content = [
+      'Buy and Sell',
+      'Advertising a purpose, a car at a time.',
+      'With Kingsbridge you get your money\'s worth.',
+      'You are in control. Choose the right package to sell your car.'
+    ];
 
-	
-		// List of sentences
-var _CONTENT = [ 
-"Buy and Sell", 
-"Advertising a Purpose, a Car at a Time,", 
-"With KingsBridge you get your money’s worth!!!.", 
-"You're in control, choose the right package to sell your car ."
-];
+    var part = 0;
+    var partIndex = 0;
+    var intervalVal;
+    var element = document.querySelector('#text');
+    var cursor = document.querySelector('#cursor');
 
-// Current sentence being processed
-var _PART = 0;
+    function type() {
+      if (!element || !cursor) {
+        return;
+      }
 
-// Character number of the current sentence being processed 
-var _PART_INDEX = 0;
+      var text = content[part].substring(0, partIndex + 1);
+      element.innerHTML = text;
+      partIndex += 1;
 
-// Holds the handle returned from setInterval
-var _INTERVAL_VAL;
+      if (text === content[part]) {
+        cursor.style.display = 'none';
+        clearInterval(intervalVal);
+        setTimeout(function () {
+          intervalVal = setInterval(remove, 50);
+        }, 1000);
+      }
+    }
 
-// Element that holds the text
-var _ELEMENT = document.querySelector("#text");
+    function remove() {
+      var text = content[part].substring(0, partIndex - 1);
+      element.innerHTML = text;
+      partIndex -= 1;
 
-// Cursor element 
-var _CURSOR = document.querySelector("#cursor");
+      if (text === '') {
+        clearInterval(intervalVal);
+        part = part === content.length - 1 ? 0 : part + 1;
+        partIndex = 0;
+        setTimeout(function () {
+          cursor.style.display = 'inline-block';
+          intervalVal = setInterval(type, 100);
+        }, 200);
+      }
+    }
 
-// Implements typing effect
-function Type() { 
-// Get substring with 1 characater added
-var text =  _CONTENT[_PART].substring(0, _PART_INDEX + 1);
-_ELEMENT.innerHTML = text;
-_PART_INDEX++;
+    intervalVal = setInterval(type, 100);
 
-// If full sentence has been displayed then start to delete the sentence after some time
-if(text === _CONTENT[_PART]) {
-// Hide the cursor
-_CURSOR.style.display = 'none';
-
-clearInterval(_INTERVAL_VAL);
-setTimeout(function() {
-	_INTERVAL_VAL = setInterval(Delete, 50);
-}, 1000);
-}
-}
-
-// Implements deleting effect
-function Delete() {
-// Get substring with 1 characater deleted
-var text =  _CONTENT[_PART].substring(0, _PART_INDEX - 1);
-_ELEMENT.innerHTML = text;
-_PART_INDEX--;
-
-// If sentence has been deleted then start to display the next sentence
-if(text === '') {
-clearInterval(_INTERVAL_VAL);
-
-// If current sentence was last then display the first one, else move to the next
-if(_PART == (_CONTENT.length - 1))
-	_PART = 0;
-else
-	_PART++;
-
-_PART_INDEX = 0;
-
-// Start to display the next sentence after some time
-setTimeout(function() {
-	_CURSOR.style.display = 'inline-block';
-	_INTERVAL_VAL = setInterval(Type, 100);
-}, 200);
-}
-}
-
-/// Start the typing effect on load
-_INTERVAL_VAL = setInterval(Type, 100);
-
-window.onload=function(){
-  $('.slider').slick({
-  autoplay:true,
-  autoplaySpeed:1500,
-  arrows:true,
-  prevArrow:'<button type="button" class="slick-prev"></button>',
-  nextArrow:'<button type="button" class="slick-next"></button>',
-  centerMode:true,
-  slidesToShow:3,
-  slidesToScroll:2
-  
+    $('.slider').slick({
+      autoplay: true,
+      autoplaySpeed: 1500,
+      arrows: true,
+      prevArrow: '<button type=\"button\" class=\"slick-prev\"></button>',
+      nextArrow: '<button type=\"button\" class=\"slick-next\"></button>',
+      centerMode: true,
+      slidesToShow: 3,
+      slidesToScroll: 2
+    });
   });
-  
-};
-
-
 </script>
-<script type="text/javascript">
-let thumbnails = document.getElementsByClassName('thumbnail')
+@endpush
 
-let activeImages = document.getElementsByClassName('active')
-
-for (var i=0; i < thumbnails.length; i++){
-
-	thumbnails[i].addEventListener('click', function(){
-		console.log(activeImages)
-		
-		if (activeImages.length > 1){
-			activeImages[0].classList.remove('active')
-		}
-		
-
-		this.classList.add('active')
-		document.getElementById('featured').src = this.src
-	})
-}        
-
-
-	// List of sentences
-var _CONTENT = [ 
-"The largest community of car enthusiasts.", 
-"From Car hiring services,,", 
-"selling of vehicles and selling of vehicles parts. ", 
-"All under one roof."
-];
-
-// Current sentence being processed
-var _PART = 0;
-
-// Character number of the current sentence being processed 
-var _PART_INDEX = 0;
-
-// Holds the handle returned from setInterval
-var _INTERVAL_VAL;
-
-// Element that holds the text
-var _ELEMENT = document.querySelector("#text");
-
-// Cursor element 
-var _CURSOR = document.querySelector("#cursor");
-
-// Implements typing effect
-function Type() { 
-// Get substring with 1 characater added
-var text =  _CONTENT[_PART].substring(0, _PART_INDEX + 1);
-_ELEMENT.innerHTML = text;
-_PART_INDEX++;
-
-// If full sentence has been displayed then start to delete the sentence after some time
-if(text === _CONTENT[_PART]) {
-// Hide the cursor
-_CURSOR.style.display = 'none';
-
-clearInterval(_INTERVAL_VAL);
-setTimeout(function() {
-_INTERVAL_VAL = setInterval(Delete, 50);
-}, 1000);
-}
-}
-
-// Implements deleting effect
-function Delete() {
-// Get substring with 1 characater deleted
-var text =  _CONTENT[_PART].substring(0, _PART_INDEX - 1);
-_ELEMENT.innerHTML = text;
-_PART_INDEX--;
-
-// If sentence has been deleted then start to display the next sentence
-if(text === '') {
-clearInterval(_INTERVAL_VAL);
-
-// If current sentence was last then display the first one, else move to the next
-if(_PART == (_CONTENT.length - 1))
-_PART = 0;
-else
-_PART++;
-
-_PART_INDEX = 0;
-
-// Start to display the next sentence after some time
-setTimeout(function() {
-_CURSOR.style.display = 'inline-block';
-_INTERVAL_VAL = setInterval(Type, 100);
-}, 200);
-}
-}
-
-// Start the typing effect on load
-_INTERVAL_VAL = setInterval(Type, 100);
-
-
-
-window.onload=function(){
-$('.slider').slick({
-autoplay:true,
-autoplaySpeed:1500,
-arrows:true,
-prevArrow:'<button type="button" class="slick-prev"></button>',
-nextArrow:'<button type="button" class="slick-next"></button>',
-centerMode:true,
-slidesToShow:3,
-slidesToScroll:2
-
-});
-
-};
-
-$('#recipeCarousel').carousel({
-interval: 10000
-})
-
-$('.carousel .carousel-item').each(function(){
-var minPerSlide = 3;
-var next = $(this).next();
-if (!next.length) {
-next = $(this).siblings(':first');
-}
-next.children(':first-child').clone().appendTo($(this));
-
-for (var i=0;i<minPerSlide;i++) {
-	next=next.next();
-	if (!next.length) {
-		next = $(this).siblings(':first');
-	  }
-	
-	next.children(':first-child').clone().appendTo($(this));
-  }
-});
-
-
-</script>
-
-<script src="node_modules/@glidejs/glide/dist/glide.min.js"></script>
-
-<script>
-  new Glide('.glide').mount()
-</script>
-
-	
-</section>
+	</section>
 
  @endsection

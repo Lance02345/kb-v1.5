@@ -42,35 +42,13 @@
                                 @endforeach
                             </select>
                         </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
                         <div class="form-group col-md-2">
-                            <input type="text" name="min_price" placeholder="Min Price" class="form-control">
+                            <input type="text" name="min_price" id="min_price" placeholder="Min Price" class="form-control">
                         </div>
 
                         <div class="form-group col-md-2">
-                            <input type="text" name="max_price" placeholder="Max Price" class="form-control">
+                            <input type="text" name="max_price" id="max_price" placeholder="Max Price" class="form-control">
                         </div>
-<script>
-    $(document).ready(function() {
-        // Function to add commas to numbers
-        function numberWithCommas(x) {
-            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-
-        // Event listener for min_price input
-        $('#min_price').on('input', function() {
-            let value = $(this).val().replace(/,/g, ''); // Remove existing commas
-            $(this).val(numberWithCommas(value));
-        });
-
-        // Event listener for max_price input
-        $('#max_price').on('input', function() {
-            let value = $(this).val().replace(/,/g, ''); // Remove existing commas
-            $(this).val(numberWithCommas(value));
-        });
-    });
-</script>
 
 
                         <div class="form-group col-md-2">
@@ -155,7 +133,7 @@
 					<div class="row mt-30">
   @foreach ($listings as $listing )
   @foreach ($vehicles as $vehicle)
-  @if ($listing->id == $vehicle->id)
+  @if ($listing->id == $vehicle->listing_id)
                     <div class="col-6 col-sm-3 col-md-3 col-lg-3">
 							<!-- product card -->
 							<div class="product-item bg-light">
@@ -235,113 +213,32 @@
 		</div>
 	</div>
 </section>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+@push('scripts')
 <script>
-    $(document).ready(function () {
-        $('#min_price, #max_price').on('input', function (event) {
-            // Remove non-numeric characters and format with commas
-            var value = $(this).val().replace(/[^\d]/g, '');
-            var formattedValue = formatNumberWithCommas(value);
-            $(this).val(formattedValue);
-        });
-
-        function formatNumberWithCommas(number) {
-            if (number.length > 3) {
-                return number.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            }
-            return number;
-        }
+  $(function () {
+    $('#min_price, #max_price').on('input', function () {
+      var value = $(this).val().replace(/[^\d]/g, '');
+      $(this).val(value.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
     });
-</script>
-<script>
-$(document).ready(function(){
-  $("#heart").click(function(){
-    if($("#heart").hasClass("liked")){
-      $("#heart").html('<i class="fa fa-heart-o" aria-hidden="true"></i>');
-      $("#heart").removeClass("liked");
-    }else{
-      $("#heart").html('<i class="fa fa-heart" aria-hidden="true"></i>');
-      $("#heart").addClass("liked");
-    }
-  });
-});
-</script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-$(document).ready(function(){
-$(document).on('change','.make',function(){
-// console.log("hmm its change");
-var make_id=$(this).val();
-// console.log(cat_id);
-var div=$("div.carmodel").parent();
-var option=" ";
-$.ajax({
-	type:'get',
-	url:'{!!URL::to('carmodel')!!}',
-	data:{'id':make_id},
-	success:function(data)
-	{
-		for(var i=0;i<data.length;i++)
-		{
-			option+='<option value="'+data[i].id+'">'+data[i].model+'</option>';
-			
-		}
-			div.find('.model').html(" ");
-			div.find('.model').append(option);
-	},
-	
-	error:function(){    }
-});
-});
-});
-$(document).ready(function(){
-    new ConditionalField({
-          control: ' .select-field',
-          visibility: {
-            'sale': '.sale',
-            'hire': '.hire',
-            'parts': '.parts'
-          }
-        });
 
-});
-</script>
-  <!-- The script for Car Make -->
-  <script>
-    $('input.number').keyup(function(event) {
-// skip for arrow keys
-if(event.which >= 37 && event.which <= 40) return;
-// format number
-$(this).val(function(index, value) {
-  return value
-  .replace(/\D/g, "")
-  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-  ;
-});
-});
-  $(document).ready(function(){
-$(document).on('change','.make',function(){
-  // console.log("hmm its change");
-  var make_id=$(this).val();
-  // console.log(cat_id);
-  var div=$("div.carmodel").parent();
-  var option=" ";
-  $.ajax({
-    type:'get',
-    url:'{!!URL::to('user/model')!!}',
-    data:{'id':make_id},
-    success:function(data){
-      
-      for(var i=0;i<data.length;i++){
-        option+='<option value="'+data[i].id+'" >'+data[i].model+'</option>';
-       }
-       div.find('.model').html(" ");
-       div.find('.model').append(option);
-    },
-    
-    error:function(){    }
+    $(document).on('change', '.make', function () {
+      var makeId = $(this).val();
+      var modelContainer = $('div.carmodel').parent();
+      var option = '<option value=\"\" disabled selected>Choose a model</option>';
+
+      $.ajax({
+        type: 'get',
+        url: '{{ url("carmodel") }}',
+        data: { id: makeId },
+        success: function (data) {
+          for (var i = 0; i < data.length; i++) {
+            option += '<option value=\"' + data[i].id + '\">' + data[i].model + '</option>';
+          }
+          modelContainer.find('.model').html(option);
+        }
+      });
+    });
   });
-});
-});
-  </script>
+</script>
+@endpush
 @endsection

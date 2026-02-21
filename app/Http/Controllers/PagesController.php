@@ -21,12 +21,18 @@ class PagesController extends Controller
 {
     
 Public function index (){
-    $arr['cities'] = City::all();
-    $arr['vehicles'] = Vehicle::all();
-    $arr['makes'] = Carmake::all();
+    $arr['cities'] = City::orderBy('city')->get();
+    $arr['makes'] = Carmake::orderBy('make')->get();
     $arr['models'] = Carmodel::all();
-    $arr['carevents'] = Carevent::all();
-    $arr['listings'] = Listing::where('category_id',2)->get(); 
+    $arr['carevents'] = Carevent::latest()->get();
+    $arr['listings'] = Listing::with(['category', 'city', 'package', 'vehicles.carmodel.carmake'])
+        ->where('category_id', 2)
+        ->latest()
+        ->take(24)
+        ->get();
+    $arr['vehicles'] = Vehicle::with('carmodel.carmake')
+        ->whereIn('listing_id', $arr['listings']->pluck('id'))
+        ->get();
     
     return view ('pages.index')->with($arr);
     
@@ -87,12 +93,14 @@ Public function contact_us(){
 }
 public function vehicle_search(Request $request)
 {
-    $cities = City::all();
-    $makes = Carmake::all();
+    $cities = City::orderBy('city')->get();
+    $makes = Carmake::orderBy('make')->get();
     $models = Carmodel::all();
-    $vehicles = Vehicle::all();
+    $vehicles = collect();
 
-    $listingsQuery = Listing::whereNotNull('city_id');
+    $listingsQuery = Listing::with(['category', 'city', 'vehicles.carmodel.carmake'])
+        ->where('category_id', 2)
+        ->whereNotNull('city_id');
 
     if ($request->filled('city')) {
         $listingsQuery->where('city_id', $request->city);
@@ -119,7 +127,10 @@ if ($request->filled('max_price')) {
     });
 }
 
-    $listings = $listingsQuery->orderBy("id", "desc")->paginate(16);
+    $listings = $listingsQuery->orderBy('id', 'desc')->paginate(16);
+    $vehicles = Vehicle::with('carmodel.carmake')
+        ->whereIn('listing_id', $listings->pluck('id'))
+        ->get();
 
     return view('pages.vehicleslist', compact('cities', 'makes', 'models', 'listings', 'vehicles'));
 }
@@ -136,19 +147,22 @@ public function vehicle_filter(Request $request){
     $arr['makes'] = Carmake::all();
     $arr['models'] = Carmodel::all();
     $arr['listings'] = Listing::where('category_id',2)->take(18)->get(); 
-    $arr['vehicles'] = vehicle::Where('model_id',$request->id)->take(20)->get(); 
+    $arr['vehicles'] = Vehicle::where('model_id', $request->id)->take(20)->get();
     $arr['cities'] = City::all();
     return view ('pages.vehicleslist')->with($arr);
 }
 
 Public function vehicleslist(){
-    $arr['makes'] = Carmake::all();
+    $arr['makes'] = Carmake::orderBy('make')->get();
     $arr['models'] = Carmodel::all();
-    $arr['cities'] = City::all();
-    $arr['vehicles'] = Vehicle::all();
-    $arr['listings'] = Listing::where('category_id',2)->paginate(20); //the 2 is the id of car category
+    $arr['cities'] = City::orderBy('city')->get();
+    $arr['listings'] = Listing::with(['category', 'city', 'vehicles.carmodel.carmake'])
+        ->where('category_id', 2)
+        ->paginate(20);
+    $arr['vehicles'] = Vehicle::with('carmodel.carmake')
+        ->whereIn('listing_id', $arr['listings']->pluck('id'))
+        ->get();
    // $arr['carcities'] = Listing::where('category_id',2)->where('city_id',$request->city_id)->take(20)->get();
-   $imagecount =! Null;
    $arr['imgcount'] = Vehicle::where(['front_img' => Null,'back_img'=> Null, 'right_img'=> Null, 'left_img'=> Null])->count();
   
     $arr['vehiclephotos'] = Vehicle_photo::where('photo_postion',1)->get();

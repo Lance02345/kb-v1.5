@@ -14,7 +14,7 @@ use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\CountyController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\Allusercontroller;
+use App\Http\Controllers\Admin\AlluserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\AdminListingController;
 use App\Http\Controllers\Admin\AdminInvoiceController;
