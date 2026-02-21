@@ -177,9 +177,16 @@
           @endphp
 
           <article class="seller-listing-card">
-            <a href="{{ route('user.show_vehiclesale', [$listing->id, $vehicle->id]) }}" class="seller-listing-image-wrap">
-              <img class="seller-listing-image" src="/storage/photos/{{ $vehicle->front_img }}" alt="{{ $vehicle->title ?? 'Vehicle image' }}">
-            </a>
+            <div class="seller-listing-visual">
+              <a href="{{ route('user.show_vehiclesale', [$listing->id, $vehicle->id]) }}" class="seller-listing-image-wrap">
+                <img class="seller-listing-image" src="/storage/photos/{{ $vehicle->front_img }}" alt="{{ $vehicle->title ?? 'Vehicle image' }}">
+              </a>
+              <div class="seller-listing-glass">
+                <span class="seller-listing-glass-label">Price</span>
+                <strong>Ksh {{ number_format((float) $vehicle->price) }}</strong>
+                <span class="seller-listing-glass-meta">{{ number_format((int) $vehicle->views) }} views</span>
+              </div>
+            </div>
             <div class="seller-listing-body">
               <div class="seller-listing-top">
                 <h4>
@@ -189,23 +196,30 @@
                 </h4>
                 <span class="seller-status-badge {{ $statusClass }}">{{ $listing->ads_status }}</span>
               </div>
+              <p class="seller-listing-subtitle">
+                Listing #{{ $listing->id }}
+                • {{ optional($listing->city)->city ?: 'No city' }}
+                • {{ optional($listing->created_at)->format('d M Y') }}
+              </p>
 
               @php
                 $listingQuality = $quality[$listing->id] ?? ['score' => 0, 'missing' => []];
+                $qualityScore = max(0, min(100, (int) ($listingQuality['score'] ?? 0)));
               @endphp
               <div class="seller-quality-row">
                 <span class="seller-quality-label">Listing Quality</span>
-                <span class="seller-quality-score">{{ $listingQuality['score'] }}%</span>
+                <span class="seller-quality-score">{{ $qualityScore }}%</span>
+              </div>
+              <div class="seller-quality-track mb-2">
+                <span style="width: {{ $qualityScore }}%"></span>
               </div>
 
-              <ul class="seller-meta-list">
-                <li><strong>Listing ID:</strong> {{ $listing->id }}</li>
-                <li><strong>Price:</strong> Ksh {{ number_format((float) $vehicle->price) }}</li>
-                <li><strong>Type:</strong> {{ $vehicle->vehicle_type }}</li>
-                <li><strong>Views:</strong> {{ $vehicle->views }}</li>
-                <li><strong>City:</strong> {{ optional($listing->city)->city }}</li>
-                <li><strong>Created:</strong> {{ optional($listing->created_at)->format('d M Y') }}</li>
-              </ul>
+              <div class="seller-meta-pills">
+                <span>{{ $vehicle->vehicle_type ?: 'Vehicle' }}</span>
+                <span>{{ $vehicle->fuel_type ?: 'Fuel N/A' }}</span>
+                <span>{{ $vehicle->transmission ?: 'Transmission N/A' }}</span>
+                <span>{{ number_format((int) $vehicle->mileage) }} km</span>
+              </div>
 
               @php
                 $tips = $recommendations[$listing->id] ?? [];
@@ -226,9 +240,9 @@
               @endif
 
               <div class="seller-listing-actions">
-                <a href="{{ route('user.packages', $listing->id) }}" class="btn btn-sm btn-outline-main">Boost</a>
-                <a href="{{ route('user.show_vehiclesale', [$listing->id, $vehicle->id]) }}" class="btn btn-sm btn-outline-main">View</a>
+                <a href="{{ route('user.show_vehiclesale', [$listing->id, $vehicle->id]) }}" class="btn btn-sm btn-main">View Listing</a>
                 <a href="{{ route('user.edit_vehiclesale', [$listing->id, $vehicle->id]) }}" class="btn btn-sm btn-outline-main">Edit</a>
+                <a href="{{ route('user.packages', $listing->id) }}" class="btn btn-sm btn-outline-main">Boost</a>
 
                 @if($status !== 'sold')
                   <form action="{{ route('user.listing.quick_action', $listing->id) }}" method="post" class="d-inline">
