@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ @filemtime(public_path('css/style.css')) }}">
-  <link rel="stylesheet" href="{{ asset('css/kingsbridge-modern.css') }}?v=20260222g">
+  <link rel="stylesheet" href="{{ asset('css/kingsbridge-modern.css') }}?v=20260222h">
   <style>
     body.kb-modern{background:#f3f5f9!important;font-family:"Plus Jakarta Sans",sans-serif!important}
     .kb-nav-shell{position:sticky;top:0;z-index:1000;background:linear-gradient(90deg,#020617,#0f172a)!important}
@@ -33,9 +33,9 @@
     .kb-modern .footer .block h4,.kb-modern .footer .block p,.kb-modern .footer .block .text{color:#dbe4f4!important}
     .kb-modern .footer .block a{color:#f2d98a!important}
     .kb-modern .footer-bottom{background:#0a1222!important}
-    .landing-v2-value-item{background:linear-gradient(130deg,#111827,#1f2937)!important;color:#e5e7eb!important;border:1px solid rgba(212,175,55,.35)!important;border-radius:14px!important;min-height:138px!important;padding:1.05rem 1rem!important}
-    .landing-v2-value-item h4{color:#f6e8b5!important}
-    .landing-v2-value-item p{color:#d1d9e6!important;margin:0!important}
+    .landing-v2-value-item{background:linear-gradient(180deg,#fff,#f9fbff)!important;color:#1f2937!important;border:1px solid #dfcf96!important;border-radius:14px!important;min-height:138px!important;padding:1.05rem 1rem!important}
+    .landing-v2-value-item h4{color:#162033!important}
+    .landing-v2-value-item p{color:#5a697f!important;margin:0!important}
     .landing-property-price .badge-sale{background:#d4af37!important;color:#fff!important}
     .landing-property-price .price{background:#aaa9ad!important;color:#2a303b!important}
   </style>

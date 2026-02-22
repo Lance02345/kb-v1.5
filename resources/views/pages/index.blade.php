@@ -54,18 +54,21 @@
     <div class="row">
       <div class="col-md-4 mb-3 d-flex">
         <article class="landing-v2-value-item w-100">
+          <span class="landing-v2-value-icon"><i class="fa fa-users"></i></span>
           <h4>Serious Buyers</h4>
           <p>High-intent demand from users actively searching to buy.</p>
         </article>
       </div>
       <div class="col-md-4 mb-3 d-flex">
         <article class="landing-v2-value-item w-100">
+          <span class="landing-v2-value-icon"><i class="fa fa-bullhorn"></i></span>
           <h4>Premium Exposure</h4>
           <p>Promoted inventory options for faster visibility and conversion.</p>
         </article>
       </div>
       <div class="col-md-4 mb-3 d-flex">
         <article class="landing-v2-value-item w-100">
+          <span class="landing-v2-value-icon"><i class="fa fa-cogs"></i></span>
           <h4>All-In-One Flow</h4>
           <p>Vehicles, parts, events, and garages managed from one platform.</p>
         </article>
