@@ -43,7 +43,23 @@
       <p>Fresh marketplace inventory across every budget and style.</p>
     </div>
 
-    <div wire:loading.flex class="landing-loading">Updating listings...</div>
+    <div wire:loading.block>
+      <div class="row">
+        @for ($i = 0; $i < 6; $i++)
+          <div class="col-sm-6 col-md-4 col-lg-4 mb-3 d-flex">
+            <div class="landing-skeleton-card w-100">
+              <div class="landing-skeleton-media"></div>
+              <div class="landing-skeleton-body">
+                <div class="landing-skeleton-line w-85"></div>
+                <div class="landing-skeleton-line w-65"></div>
+                <div class="landing-skeleton-line w-100"></div>
+                <div class="landing-skeleton-line w-55"></div>
+              </div>
+            </div>
+          </div>
+        @endfor
+      </div>
+    </div>
 
     <div class="row" wire:loading.remove>
       @forelse($vehicles as $vehicle)
@@ -51,33 +67,7 @@
           $listing = $vehicle->listing;
         @endphp
         <div class="col-sm-6 col-md-4 col-lg-4 mb-3 d-flex">
-          <article class="landing-vehicle-card">
-            <div class="landing-card-shell">
-              <a class="landing-card-media" href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">
-                <img class="landing-card-image" src="/storage/photos/{{ $vehicle->front_img }}" alt="{{ $vehicle->title ?? 'Vehicle image' }}">
-                <span class="landing-card-badge">Live</span>
-              </a>
-              <div class="landing-card-body">
-                <h4 class="landing-card-title">
-                  <a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ $vehicle->carmodel->carmake->make ?? '' }} {{ $vehicle->carmodel->model ?? '' }} {{ $vehicle->year_of_build }}</a>
-                </h4>
-                <ul class="landing-meta">
-                  <li><a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ optional($listing->category)->category_name }}</a></li>
-                  <li><a href="#">{{ optional($listing->city)->city }}</a></li>
-                </ul>
-                <ul class="landing-spec-list">
-                  <li><b>Engine</b><span>{{ $vehicle->engine_size }}</span></li>
-                  <li><b>Trans</b><span>{{ $vehicle->transmission }}</span></li>
-                  <li><b>Miles</b><span>{{ number_format((float) $vehicle->mileage, 0, '.', ',') }} Km</span></li>
-                  <li><b>Fuel</b><span>{{ $vehicle->fuel_type }}</span></li>
-                </ul>
-                <div class="landing-price-row">
-                  <p class="landing-sale-tag">For Sale</p>
-                  <p class="landing-price-value">Ksh {{ number_format((float) $vehicle->price) }}</p>
-                </div>
-              </div>
-            </div>
-          </article>
+          @include('partials.vehicle-card', ['vehicle' => $vehicle, 'listing' => $listing, 'badge' => 'Live'])
         </div>
       @empty
         <div class="col-12">

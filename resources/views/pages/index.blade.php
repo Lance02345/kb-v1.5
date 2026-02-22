@@ -26,6 +26,31 @@
   </div>
 </section>
 
+<section class="landing-trust-strip">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-2 mb-md-0">
+        <div class="landing-trust-item">
+          <small>Active Vehicles</small>
+          <strong>{{ count($vehicles) }}</strong>
+        </div>
+      </div>
+      <div class="col-md-4 mb-2 mb-md-0">
+        <div class="landing-trust-item">
+          <small>Marketplace Listings</small>
+          <strong>{{ count($listings) }}</strong>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="landing-trust-item">
+          <small>Upcoming Events</small>
+          <strong>{{ count($carevents) }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="landing-section landing-trending">
   <div class="container">
     <div class="landing-section-head text-center">
@@ -45,34 +70,8 @@
                     <div class="row mt-10">
                 @endif
 
-                <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
-                  <article class="landing-vehicle-card">
-                    <div class="landing-card-shell">
-                      <a class="landing-card-media" href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">
-                        <img class="landing-card-image" src="/storage/photos/{{ $vehicle->front_img }}" alt="{{ $vehicle->title ?? 'Vehicle image' }}">
-                        <span class="landing-card-badge">Featured</span>
-                      </a>
-                      <div class="landing-card-body">
-                        <h4 class="landing-card-title">
-                          <a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ $vehicle->carmodel->carmake->make }} {{ $vehicle->carmodel->model }} {{ $vehicle->year_of_build }}</a>
-                        </h4>
-                        <ul class="landing-meta">
-                          <li><a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ $listing->category->category_name }}</a></li>
-                          <li><a href="#">{{ $listing->city->city }}</a></li>
-                        </ul>
-                        <ul class="landing-spec-list">
-                          <li><b>Engine</b><span>{{ $vehicle->engine_size }}</span></li>
-                          <li><b>Trans</b><span>{{ $vehicle->transmission }}</span></li>
-                          <li><b>Miles</b><span>{{ number_format($vehicle->mileage, 0, '.', ',') }} Km</span></li>
-                          <li><b>Fuel</b><span>{{ $vehicle->fuel_type }}</span></li>
-                        </ul>
-                        <div class="landing-price-row">
-                          <p class="landing-sale-tag">For Sale</p>
-                          <p class="landing-price-value">Ksh {{ number_format((float) $vehicle->price) }}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </article>
+                <div class="col-sm-6 col-md-4 col-lg-4 mb-3 d-flex">
+                  @include('partials.vehicle-card', ['vehicle' => $vehicle, 'listing' => $listing, 'badge' => 'Featured'])
                 </div>
 
                 @php $slideNumber++; @endphp

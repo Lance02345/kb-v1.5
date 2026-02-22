@@ -337,9 +337,123 @@ body.kb-modern {
   padding: 1.6rem 1rem;
 }
 
+.landing-trust-strip {
+  margin-top: -14px;
+  margin-bottom: 1.1rem;
+}
+
+.landing-trust-item {
+  background: rgba(15, 23, 42, 0.95);
+  color: #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  padding: 0.85rem 1rem;
+}
+
+.landing-trust-item small {
+  display: block;
+  color: #cbd5e1;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.landing-trust-item strong {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 1.35rem;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.landing-skeleton-card {
+  border: 1px solid #d9e3f2;
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.landing-skeleton-media {
+  height: 208px;
+  background: linear-gradient(110deg, #edf2f8 8%, #e2e8f0 18%, #edf2f8 33%);
+  background-size: 200% 100%;
+  animation: kb-shimmer 1.25s linear infinite;
+}
+
+.landing-skeleton-body {
+  padding: 1rem;
+}
+
+.landing-skeleton-line {
+  height: 12px;
+  border-radius: 999px;
+  margin-bottom: 0.55rem;
+  background: linear-gradient(110deg, #edf2f8 8%, #e2e8f0 18%, #edf2f8 33%);
+  background-size: 200% 100%;
+  animation: kb-shimmer 1.25s linear infinite;
+}
+
+.landing-skeleton-line.w-100 { width: 100%; }
+.landing-skeleton-line.w-85 { width: 85%; }
+.landing-skeleton-line.w-65 { width: 65%; }
+.landing-skeleton-line.w-55 { width: 55%; }
+
+@keyframes kb-shimmer {
+  to { background-position-x: -200%; }
+}
+
+.kb-mobile-cta {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  z-index: 1020;
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.28);
+}
+
+.kb-mobile-cta a {
+  text-align: center;
+  color: #fff;
+  font-weight: 700;
+  padding: 0.6rem 0.7rem;
+  border-radius: 10px;
+  background: linear-gradient(120deg, #1d4ed8, #2563eb);
+}
+
 @media (max-width: 991px) {
   .kb-nav-shell {
     position: static;
+  }
+
+  .kb-mobile-menu {
+    margin-top: 0.7rem;
+    border: 1px solid rgba(148, 163, 184, 0.34);
+    background: rgba(15, 23, 42, 0.98);
+    border-radius: 14px;
+    padding: 0.4rem 0.8rem 0.8rem;
+  }
+
+  .kb-mobile-menu .nav-item {
+    margin-top: 0.25rem;
+  }
+
+  .kb-mobile-menu .nav-link {
+    border-radius: 10px;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .kb-mobile-cta {
+    display: grid;
+  }
+
+  .kb-modern .kb-page-content {
+    padding-bottom: 84px;
   }
 
   .landing-card-image {

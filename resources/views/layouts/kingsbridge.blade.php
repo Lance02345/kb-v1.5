@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ @filemtime(public_path('css/style.css')) }}">
-  <link rel="stylesheet" href="{{ asset('css/kingsbridge-modern.css') }}?v=20260222b">
+  <link rel="stylesheet" href="{{ asset('css/kingsbridge-modern.css') }}?v=20260222c">
   <style>
     body.kb-modern{background:#f4f7fb!important;font-family:"Plus Jakarta Sans",sans-serif!important}
     .kb-nav-shell{position:sticky;top:0;z-index:1000;background:linear-gradient(90deg,#0f172a,#1e293b)!important}
@@ -48,11 +48,11 @@
             <span style="color:#d4af37">Kings</span><span>bridge motors</span>
           </a>
 
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler kb-mobile-toggle" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
 
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="collapse navbar-collapse kb-mobile-menu" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto main-nav">
               <li class="nav-item {{ request()->routeIs('index') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('index') }}">Home</a>
@@ -117,6 +117,11 @@
 <main class="kb-page-content">
   @yield('content')
 </main>
+
+<nav class="kb-mobile-cta d-lg-none" aria-label="Quick mobile actions">
+  <a href="{{ route('vehicleslist') }}">Browse</a>
+  <a href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">Add Listing</a>
+</nav>
 
 <footer class="footer section section-sm">
   <div class="container">
@@ -223,6 +228,12 @@
     jQuery('.price').each(function () {
       var self = jQuery(this);
       self.html('<div>' + addCommas(self.text()) + '</div>');
+    });
+
+    jQuery('.kb-mobile-menu .nav-link').on('click', function () {
+      if (window.innerWidth < 992) {
+        jQuery('.kb-mobile-menu').collapse('hide');
+      }
     });
   }
 </script>
