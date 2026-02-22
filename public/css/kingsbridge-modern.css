@@ -737,3 +737,89 @@ body.kb-modern {
     height: 190px;
   }
 }
+
+/* Cars&Bids-ish homepage shell */
+.cnb-hero {
+  padding: 2rem 0 1.2rem;
+}
+
+.cnb-eyebrow {
+  margin-bottom: 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #7d6314;
+}
+
+.cnb-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.9rem, 4.1vw, 3.15rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.7rem;
+}
+
+.cnb-subtitle {
+  color: #5c6b80;
+  max-width: 620px;
+}
+
+.cnb-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.cnb-hero-panel {
+  background: #fff;
+  border: 1px solid #e8d9aa;
+  border-radius: 18px;
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+  padding: 1.1rem;
+}
+
+.cnb-hero-panel h3 {
+  font-family: "Space Grotesk", sans-serif;
+  margin-bottom: 0.7rem;
+}
+
+.cnb-hero-panel ul {
+  list-style: none;
+  margin: 0 0 0.9rem;
+  padding: 0;
+}
+
+.cnb-hero-panel li {
+  padding: 0.32rem 0;
+  color: #52637b;
+  border-bottom: 1px solid #eef1f6;
+}
+
+.cnb-hero-panel li:last-child {
+  border-bottom: 0;
+}
+
+.cnb-hero-panel b {
+  color: #151515;
+}
+
+.cnb-quick-links {
+  padding-bottom: 1.4rem;
+}
+
+.cnb-quick-link {
+  display: block;
+  background: #fff;
+  border: 1px solid #e7dbb0;
+  border-radius: 12px;
+  padding: 0.8rem;
+  text-align: center;
+  font-weight: 700;
+  color: #4d3d0d;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+}
+
+.cnb-quick-link:hover {
+  background: #fff8df;
+}
