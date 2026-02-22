@@ -1,9 +1,9 @@
 <section class="landing-section landing-drive">
   <div class="container">
-    <div class="landing-search-shell landing-livewire-search mb-4">
+    <div class="landing-search-shell landing-livewire-search mb-4" role="region" aria-label="Vehicle filters">
       <div class="row">
         <div class="col-md-2 mb-2">
-          <select wire:model.live="make" class="form-control">
+          <select wire:model.live="make" class="form-control" aria-label="Choose make">
             <option value="">Choose a Make</option>
             @foreach($makes as $makeOption)
               <option value="{{ $makeOption->id }}">{{ $makeOption->make }}</option>
@@ -11,7 +11,7 @@
           </select>
         </div>
         <div class="col-md-2 mb-2">
-          <select wire:model.live="model" class="form-control">
+          <select wire:model.live="model" class="form-control" aria-label="Choose model">
             <option value="">Choose a model</option>
             @foreach($models as $modelOption)
               <option value="{{ $modelOption->id }}">{{ $modelOption->model }}</option>
@@ -19,7 +19,7 @@
           </select>
         </div>
         <div class="col-md-2 mb-2">
-          <select wire:model.live="city" class="form-control">
+          <select wire:model.live="city" class="form-control" aria-label="Choose city">
             <option value="">Select City</option>
             @foreach($cities as $cityOption)
               <option value="{{ $cityOption->id }}">{{ $cityOption->city }}</option>
@@ -27,10 +27,10 @@
           </select>
         </div>
         <div class="col-md-2 mb-2">
-          <input wire:model.live.debounce.400ms="minPrice" type="number" min="0" class="form-control" placeholder="Min Price">
+          <input wire:model.live.debounce.400ms="minPrice" type="number" min="0" class="form-control" placeholder="Min Price" aria-label="Minimum price">
         </div>
         <div class="col-md-2 mb-2">
-          <input wire:model.live.debounce.400ms="maxPrice" type="number" min="0" class="form-control" placeholder="Max Price">
+          <input wire:model.live.debounce.400ms="maxPrice" type="number" min="0" class="form-control" placeholder="Max Price" aria-label="Maximum price">
         </div>
         <div class="col-md-2 mb-2 d-flex">
           <button type="button" wire:click="clearFilters" class="btn btn-outline-main w-100">Reset</button>
@@ -50,7 +50,7 @@
         @php
           $listing = $vehicle->listing;
         @endphp
-        <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
+        <div class="col-sm-6 col-md-4 col-lg-4 mb-3 d-flex">
           <article class="landing-vehicle-card">
             <div class="landing-card-shell">
               <a class="landing-card-media" href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">
@@ -82,7 +82,7 @@
       @empty
         <div class="col-12">
           <div class="landing-empty-state text-center">
-            <h4>No vehicles found</h4>
+            <h4 class="mb-2">No vehicles found</h4>
             <p>Try adjusting your filters to broaden results.</p>
           </div>
         </div>

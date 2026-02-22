@@ -6,8 +6,9 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#0f172a">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', config('app.name', 'Laravel'))</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -18,8 +19,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/kingsbridge-modern.css') }}?v={{ @filemtime(public_path('css/kingsbridge-modern.css')) }}" rel="stylesheet">
+    @livewireStyles
+    @stack('styles')
 </head>
-<body>
+<body class="kb-modern">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
@@ -75,9 +79,11 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="py-4 kb-page-content">
             @yield('content')
         </main>
     </div>
+    @livewireScripts
+    @stack('scripts')
 </body>
 </html>

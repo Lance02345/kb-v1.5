@@ -1,5 +1,12 @@
 <?php
 
+if (
+    ! class_exists(\Illuminate\Http\Middleware\HandleCors::class)
+    && class_exists(\Fruitcake\Cors\HandleCors::class)
+) {
+    class_alias(\Fruitcake\Cors\HandleCors::class, \Illuminate\Http\Middleware\HandleCors::class);
+}
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application

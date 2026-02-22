@@ -5,7 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#0f172a">
     <title>Kingbridge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
     <!-- Pignose Calender -->
     <link href="{{ asset('admin/plugins/pg-calendar/css/pignose.calendar.min.css')}}" rel="stylesheet">
@@ -15,10 +19,13 @@
     <!-- Custom Stylesheet -->
     <link href="{{ asset('admin/css/style.css')}}" rel="stylesheet">
     <link href="{{ asset('admin/plugins/sweetalert/css/sweetalert.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/kingsbridge-modern.css') }}?v={{ @filemtime(public_path('css/kingsbridge-modern.css')) }}" rel="stylesheet">
+    @livewireStyles
+    @stack('styles')
 
 </head>
 
-<body>
+<body class="kb-modern">
 
     <!--*******************
         Preloader start
@@ -470,6 +477,8 @@
 
     <script src="{{ asset('admin/plugins/summernote/dist/summernote.min.js')}}"></script>
     <script src="{{ asset('admin/plugins/summernote/dist/summernote-init.js')}}"></script>
+    @livewireScripts
+    @stack('scripts')
 
     
 </body>

@@ -6,7 +6,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>KingsBridge</title>
+    <meta name="theme-color" content="#0f172a">
+    <title>@yield('title', 'KingsBridge')</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     
     <!-- FAVICON -->
     <link href="img/favicon.png" rel="shortcut icon">
@@ -27,7 +31,10 @@
  <link rel="stylesheet" href="{{ asset('plugins/jquery-nice-select/css/nice-select.css')}}" > 
     <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css')}}" >
+    <link rel="stylesheet" href="{{ asset('css/kingsbridge-modern.css') }}?v={{ @filemtime(public_path('css/kingsbridge-modern.css')) }}">
     <link rel="stylesheet"  href="{{ asset('plugins/font-awesome/css/font-awesome.min.css')}}" >
+    @livewireStyles
+    @stack('styles')
 
 
   
@@ -41,7 +48,7 @@
   
   </head>
   
-  <body class="body-wrapper">
+  <body class="body-wrapper kb-modern">
   
 
    
@@ -75,11 +82,12 @@
 <script src="/path/to/flickity.pkgd.min.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="jquery.numberformatter.js"></script>
+@livewireScripts
+@stack('scripts')
 
 
 
+</body>
 
 </html>
-
-
 

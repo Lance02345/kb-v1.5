@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Kingsbridge Motors Kenya - buy, sell, and discover vehicles, parts, and car events.">
-  <title>Kingsbridge Motors</title>
+  <meta name="theme-color" content="#0f172a">
+  <title>@yield('title', 'Kingsbridge Motors')</title>
 
   <link href="{{ asset('images/king2.png') }}" rel="shortcut icon" type="image/png">
 
@@ -20,12 +21,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ @filemtime(public_path('css/style.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/kingsbridge-modern.css') }}?v={{ @filemtime(public_path('css/kingsbridge-modern.css')) }}">
   @livewireStyles
   @stack('styles')
 </head>
 
-<body class="body-wrapper">
-<section class="nav-bg">
+<body class="body-wrapper kb-modern">
+<section class="nav-bg kb-nav-shell">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -101,7 +103,9 @@
   </div>
 </section>
 
-@yield('content')
+<main class="kb-page-content">
+  @yield('content')
+</main>
 
 <footer class="footer section section-sm">
   <div class="container">
