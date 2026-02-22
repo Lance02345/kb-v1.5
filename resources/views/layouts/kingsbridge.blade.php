@@ -21,16 +21,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ @filemtime(public_path('css/style.css')) }}">
-  <link rel="stylesheet" href="{{ asset('css/kingsbridge-modern.css') }}?v=20260222d">
+  <link rel="stylesheet" href="{{ asset('css/kingsbridge-modern.css') }}?v=20260222e">
   <style>
-    body.kb-modern{background:#f4f7fb!important;font-family:"Plus Jakarta Sans",sans-serif!important}
-    .kb-nav-shell{position:sticky;top:0;z-index:1000;background:linear-gradient(90deg,#0f172a,#1e293b)!important}
+    body.kb-modern{background:#f3f5f9!important;font-family:"Plus Jakarta Sans",sans-serif!important}
+    .kb-nav-shell{position:sticky;top:0;z-index:1000;background:linear-gradient(90deg,#020617,#0f172a)!important}
     .kb-modern .card,.kb-modern .widget,.kb-modern .dashboard-container{background:#fff;border:1px solid #d8e0ea;border-radius:16px;box-shadow:0 16px 40px rgba(15,23,42,.08)}
-    .kb-modern .btn-main,.kb-modern .btn-primary,.kb-modern .add-button{background:linear-gradient(120deg,#1d4ed8,#2563eb)!important;border-color:#1d4ed8!important;color:#fff!important}
+    .kb-modern .btn-main,.kb-modern .btn-primary,.kb-modern .add-button{background:linear-gradient(120deg,#d4af37,#e4c96a)!important;border-color:#a68014!important;color:#151515!important}
     .kb-modern .form-control{border-radius:12px!important;border:1px solid #d8e0ea!important}
     .kb-modern .footer{background:#0f172a!important}
     .kb-modern .footer .block{background:transparent!important;border:0!important;box-shadow:none!important}
-    .kb-modern .footer .block h4,.kb-modern .footer .block p,.kb-modern .footer .block .text,.kb-modern .footer .block a{color:#dbe4f4!important}
+    .kb-modern .footer .block h4,.kb-modern .footer .block p,.kb-modern .footer .block .text{color:#dbe4f4!important}
+    .kb-modern .footer .block a{color:#f2d98a!important}
     .kb-modern .footer-bottom{background:#0a1222!important}
   </style>
   @livewireStyles

@@ -1,168 +1,119 @@
 @extends('layouts.kingsbridge')
+@section('title', 'Kingsbridge Motors | Kenya Auto Marketplace')
 @section('content')
+@php
+  $featuredPairs = [];
+  foreach ($listings as $listingItem) {
+      if ((int) $listingItem->package_id !== 2) {
+          continue;
+      }
+      foreach ($vehicles as $vehicleItem) {
+          if ((int) $vehicleItem->listing_id === (int) $listingItem->id) {
+              $featuredPairs[] = ['listing' => $listingItem, 'vehicle' => $vehicleItem];
+          }
+      }
+  }
+@endphp
 
-<section class="hero-area bg-1 overly landing-hero">
+<section class="landing-v2-hero">
   <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="content-block landing-hero-content">
-          <p class="landing-kicker">Kenya's automotive marketplace</p>
-          <h1>Buy, sell, and scale your automotive business</h1>
-          <p class="landing-hero-subtitle">A single platform for verified listings, vehicle parts, and events built for serious buyers and sellers.</p>
-          <div id="autotext" class="landing-autotext">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <div class="landing-v2-hero-copy">
+          <p class="landing-v2-eyebrow">KENYA'S PREMIER AUTO MARKETPLACE</p>
+          <h1>Own The Road With Verified Deals And Serious Buyers</h1>
+          <p>
+            Kingsbridge brings vehicles, parts, garages, and events into one premium marketplace
+            built to move inventory faster and close deals with confidence.
+          </p>
+          <div id="autotext" class="landing-v2-autotext">
             <div id="text"></div><div id="cursor"></div>
           </div>
-          <div class="landing-hero-actions">
-            <a class="btn btn-main" href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">Post a Listing</a>
+          <div class="landing-v2-actions">
+            <a class="btn btn-main" href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">Post Your Listing</a>
             <a class="btn btn-outline-main" href="{{ route('vehicleslist') }}">Browse Vehicles</a>
           </div>
-          <div class="landing-hero-stats">
-            <span><b>{{ count($vehicles) }}</b> Vehicles</span>
-            <span><b>{{ count($carevents) }}</b> Events</span>
-            <span><b>{{ count($listings) }}</b> Listings</span>
-          </div>
-          <div class="short-popular-category-list">
-            <h2>Start with what you need</h2>
-            <ul class="list-inline">
-              <li class="list-inline-item"><a href="{{ route('vehicleslist') }}">Vehicles</a></li>
-              <li class="list-inline-item"><a href="{{ route('spareparts') }}">Vehicle Parts</a></li>
-              <li class="list-inline-item"><a href="{{ route('carhire') }}">Car Hire</a></li>
-            </ul>
+          <div class="landing-v2-stats">
+            <article><strong>{{ count($vehicles) }}</strong><span>Vehicles</span></article>
+            <article><strong>{{ count($listings) }}</strong><span>Listings</span></article>
+            <article><strong>{{ count($carevents) }}</strong><span>Events</span></article>
           </div>
         </div>
-
+      </div>
+      <div class="col-lg-5 mt-4 mt-lg-0">
+        <div class="landing-v2-hero-panel">
+          <h3>Explore by category</h3>
+          <div class="landing-v2-chip-grid">
+            <a href="{{ route('vehicleslist') }}">Vehicles</a>
+            <a href="{{ route('spareparts') }}">Vehicle Parts</a>
+            <a href="{{ route('carhirelist') }}">Car Hire</a>
+            <a href="{{ route('carevent') }}">Car Events</a>
+            <a href="{{ route('garages.index') }}">Garages</a>
+            <a href="{{ route('package') }}">Seller Packages</a>
+          </div>
+          <div class="landing-v2-mini-note">
+            <span>Trusted platform</span>
+            <span>•</span>
+            <span>Fast listing tools</span>
+            <span>•</span>
+            <span>Nationwide reach</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="landing-trust-strip">
+<section class="landing-v2-valuebar">
   <div class="container">
     <div class="row">
       <div class="col-md-4 mb-2 mb-md-0">
-        <div class="landing-trust-item">
-          <small>Active Vehicles</small>
-          <strong>{{ count($vehicles) }}</strong>
+        <div class="landing-v2-value-item">
+          <h4>Serious Buyers</h4>
+          <p>High-intent demand from users actively searching to buy.</p>
         </div>
       </div>
       <div class="col-md-4 mb-2 mb-md-0">
-        <div class="landing-trust-item">
-          <small>Marketplace Listings</small>
-          <strong>{{ count($listings) }}</strong>
+        <div class="landing-v2-value-item">
+          <h4>Premium Exposure</h4>
+          <p>Promoted inventory options for faster visibility and conversion.</p>
         </div>
       </div>
       <div class="col-md-4">
-        <div class="landing-trust-item">
-          <small>Upcoming Events</small>
-          <strong>{{ count($carevents) }}</strong>
+        <div class="landing-v2-value-item">
+          <h4>All-In-One Flow</h4>
+          <p>Vehicles, parts, events, and garages managed from one platform.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="landing-section landing-trending">
+<section class="landing-section landing-v2-featured">
   <div class="container">
     <div class="landing-section-head text-center">
-      <h2>Trending Ads</h2>
-      <p>Premium listings getting the most attention right now.</p>
+      <h2>Featured Inventory</h2>
+      <p>Top-tier listings selected for premium visibility across the marketplace.</p>
     </div>
 
-    <div id="featuredCarousel" class="carousel slide landing-carousel" data-ride="carousel">
-      <div class="carousel-inner">
-        @php $slideNumber = 0; @endphp
-        @foreach ($listings as $listing)
-          @if ($listing->package_id == 2)
-            @foreach ($vehicles as $vehicle)
-              @if ($listing->id == $vehicle->listing_id)
-                @if ($slideNumber % 3 == 0)
-                  <div class="carousel-item{{ $slideNumber === 0 ? ' active' : '' }}">
-                    <div class="row mt-10">
-                @endif
-
-                <div class="col-sm-6 col-md-4 col-lg-4 mb-3 d-flex">
-                  @include('partials.vehicle-card', ['vehicle' => $vehicle, 'listing' => $listing, 'badge' => 'Featured'])
-                </div>
-
-                @php $slideNumber++; @endphp
-                @if ($slideNumber % 3 == 0)
-                    </div>
-                  </div>
-                @endif
-              @endif
-            @endforeach
-          @endif
-        @endforeach
-
-        @if ($slideNumber > 0 && $slideNumber % 3 != 0)
-            </div>
-          </div>
-        @endif
-      </div>
-
-      <a class="carousel-control-prev" href="#featuredCarousel" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#featuredCarousel" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<livewire:landing-vehicle-browser />
-
-<section class="landing-section landing-events">
-  <div class="container">
-    <div class="landing-section-head text-center">
-      <h2>Car Events</h2>
-      <p>Shows, meetups, and experiences curated for enthusiasts.</p>
-    </div>
-
-    @php
-      $eventCount = count($carevents);
-      $eventSlideCount = $eventCount > 0 ? (int) ceil($eventCount / 3) : 0;
-    @endphp
-
-    @if ($eventCount === 0)
+    @if (count($featuredPairs) === 0)
       <div class="landing-empty-state text-center">
-        <h4>No events yet</h4>
-        <p>Check back soon for upcoming car events.</p>
+        <h4 class="mb-2">No featured inventory yet</h4>
+        <p>Featured vehicles will appear here as soon as they are promoted.</p>
       </div>
     @else
-      <div id="eventCarousel" class="carousel slide landing-carousel" data-ride="carousel">
-        <ol class="carousel-indicators">
-          @for ($slide = 0; $slide < $eventSlideCount; $slide++)
-            <li data-target="#eventCarousel" data-slide-to="{{ $slide }}" class="{{ $slide === 0 ? 'active' : '' }}"></li>
-          @endfor
-        </ol>
-
+      <div id="featuredCarousel" class="carousel slide landing-carousel" data-ride="carousel">
         <div class="carousel-inner">
-          @for ($i = 0; $i < $eventCount; $i += 3)
+          @for ($i = 0; $i < count($featuredPairs); $i += 3)
             <div class="carousel-item {{ $i === 0 ? 'active' : '' }}">
               <div class="row mt-10">
-                @for ($j = $i; $j < min($i + 3, $eventCount); $j++)
-                  <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
-                    <article class="landing-event-card">
-                      <div class="landing-card-shell">
-                        <a class="landing-card-media" href="{{ route('carevent') }}">
-                          <img class="landing-card-image" src="/storage/photos/{{ $carevents[$j]->event_image }}" alt="{{ $carevents[$j]->event_title }}">
-                          <span class="landing-card-badge">Event</span>
-                        </a>
-                        <div class="landing-card-body">
-                          <h4 class="landing-card-title">{{ $carevents[$j]->event_title }}</h4>
-                          <ul class="landing-event-meta">
-                            <li><b>Location:</b> <span>{{ $carevents[$j]->event_location }}</span></li>
-                            <li><b>Date:</b> <span>{{ $carevents[$j]->event_date }}</span></li>
-                            <li><b>Time:</b> <span>{{ $carevents[$j]->event_time }}</span></li>
-                            <li><b>Organizer:</b> <span>{{ $carevents[$j]->organizer }}</span></li>
-                            <li><b>Ticket:</b> <span>Kes {{ $carevents[$j]->ticket_price }}</span></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </article>
+                @for ($j = $i; $j < min($i + 3, count($featuredPairs)); $j++)
+                  <div class="col-sm-6 col-md-4 col-lg-4 mb-3 d-flex">
+                    @include('partials.vehicle-card', [
+                      'vehicle' => $featuredPairs[$j]['vehicle'],
+                      'listing' => $featuredPairs[$j]['listing'],
+                      'badge' => 'Featured'
+                    ])
                   </div>
                 @endfor
               </div>
@@ -170,11 +121,11 @@
           @endfor
         </div>
 
-        <a class="carousel-control-prev" href="#eventCarousel" role="button" data-slide="prev">
+        <a class="carousel-control-prev" href="#featuredCarousel" role="button" data-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="sr-only">Previous</span>
         </a>
-        <a class="carousel-control-next" href="#eventCarousel" role="button" data-slide="next">
+        <a class="carousel-control-next" href="#featuredCarousel" role="button" data-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="sr-only">Next</span>
         </a>
@@ -183,78 +134,90 @@
   </div>
 </section>
 
-<section class="landing-section landing-why">
+<livewire:landing-vehicle-browser />
+
+<section class="landing-section landing-v2-events">
   <div class="container">
-    <div class="landing-section-head text-center">
-      <h2>Why KingsBridge Motors?</h2>
-      <p>Built for buyers, sellers, garages, and event organizers.</p>
+    <div class="d-flex flex-wrap align-items-end justify-content-between landing-v2-section-inline-head">
+      <div>
+        <h2>Upcoming Car Events</h2>
+        <p>Connect with communities, clubs, and automotive brands near you.</p>
+      </div>
+      <a class="btn btn-outline-main mt-2 mt-md-0" href="{{ route('carevent') }}">See all events</a>
     </div>
     <div class="row">
-      <div class="col-md-6 mb-3">
-        <article class="landing-info-card">
-          <h5>More Than Listings</h5>
-          <p>
-            KingsBridge is an automotive hub where buyers, sellers, garages, and enthusiasts connect in one trusted platform.
-            From discovery to deal closure, the experience is designed to move faster.
-          </p>
-          <a class="btn btn-main" href="{{ route('about_us') }}">Learn more</a>
-        </article>
-      </div>
-      <div class="col-md-6 mb-3">
-        <article class="landing-info-card">
-          <h5>Flexible Growth Options</h5>
-          <p>
-            Choose listing and promotion options that match your goals.
-            Whether you are moving one vehicle or scaling a full inventory, KingsBridge gives you room to grow.
-          </p>
-          <a class="btn btn-main" href="{{ route('about_us') }}">Learn more</a>
-        </article>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-join landing-join">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-md-7">
-        <div class="block about landing-join-copy">
-          <h2>Start today, get more exposure, and grow your business</h2>
-          <p>Launch your next listing in minutes and reach high-intent buyers.</p>
-          <ul class="list-inline mt-20">
-            <li class="list-inline-item"><a class="btn btn-main" href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">Join Today</a></li>
-          </ul>
+      @forelse($carevents as $carevent)
+        <div class="col-md-6 col-lg-4 mb-3 d-flex">
+          <article class="landing-v2-event-tile">
+            <img src="/storage/photos/{{ $carevent->event_image }}" alt="{{ $carevent->event_title }}">
+            <div class="landing-v2-event-body">
+              <h4>{{ $carevent->event_title }}</h4>
+              <ul>
+                <li><b>Location:</b> {{ $carevent->event_location }}</li>
+                <li><b>Date:</b> {{ $carevent->event_date }}</li>
+                <li><b>Time:</b> {{ $carevent->event_time }}</li>
+                <li><b>Organizer:</b> {{ $carevent->organizer }}</li>
+              </ul>
+            </div>
+          </article>
         </div>
-      </div>
-      <div class="col-md-5 text-center">
-        <img class="joinimg1" src="../images/call-to-action/Buying.svg" alt="Join KingsBridge" width="260" height="190">
-      </div>
+      @empty
+        <div class="col-12">
+          <div class="landing-empty-state text-center">
+            <h4 class="mb-2">No events yet</h4>
+            <p>Check back soon for upcoming meets and shows.</p>
+          </div>
+        </div>
+      @endforelse
     </div>
   </div>
 </section>
 
-<section class="product landing-partners">
+<section class="landing-section landing-v2-why">
   <div class="container">
     <div class="landing-section-head text-center">
-      <h2>Our Partners</h2>
-      <p>Trusted collaborators helping us serve the automotive ecosystem.</p>
+      <h2>Why Sellers And Buyers Choose Kingsbridge</h2>
+      <p>A platform designed to help you discover, list, promote, and close better.</p>
     </div>
-    <div class="slider">
-      <div><img src="../images/GarageGallery Logo.jpg" alt="Garage Gallery" style="max-height: 150px;"></div>
+    <div class="row">
+      <div class="col-md-6 col-lg-3 mb-3">
+        <article class="landing-v2-point-card">
+          <h4>Verified Visibility</h4>
+          <p>Get your inventory in front of buyers actively ready to transact.</p>
+        </article>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-3">
+        <article class="landing-v2-point-card">
+          <h4>Flexible Packages</h4>
+          <p>Choose listing and promotion levels that match your business goals.</p>
+        </article>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-3">
+        <article class="landing-v2-point-card">
+          <h4>Faster Lead Flow</h4>
+          <p>Clean listings, structured details, and clear actions increase response rates.</p>
+        </article>
+      </div>
+      <div class="col-md-6 col-lg-3 mb-3">
+        <article class="landing-v2-point-card">
+          <h4>Ecosystem Reach</h4>
+          <p>Sell vehicles, offer parts, promote events, and support garage services together.</p>
+        </article>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="call-to-action overly bg-3 section-sm landing-cta">
+<section class="landing-v2-final-cta">
   <div class="container">
-    <div class="row justify-content-md-center text-center">
-      <div class="col-md-8">
-        <div class="content-holder">
-          <h2>Join the largest community of vehicle enthusiasts</h2>
-          <ul class="list-inline mt-30">
-            <li class="list-inline-item"><a class="btn btn-main" href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">Add Listing</a></li>
-            <li class="list-inline-item"><a class="btn btn-secondary" href="{{ route('vehicleslist') }}">Browse Listings</a></li>
-          </ul>
+    <div class="landing-v2-final-shell">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <h2>Ready To Move More Inventory?</h2>
+          <p>Launch your next listing in minutes and reach motivated buyers across Kenya.</p>
+        </div>
+        <div class="col-lg-4 text-lg-right mt-3 mt-lg-0">
+          <a class="btn btn-main" href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">Start Selling</a>
         </div>
       </div>
     </div>
@@ -265,8 +228,7 @@
 <script>
   $(function () {
     var content = [
-      'Buy and sell smarter.',
-      'Move inventory faster with better visibility.',
+      'Sell smarter with premium listing tools.',
       'Reach serious buyers across Kenya.',
       'Promote vehicles, parts, and events in one place.'
     ];
@@ -290,8 +252,8 @@
         cursor.style.display = 'none';
         clearInterval(intervalVal);
         setTimeout(function () {
-          intervalVal = setInterval(remove, 50);
-        }, 1000);
+          intervalVal = setInterval(remove, 55);
+        }, 900);
       }
     }
 
@@ -306,27 +268,12 @@
         partIndex = 0;
         setTimeout(function () {
           cursor.style.display = 'inline-block';
-          intervalVal = setInterval(type, 100);
+          intervalVal = setInterval(type, 95);
         }, 200);
       }
     }
 
-    intervalVal = setInterval(type, 100);
-
-    $('.slider').slick({
-      autoplay: true,
-      autoplaySpeed: 1500,
-      arrows: true,
-      prevArrow: '<button type="button" class="slick-prev"></button>',
-      nextArrow: '<button type="button" class="slick-next"></button>',
-      centerMode: true,
-      slidesToShow: 3,
-      slidesToScroll: 2,
-      responsive: [
-        { breakpoint: 992, settings: { slidesToShow: 2 } },
-        { breakpoint: 640, settings: { slidesToShow: 1, centerMode: false } }
-      ]
-    });
+    intervalVal = setInterval(type, 95);
   });
 </script>
 @endpush
