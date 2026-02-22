@@ -52,23 +52,23 @@
 <section class="landing-v2-valuebar">
   <div class="container">
     <div class="row">
-      <div class="col-md-4 mb-2 mb-md-0">
-        <div class="landing-v2-value-item">
+      <div class="col-md-4 mb-3 d-flex">
+        <article class="landing-v2-value-item w-100">
           <h4>Serious Buyers</h4>
           <p>High-intent demand from users actively searching to buy.</p>
-        </div>
+        </article>
       </div>
-      <div class="col-md-4 mb-2 mb-md-0">
-        <div class="landing-v2-value-item">
+      <div class="col-md-4 mb-3 d-flex">
+        <article class="landing-v2-value-item w-100">
           <h4>Premium Exposure</h4>
           <p>Promoted inventory options for faster visibility and conversion.</p>
-        </div>
+        </article>
       </div>
-      <div class="col-md-4">
-        <div class="landing-v2-value-item">
+      <div class="col-md-4 mb-3 d-flex">
+        <article class="landing-v2-value-item w-100">
           <h4>All-In-One Flow</h4>
           <p>Vehicles, parts, events, and garages managed from one platform.</p>
-        </div>
+        </article>
       </div>
     </div>
   </div>

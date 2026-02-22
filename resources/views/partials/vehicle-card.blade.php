@@ -24,9 +24,9 @@
         <li><b>Miles</b><span>{{ number_format((float) $vehicle->mileage, 0, '.', ',') }} Km</span></li>
         <li><b>Fuel</b><span>{{ $vehicle->fuel_type }}</span></li>
       </ul>
-      <div class="landing-price-row">
-        <p class="landing-sale-tag">For Sale</p>
-        <p class="landing-price-value">Ksh {{ number_format((float) $vehicle->price) }}</p>
+      <div class="property-price landing-property-price">
+        <p class="badge-sale">For Sale</p>
+        <p class="price">Ksh {{ number_format((float) $vehicle->price, 0, '.', ',') }}</p>
       </div>
     </div>
   </div>
