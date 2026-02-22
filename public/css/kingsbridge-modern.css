@@ -70,7 +70,6 @@ body.kb-modern {
 .kb-modern .single-post,
 .kb-modern .product-item,
 .kb-modern .widget,
-.kb-modern .block,
 .kb-modern .dashboard-container,
 .kb-modern .user-dashboard-menu,
 .kb-modern .search-result-item,
@@ -177,8 +176,34 @@ body.kb-modern {
   color: #cfd8e8;
 }
 
+.kb-modern .footer .block {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  color: #cfd8e8;
+}
+
+.kb-modern .footer h4,
+.kb-modern .footer p,
+.kb-modern .footer .text {
+  color: #dbe4f4;
+}
+
 .kb-modern .footer a {
   color: #e5edf9;
+}
+
+.kb-modern .footer .footer-social-links li a {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 42px;
+  padding: 0.35rem 0.8rem;
 }
 
 .kb-modern .footer-bottom {
