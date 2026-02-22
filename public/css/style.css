@@ -6346,6 +6346,10 @@ a:focus {
   font-weight: 600;
 }
 
+.landing-livewire-search {
+  margin-top: -46px;
+}
+
 .btn-landing-search {
   width: 100%;
   min-height: 46px;
@@ -6612,6 +6616,19 @@ a:focus {
   margin-bottom: 0;
 }
 
+.landing-loading {
+  min-height: 64px;
+  align-items: center;
+  justify-content: center;
+  color: #5a6b86;
+  font-weight: 700;
+}
+
+.landing-pagination {
+  display: flex;
+  justify-content: center;
+}
+
 .landing-info-card {
   height: 100%;
   border: 1px solid #d5deec;
@@ -6692,6 +6709,10 @@ a:focus {
 
   .landing-search-shell .form-group {
     margin-bottom: 10px;
+  }
+
+  .landing-livewire-search {
+    margin-top: 0;
   }
 
   .landing-card-image {

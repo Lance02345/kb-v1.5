@@ -21,54 +21,6 @@
           </div>
         </div>
 
-        <div class="landing-search-shell">
-          <div class="row justify-content-center">
-            <div class="col-lg-12 col-md-12 align-content-center sale">
-              <form action="{{ route('vehicle_search') }}" method="get" id="vehicleSearchForm">
-                <div class="form-row">
-                  <div class="form-group col-md-2">
-                    <select name="make" id="make" class="make form-control">
-                      <option value="" data-live-search="true">Choose a Make</option>
-                      @foreach($makes as $make)
-                        <option value="{{ $make->id }}">{{ $make->make }}</option>
-                      @endforeach
-                    </select>
-                    @error('make_id')
-                      <span class="invalid" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                  </div>
-
-                  <div class="carmodel form-group col-md-2">
-                    <select name="model_id" id="model_id" class="model form-control">
-                      <option value="" disabled="true" selected="true">Choose a model</option>
-                    </select>
-                  </div>
-
-                  <div class="form-group col-md-2">
-                    <select name="city" id="inputGroupSelect" class="form-control">
-                      <option value="">Select City</option>
-                      @foreach ($cities as $city)
-                        <option value="{{ $city->id }}" {{ (old('city') == $city->id) ? 'selected' : '' }}>{{ $city->city }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-
-                  <div class="form-group col-md-2">
-                    <input type="text" name="min_price" placeholder="Min Price" class="form-control">
-                  </div>
-
-                  <div class="form-group col-md-2">
-                    <input type="text" name="max_price" placeholder="Max Price" class="form-control">
-                  </div>
-
-                  <div class="form-group col-md-2">
-                    <button type="submit" class="btn btn-primary btn-landing-search">Search Now</button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -151,80 +103,7 @@
   </div>
 </section>
 
-<section class="landing-section landing-drive">
-  <div class="container">
-    <div class="landing-section-head text-center">
-      <h2>Find Your Drive</h2>
-      <p>Fresh marketplace inventory across every budget and style.</p>
-    </div>
-
-    <div id="browseCarousel" class="carousel slide landing-carousel" data-ride="carousel">
-      <div class="carousel-inner">
-        @php $slideNumber = 0; @endphp
-        @foreach ($listings as $listing)
-          @foreach ($vehicles as $vehicle)
-            @if ($listing->id == $vehicle->listing_id)
-              @if ($slideNumber % 3 == 0)
-                <div class="carousel-item{{ $slideNumber === 0 ? ' active' : '' }}">
-                  <div class="row mt-10">
-              @endif
-
-              <div class="col-sm-6 col-md-4 col-lg-4 mb-3">
-                <article class="landing-vehicle-card">
-                  <div class="landing-card-shell">
-                    <a class="landing-card-media" href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">
-                      <img class="landing-card-image" src="/storage/photos/{{ $vehicle->front_img }}" alt="{{ $vehicle->title ?? 'Vehicle image' }}">
-                      <span class="landing-card-badge">Live</span>
-                    </a>
-                    <div class="landing-card-body">
-                      <h4 class="landing-card-title">
-                        <a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ $vehicle->carmodel->carmake->make }} {{ $vehicle->carmodel->model }} {{ $vehicle->year_of_build }}</a>
-                      </h4>
-                      <ul class="landing-meta">
-                        <li><a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">{{ $listing->category->category_name }}</a></li>
-                        <li><a href="#">{{ $listing->city->city }}</a></li>
-                      </ul>
-                      <ul class="landing-spec-list">
-                        <li><b>Engine</b><span>{{ $vehicle->engine_size }}</span></li>
-                        <li><b>Trans</b><span>{{ $vehicle->transmission }}</span></li>
-                        <li><b>Miles</b><span>{{ number_format($vehicle->mileage, 0, '.', ',') }} Km</span></li>
-                        <li><b>Fuel</b><span>{{ $vehicle->fuel_type }}</span></li>
-                      </ul>
-                      <div class="landing-price-row">
-                        <p class="landing-sale-tag">For Sale</p>
-                        <p class="landing-price-value">Ksh {{ number_format((float) $vehicle->price) }}</p>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              </div>
-
-              @php $slideNumber++; @endphp
-              @if ($slideNumber % 3 == 0)
-                  </div>
-                </div>
-              @endif
-            @endif
-          @endforeach
-        @endforeach
-
-        @if ($slideNumber > 0 && $slideNumber % 3 != 0)
-            </div>
-          </div>
-        @endif
-      </div>
-
-      <a class="carousel-control-prev" href="#browseCarousel" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#browseCarousel" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
-  </div>
-</section>
+<livewire:landing-vehicle-browser />
 
 <section class="landing-section landing-events">
   <div class="container">
@@ -376,24 +255,6 @@
 @push('scripts')
 <script>
   $(function () {
-    $(document).on('change', '.make', function () {
-      var makeId = $(this).val();
-      var modelContainer = $('div.carmodel').parent();
-      var option = '<option value="" disabled selected>Choose a model</option>';
-
-      $.ajax({
-        type: 'get',
-        url: '{{ url("carmodel") }}',
-        data: { id: makeId },
-        success: function (data) {
-          for (var i = 0; i < data.length; i++) {
-            option += '<option value="' + data[i].id + '">' + data[i].model + '</option>';
-          }
-          modelContainer.find('.model').html(option);
-        }
-      });
-    });
-
     var content = [
       'Buy and sell smarter.',
       'Move inventory faster with better visibility.',

@@ -20,6 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ @filemtime(public_path('css/style.css')) }}">
+  @livewireStyles
   @stack('styles')
 </head>
 
@@ -189,6 +190,7 @@
 <script src="{{ asset('plugins/conditional-field/conditional-field.min.js') }}"></script>
 <script src="{{ asset('plugins/google-map/gmap.js') }}"></script>
 <script src="{{ asset('js/script.js') }}?v={{ @filemtime(public_path('js/script.js')) }}"></script>
+@livewireScripts
 
 <script>
   function addCommas(numberText) {
@@ -212,3 +214,4 @@
 @stack('scripts')
 </body>
 </html>
+scm-history-item:/home/lance/projects/kb-v1.5?%7B%22repositoryId%22%3A%22scm0%22%2C%22historyItemId%22%3A%22630b0cce480b0e75e8dca6204b08add443a2d90b%22%2C%22historyItemParentId%22%3A%22e5e248a14ac83b410c178346a0978eb0321e2246%22%2C%22historyItemDisplayId%22%3A%22630b0cc%22%7D
