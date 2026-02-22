@@ -15,49 +15,60 @@
   }
 @endphp
 
-<section class="cnb-hero">
+<section class="hero-area bg-1 overly landing-hero">
   <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg-7">
-        <p class="cnb-eyebrow">KINGSBRIDGE MARKETPLACE</p>
-        <h1 class="cnb-title">Buy great cars from trusted Kenyan sellers</h1>
-        <p class="cnb-subtitle">
-          A listings-first marketplace inspired by modern enthusiast platforms, powered by Kingsbridge gold.
-        </p>
-        <div class="cnb-actions">
-          <a class="btn btn-main" href="{{ route('vehicleslist') }}">Explore Listings</a>
-          <a class="btn btn-outline-main" href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">List Your Car</a>
-        </div>
-      </div>
-      <div class="col-lg-5 mt-4 mt-lg-0">
-        <div class="cnb-hero-panel">
-          <h3>Live marketplace</h3>
-          <ul>
-            <li><b>{{ count($vehicles) }}</b> Active vehicles</li>
-            <li><b>{{ count($listings) }}</b> Total listings</li>
-            <li><b>{{ count($carevents) }}</b> Upcoming events</li>
-          </ul>
-          <a class="btn btn-main w-100" href="{{ route('package') }}">View seller packages</a>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="content-block landing-hero-content">
+          <p class="landing-kicker">Kenya's automotive marketplace</p>
+          <h1>Buy, sell, and scale your automotive business</h1>
+          <p class="landing-hero-subtitle">A single platform for verified listings, vehicle parts, and events built for serious buyers and sellers.</p>
+          <div id="autotext" class="landing-autotext">
+            <div id="text"></div><div id="cursor"></div>
+          </div>
+          <div class="landing-hero-actions">
+            <a class="btn btn-main" href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">Post a Listing</a>
+            <a class="btn btn-outline-main" href="{{ route('vehicleslist') }}">Browse Vehicles</a>
+          </div>
+          <div class="landing-hero-stats">
+            <span><b>{{ count($vehicles) }}</b> Vehicles</span>
+            <span><b>{{ count($carevents) }}</b> Events</span>
+            <span><b>{{ count($listings) }}</b> Listings</span>
+          </div>
+          <div class="short-popular-category-list">
+            <h2>Start with what you need</h2>
+            <ul class="list-inline">
+              <li class="list-inline-item"><a href="{{ route('vehicleslist') }}">Vehicles</a></li>
+              <li class="list-inline-item"><a href="{{ route('spareparts') }}">Vehicle Parts</a></li>
+              <li class="list-inline-item"><a href="{{ route('carhire') }}">Car Hire</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="cnb-quick-links">
+<section class="landing-v2-valuebar">
   <div class="container">
     <div class="row">
-      <div class="col-md-3 col-6 mb-2">
-        <a class="cnb-quick-link" href="{{ route('vehicleslist') }}">Vehicles</a>
+      <div class="col-md-4 mb-2 mb-md-0">
+        <div class="landing-v2-value-item">
+          <h4>Serious Buyers</h4>
+          <p>High-intent demand from users actively searching to buy.</p>
+        </div>
       </div>
-      <div class="col-md-3 col-6 mb-2">
-        <a class="cnb-quick-link" href="{{ route('spareparts') }}">Vehicle Parts</a>
+      <div class="col-md-4 mb-2 mb-md-0">
+        <div class="landing-v2-value-item">
+          <h4>Premium Exposure</h4>
+          <p>Promoted inventory options for faster visibility and conversion.</p>
+        </div>
       </div>
-      <div class="col-md-3 col-6 mb-2">
-        <a class="cnb-quick-link" href="{{ route('carhire') }}">Car Hire</a>
-      </div>
-      <div class="col-md-3 col-6 mb-2">
-        <a class="cnb-quick-link" href="{{ route('carevent') }}">Car Events</a>
+      <div class="col-md-4">
+        <div class="landing-v2-value-item">
+          <h4>All-In-One Flow</h4>
+          <p>Vehicles, parts, events, and garages managed from one platform.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -197,5 +208,59 @@
     </div>
   </div>
 </section>
+
+@push('scripts')
+<script>
+  $(function () {
+    var content = [
+      'Sell smarter with premium listing tools.',
+      'Reach serious buyers across Kenya.',
+      'Promote vehicles, parts, and events in one place.'
+    ];
+
+    var part = 0;
+    var partIndex = 0;
+    var intervalVal;
+    var element = document.querySelector('#text');
+    var cursor = document.querySelector('#cursor');
+
+    function type() {
+      if (!element || !cursor) {
+        return;
+      }
+
+      var text = content[part].substring(0, partIndex + 1);
+      element.innerHTML = text;
+      partIndex += 1;
+
+      if (text === content[part]) {
+        cursor.style.display = 'none';
+        clearInterval(intervalVal);
+        setTimeout(function () {
+          intervalVal = setInterval(remove, 55);
+        }, 900);
+      }
+    }
+
+    function remove() {
+      var text = content[part].substring(0, partIndex - 1);
+      element.innerHTML = text;
+      partIndex -= 1;
+
+      if (text === '') {
+        clearInterval(intervalVal);
+        part = part === content.length - 1 ? 0 : part + 1;
+        partIndex = 0;
+        setTimeout(function () {
+          cursor.style.display = 'inline-block';
+          intervalVal = setInterval(type, 95);
+        }, 200);
+      }
+    }
+
+    intervalVal = setInterval(type, 95);
+  });
+</script>
+@endpush
 
 @endsection
