@@ -8,8 +8,18 @@
         <div class="content-block landing-hero-content">
           <p class="landing-kicker">Kenya's automotive marketplace</p>
           <h1>Buy, sell, and scale your automotive business</h1>
+          <p class="landing-hero-subtitle">A single platform for verified listings, vehicle parts, and events built for serious buyers and sellers.</p>
           <div id="autotext" class="landing-autotext">
             <div id="text"></div><div id="cursor"></div>
+          </div>
+          <div class="landing-hero-actions">
+            <a class="btn btn-main" href="{{ Auth::check() ? route('user.new_listing') : route('login') }}">Post a Listing</a>
+            <a class="btn btn-outline-main" href="{{ route('vehicleslist') }}">Browse Vehicles</a>
+          </div>
+          <div class="landing-hero-stats">
+            <span><b>{{ count($vehicles) }}</b> Vehicles</span>
+            <span><b>{{ count($carevents) }}</b> Events</span>
+            <span><b>{{ count($listings) }}</b> Listings</span>
           </div>
           <div class="short-popular-category-list">
             <h2>Start with what you need</h2>
