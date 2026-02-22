@@ -49,6 +49,8 @@
   </div>
 </section>
 
+<livewire:landing-vehicle-browser />
+
 <section class="landing-v2-valuebar">
   <div class="container">
     <div class="row">
@@ -121,8 +123,6 @@
     @endif
   </div>
 </section>
-
-<livewire:landing-vehicle-browser />
 
 <section class="landing-section landing-v2-events">
   <div class="container">

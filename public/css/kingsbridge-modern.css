@@ -434,6 +434,21 @@ body.kb-modern {
   padding: 2.2rem 0;
 }
 
+.landing-hero {
+  position: relative;
+}
+
+.landing-hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 92px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(2, 6, 23, 0), rgba(243, 245, 249, 0.95) 65%, rgba(243, 245, 249, 1));
+}
+
 .landing-section-head h2,
 .landing-v2-section-inline-head h2 {
   font-family: "Space Grotesk", sans-serif;
@@ -456,8 +471,38 @@ body.kb-modern {
   background: rgba(255, 255, 255, 0.93);
   border: 1px solid var(--kb-border);
   border-radius: 18px;
-  padding: 1rem;
-  box-shadow: var(--kb-shadow);
+  padding: 1rem 1rem 0.9rem;
+  box-shadow: 0 20px 36px rgba(15, 23, 42, 0.14);
+}
+
+.landing-search-lift {
+  margin-top: -66px;
+  position: relative;
+  z-index: 9;
+}
+
+.landing-search-head h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.landing-search-head p {
+  margin: 0;
+  color: #617188;
+  font-size: 0.88rem;
+}
+
+.landing-search-count {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #eadba8;
+  background: #fff8df;
+  color: #7d6314;
+  border-radius: 999px;
+  padding: 0.33rem 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .landing-vehicle-card .landing-card-shell {
@@ -505,6 +550,27 @@ body.kb-modern {
   transform: scale(1.06);
 }
 
+.landing-product-item {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #dfe6f0;
+  background: linear-gradient(180deg, #ffffff, #fbfdff);
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.1);
+  width: 100%;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.landing-product-item:hover {
+  transform: translateY(-6px);
+  border-color: #d0b45a;
+  box-shadow: 0 24px 42px rgba(15, 23, 42, 0.2);
+}
+
+.landing-product-item .card {
+  border: 0;
+  background: transparent;
+}
+
 .landing-card-badge {
   position: absolute;
   top: 12px;
@@ -548,24 +614,32 @@ body.kb-modern {
 }
 
 .landing-spec-list {
-  list-style: none;
+  list-style: none !important;
   padding: 0;
-  margin: 0.15rem 0 0;
+  margin: 0.15rem 0 0.25rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.4rem;
+  grid-template-columns: 1fr;
+  gap: 0.22rem;
 }
 
 .landing-spec-list li {
   display: flex;
-  justify-content: space-between;
-  gap: 0.3rem;
-  font-size: 0.79rem;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.83rem;
   color: #334155;
-  border: 1px solid #e6edf7;
-  background: #f8fbff;
-  border-radius: 8px;
-  padding: 0.32rem 0.45rem;
+  padding: 0;
+}
+
+.landing-spec-list li a {
+  color: #4f6077;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.38rem;
+}
+
+.landing-spec-list li i {
+  color: #d4af37;
 }
 
 .landing-property-price {
@@ -782,6 +856,10 @@ body.kb-modern {
 
   .landing-section {
     padding: 1.8rem 0;
+  }
+
+  .landing-search-lift {
+    margin-top: -48px;
   }
 
   .landing-card-image,

@@ -1,6 +1,13 @@
 <section class="landing-section landing-drive">
   <div class="container">
-    <div class="landing-search-shell landing-livewire-search mb-4" role="region" aria-label="Vehicle filters">
+    <div class="landing-search-shell landing-livewire-search mb-4 landing-search-lift" role="region" aria-label="Vehicle filters">
+      <div class="landing-search-head d-flex flex-wrap justify-content-between align-items-center mb-2">
+        <div>
+          <h3>Search Inventory</h3>
+          <p>Filter by make, model, city, and budget.</p>
+        </div>
+        <span class="landing-search-count">{{ number_format($vehicles->total()) }} listings</span>
+      </div>
       <div class="row">
         <div class="col-md-2 mb-2">
           <select wire:model.live="make" class="form-control" aria-label="Choose make">
@@ -33,7 +40,7 @@
           <input wire:model.live.debounce.400ms="maxPrice" type="number" min="0" class="form-control" placeholder="Max Price" aria-label="Maximum price">
         </div>
         <div class="col-md-2 mb-2 d-flex">
-          <button type="button" wire:click="clearFilters" class="btn btn-outline-main w-100">Reset</button>
+          <button type="button" wire:click="clearFilters" class="btn btn-outline-main w-100">Reset Filters</button>
         </div>
       </div>
     </div>
