@@ -22,7 +22,7 @@
     <div class="flex items-center gap-2 text-xs">
       <span class="rounded-full bg-slate-800 px-2 py-1 text-slate-300">{{ $category }}</span>
       <span class="inline-flex items-center gap-1 text-slate-400">
-        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <svg class="h-3.5 w-3.5" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <path d="M12 21s7-4.35 7-11a7 7 0 1 0-14 0c0 6.65 7 11 7 11Z"></path>
           <circle cx="12" cy="10" r="2.5"></circle>
         </svg>

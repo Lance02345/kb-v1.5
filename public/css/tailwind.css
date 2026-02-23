@@ -158,6 +158,9 @@
 .relative {
     position: relative
 }
+.sticky {
+    position: sticky
+}
 .inset-0 {
     inset: 0px
 }
@@ -181,6 +184,9 @@
 }
 .z-20 {
     z-index: 20
+}
+.z-50 {
+    z-index: 50
 }
 .float-right {
     float: right
@@ -504,6 +510,9 @@
 .gap-5 {
     gap: 1.25rem
 }
+.gap-6 {
+    gap: 1.5rem
+}
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
     --tw-space-y-reverse: 0;
     margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
@@ -607,6 +616,9 @@
 .border-transparent {
     border-color: transparent
 }
+.bg-\[\#050812\]\/90 {
+    background-color: rgb(5 8 18 / 0.9)
+}
 .bg-\[\#0b1020\] {
     --tw-bg-opacity: 1;
     background-color: rgb(11 16 32 / var(--tw-bg-opacity, 1))
@@ -618,6 +630,10 @@
 .bg-\[\#161a22\] {
     --tw-bg-opacity: 1;
     background-color: rgb(22 26 34 / var(--tw-bg-opacity, 1))
+}
+.bg-amber-300 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(252 211 77 / var(--tw-bg-opacity, 1))
 }
 .bg-amber-300\/10 {
     background-color: rgb(252 211 77 / 0.1)
@@ -979,6 +995,10 @@
     --tw-text-opacity: 1;
     color: rgb(241 245 249 / var(--tw-text-opacity, 1))
 }
+.text-slate-200 {
+    --tw-text-opacity: 1;
+    color: rgb(226 232 240 / var(--tw-text-opacity, 1))
+}
 .text-slate-300 {
     --tw-text-opacity: 1;
     color: rgb(203 213 225 / var(--tw-text-opacity, 1))
@@ -990,6 +1010,10 @@
 .text-slate-500 {
     --tw-text-opacity: 1;
     color: rgb(100 116 139 / var(--tw-text-opacity, 1))
+}
+.text-slate-900 {
+    --tw-text-opacity: 1;
+    color: rgb(15 23 42 / var(--tw-text-opacity, 1))
 }
 .text-white {
     --tw-text-opacity: 1;
@@ -1099,6 +1123,14 @@
 .hover\:border-amber-300\/40:hover {
     border-color: rgb(252 211 77 / 0.4)
 }
+.hover\:border-slate-500:hover {
+    --tw-border-opacity: 1;
+    border-color: rgb(100 116 139 / var(--tw-border-opacity, 1))
+}
+.hover\:bg-amber-200:hover {
+    --tw-bg-opacity: 1;
+    background-color: rgb(253 230 138 / var(--tw-bg-opacity, 1))
+}
 .hover\:bg-gray-700:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1))
@@ -1126,6 +1158,10 @@
 .hover\:text-gray-500:hover {
     --tw-text-opacity: 1;
     color: rgb(107 114 128 / var(--tw-text-opacity, 1))
+}
+.hover\:text-white:hover {
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity, 1))
 }
 .hover\:shadow-xl:hover {
     --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
@@ -1258,6 +1294,9 @@
     }
 }
 @media (min-width: 768px) {
+    .md\:flex {
+        display: flex
+    }
     .md\:h-\[420px\] {
         height: 420px
     }

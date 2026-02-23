@@ -3,7 +3,7 @@
         <div class="flex flex-col gap-4 border-b border-slate-800 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
             <div class="flex items-start gap-3">
                 <div class="rounded-xl border border-amber-400/30 bg-amber-400/10 p-2 text-amber-300">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <svg class="h-5 w-5" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
                         <circle cx="11" cy="11" r="7"></circle>
                         <path d="m20 20-3.5-3.5"></path>
                     </svg>
