@@ -26,7 +26,7 @@
 
 <section class="relative h-[280px] sm:h-[340px] lg:h-[420px] overflow-hidden">
     <img
-        src="{{ asset('images/land1.jpg') }}"
+        src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1920&h=700&fit=crop"
         alt="Marketplace hero"
         class="absolute inset-0 h-full w-full object-cover"
     >
