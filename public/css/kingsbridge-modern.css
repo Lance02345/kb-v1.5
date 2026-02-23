@@ -954,3 +954,217 @@ body.kb-modern {
 .cnb-quick-link:hover {
   background: #fff8df;
 }
+
+/* Dark marketplace browser + card refresh */
+.landing-neo-shell {
+  margin-top: -74px;
+  z-index: 8;
+}
+
+.landing-neo-search-shell {
+  background: linear-gradient(165deg, rgba(12, 19, 33, 0.98), rgba(20, 30, 48, 0.96));
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 18px;
+  box-shadow: 0 22px 40px rgba(2, 6, 23, 0.4);
+  padding: 1rem;
+}
+
+.landing-neo-search-head h3 {
+  margin: 0;
+  color: #f8fafc;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1rem;
+}
+
+.landing-neo-search-head p {
+  margin: 0;
+  color: #9aa8be;
+  font-size: 0.83rem;
+}
+
+.landing-neo-search-icon {
+  width: 35px;
+  height: 35px;
+  margin-right: 0.7rem;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #f6d775;
+  background: rgba(212, 175, 55, 0.14);
+  border: 1px solid rgba(212, 175, 55, 0.27);
+}
+
+.landing-neo-search-count {
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  background: rgba(212, 175, 55, 0.13);
+  color: #f7e7b5;
+  padding: 0.28rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.landing-neo-search-shell .form-control {
+  min-height: 42px;
+  color: #e2e8f0;
+  border-color: #2a3a56;
+  background: #111b2e;
+}
+
+.landing-neo-search-shell .form-control::placeholder {
+  color: #8da1be;
+}
+
+.landing-neo-search-shell .form-control:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.18);
+  background: #10192a;
+}
+
+.landing-neo-search-shell .btn.btn-main {
+  min-height: 42px;
+}
+
+.landing-neo-card {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #24344d;
+  background: linear-gradient(180deg, #0e1728, #111d31);
+  box-shadow: 0 14px 28px rgba(2, 6, 23, 0.35);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.landing-neo-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(212, 175, 55, 0.55);
+  box-shadow: 0 26px 36px rgba(2, 6, 23, 0.45);
+}
+
+.landing-neo-card-media {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.landing-neo-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.landing-neo-card:hover .landing-neo-card-image {
+  transform: scale(1.05);
+}
+
+.landing-neo-card-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #4a3200;
+  border-radius: 999px;
+  padding: 0.25rem 0.72rem;
+  background: rgba(52, 211, 153, 0.88);
+}
+
+.landing-neo-card-body {
+  padding: 0.9rem 0.95rem 1rem;
+}
+
+.landing-neo-card-title {
+  margin: 0 0 0.55rem;
+  line-height: 1.35;
+}
+
+.landing-neo-card-title a {
+  color: #f8fafc;
+  font-size: 0.99rem;
+  font-weight: 700;
+}
+
+.landing-neo-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.65rem;
+  min-height: 21px;
+}
+
+.landing-neo-pill {
+  font-size: 0.72rem;
+  color: #aebed8;
+  background: #1a2940;
+  border: 1px solid #273956;
+  border-radius: 999px;
+  padding: 0.14rem 0.58rem;
+}
+
+.landing-neo-city {
+  font-size: 0.75rem;
+  color: #8698b3;
+}
+
+.landing-neo-specs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.28rem 0.5rem;
+}
+
+.landing-neo-specs li {
+  color: #98a6be;
+  font-size: 0.77rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.landing-neo-price {
+  margin-top: 0.78rem;
+  border-top: 1px solid #22344f;
+  padding-top: 0.66rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem;
+}
+
+.landing-neo-price span {
+  color: #7f93af;
+  font-size: 0.73rem;
+}
+
+.landing-neo-price strong {
+  color: #f4cb59;
+  font-size: 1.06rem;
+  line-height: 1;
+}
+
+.landing-neo-empty {
+  border-color: #273a58;
+  background: #101a2a;
+}
+
+.landing-neo-empty h4 {
+  color: #f8fafc;
+}
+
+.landing-neo-empty p {
+  color: #8ea2bf;
+}
+
+@media (max-width: 991px) {
+  .landing-neo-shell {
+    margin-top: -52px;
+  }
+
+  .landing-neo-search-count {
+    margin-top: 0.55rem;
+  }
+}

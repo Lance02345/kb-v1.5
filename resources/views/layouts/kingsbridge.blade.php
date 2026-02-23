@@ -20,6 +20,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  @php($tailwindCssPath = public_path('css/tailwind.css'))
+  @if(file_exists($tailwindCssPath))
+    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}?v={{ filemtime($tailwindCssPath) }}">
+  @else
+    <link rel="stylesheet" href="{{ asset('css/tailwind.css') }}">
+  @endif
   <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ @filemtime(public_path('css/style.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/kingsbridge-modern.css') }}?v=20260222i">
   <style>

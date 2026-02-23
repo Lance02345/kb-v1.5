@@ -19,6 +19,12 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @php($tailwindCssPath = public_path('css/tailwind.css'))
+    @if(file_exists($tailwindCssPath))
+        <link href="{{ asset('css/tailwind.css') }}?v={{ filemtime($tailwindCssPath) }}" rel="stylesheet">
+    @else
+        <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
+    @endif
     <link href="{{ asset('css/kingsbridge-modern.css') }}?v={{ @filemtime(public_path('css/kingsbridge-modern.css')) }}" rel="stylesheet">
     @livewireStyles
     @stack('styles')
