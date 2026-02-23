@@ -28,6 +28,7 @@
   @endif
   <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ @filemtime(public_path('css/style.css')) }}">
   <link rel="stylesheet" href="{{ asset('css/kingsbridge-modern.css') }}?v={{ @filemtime(public_path('css/kingsbridge-modern.css')) }}">
+  <link rel="stylesheet" href="{{ asset('css/drivefinder.css') }}?v={{ @filemtime(public_path('css/drivefinder.css')) }}">
   <style>
     body.kb-modern{background:#f3f5f9!important;font-family:"Plus Jakarta Sans",sans-serif!important}
     .kb-nav-shell{position:sticky;top:0;z-index:1000;background:linear-gradient(90deg,#020617,#0f172a)!important}
