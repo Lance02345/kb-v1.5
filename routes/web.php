@@ -25,7 +25,6 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CareventController;
 use App\Http\Controllers\MpesaSTKPUSHController;
-use App\Http\Controllers\VehicleMarketplaceController;
 use App\Models\Carevent;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,7 +40,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route :: get ('/',  [PagesController::class, 'index'])->name('index');
-Route::get('/marketplace', [VehicleMarketplaceController::class, 'index'])->name('marketplace.index');
+Route::view('/marketplace', 'marketplace.index')->name('marketplace.index');
 Route :: get ('carmodel',  [PagesController::class, 'carmodel'])->name('carmodel');
 Route :: get ('category',  [PagesController::class, 'category'])->name('category');
 Route :: get ('single',  [PagesController::class, 'single'])->name('single');
@@ -69,11 +68,35 @@ Route :: post ('storeuser',  [PagesController::class, 'storeuser'])->name('store
 Route :: get ('user/login',  [PagesController::class, 'login'])->name('user.login');
 Route :: get ('package',  [PagesController::class, 'package'])->name('package');
 Route :: get ('register',  [PagesController::class, 'register'])->name('register');
-Route :: get ('vehicle_search',  [PagesController::class, 'vehicle_search'])->name('vehicle_search');
-Route :: get ('vehicle_filter/{id}',  [PagesController::class, 'vehicle_filter'])->name('vehicle_filter');
-Route :: get ('listing_filter/{id}',  [PagesController::class, 'listing_filter'])->name('listing_filter');
-Route :: get ('vehicleslist',  [PagesController::class, 'vehicleslist'])->name('vehicleslist');
-Route :: get ('vehicles_list',  [PagesController::class, 'vehicles_list'])->name('vehicles_list');
+Route::get('vehicle_search', function () {
+    $query = array_filter([
+        'make' => request('make'),
+        'model' => request('model') ?: request('model_id'),
+        'city' => request('city'),
+        'minPrice' => request('min_price'),
+        'maxPrice' => request('max_price'),
+    ], function ($value) {
+        return $value !== null && $value !== '';
+    });
+
+    return redirect()->route('marketplace.index', $query);
+})->name('vehicle_search');
+
+Route::get('vehicle_filter/{id}', function ($id) {
+    return redirect()->route('marketplace.index', ['model' => $id]);
+})->name('vehicle_filter');
+
+Route::get('listing_filter/{id}', function ($id) {
+    return redirect()->route('marketplace.index', ['city' => $id]);
+})->name('listing_filter');
+
+Route::get('vehicleslist', function () {
+    return redirect()->route('marketplace.index');
+})->name('vehicleslist');
+
+Route::get('vehicles_list', function () {
+    return redirect()->route('marketplace.index');
+})->name('vehicles_list');
 Route :: get ('vehicle/{listing}/{vehicle}',  [PagesController::class, 'vehicle'])->name('vehicle');
 Route :: get ('post_ad_form',  [PagesController::class, 'post_ad_form'])->name('post_ad_form');
 Route :: get ('single_blog',  [PagesController::class, 'single_blog'])->name('single_blog');

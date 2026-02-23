@@ -13,7 +13,7 @@ class LandingVehicleBrowser extends Component
 {
     use WithPagination;
 
-    protected string $paginationTheme = 'bootstrap';
+    protected string $paginationTheme = 'tailwind';
 
     public $make = '';
     public $model = '';
