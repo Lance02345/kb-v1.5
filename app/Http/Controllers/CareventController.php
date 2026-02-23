@@ -16,8 +16,8 @@ class CareventController extends Controller
      */
     public function index()
     {
-        $carevents = Carevent::all(); // Replace with your actual logic to fetch events
-        return view('pages.eventspage', ['carevents' => $carevents]);
+        $carevents = Carevent::query()->latest('id')->get();
+        return view('modern.events', ['carevents' => $carevents]);
     }
 
     /**

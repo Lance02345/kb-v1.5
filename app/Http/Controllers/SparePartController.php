@@ -116,11 +116,11 @@ class SparePartController extends Controller
 
     public function showspareparts(SparePart $spareParts, Listing $listing)
     {
+        $spareParts = SparePart::query()
+            ->latest('id')
+            ->paginate(12);
 
-        $spareParts = SparePart::all();
-        $vehicles = Vehicle::all();
-        $listings = Listing::all();
-        return view('pages.spareparts', compact('spareParts', 'listings', 'vehicles'));
+        return view('modern.spareparts', compact('spareParts'));
 
 
     }
@@ -175,7 +175,7 @@ class SparePartController extends Controller
         }
 
         if ($request->filled('condition')) {
-            $query->where('condition', $request->condition);
+            $query->where('condition', ucfirst(strtolower($request->condition)));
         }
 
         // Search by minimum price
@@ -188,10 +188,9 @@ class SparePartController extends Controller
             $query->where('price', '<=', $request->input('max_price'));
         }
 
-        $spareParts = $query->paginate(10);
+        $spareParts = $query->latest('id')->paginate(12)->withQueryString();
 
-        return view('pages.spareparts', ['spareParts' => $spareParts]);
+        return view('modern.spareparts', ['spareParts' => $spareParts]);
     }
 
 }
-

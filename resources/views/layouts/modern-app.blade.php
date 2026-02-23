@@ -17,7 +17,6 @@
     @else
         <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
     @endif
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         body { font-family: Inter, sans-serif; }

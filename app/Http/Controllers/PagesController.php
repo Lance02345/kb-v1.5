@@ -69,7 +69,7 @@ Public function houses (){
 
 Public function about_us (){
 
-    return view ('pages.about_us');
+    return view('modern.about');
     
 }
 
