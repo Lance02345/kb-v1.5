@@ -10,7 +10,7 @@
     <div class="absolute inset-0 bg-gradient-to-t from-[#0c0f14]/90 via-[#0c0f14]/50 to-[#0c0f14]/20"></div>
     <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
         <div class="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30">
-            <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10"/></svg>
+            <svg class="w-4 h-4 mk-icon text-amber-400" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10"/></svg>
             <span class="text-sm font-medium text-amber-400">Marketplace</span>
         </div>
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3" style="font-family: 'Space Grotesk', sans-serif;">Find Your Drive</h1>
@@ -23,7 +23,7 @@
         <div class="flex items-center justify-between p-4 border-b border-gray-800">
             <div class="flex items-center gap-3">
                 <div class="p-2 rounded-md bg-amber-500/10">
-                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <svg class="w-4 h-4 mk-icon text-amber-400" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 </div>
                 <div>
                     <h2 class="font-semibold text-gray-100 text-sm" style="font-family: 'Space Grotesk', sans-serif;">Search Inventory</h2>
@@ -67,11 +67,11 @@
             </div>
             <div class="flex gap-3">
                 <button type="submit" class="text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <svg class="w-3.5 h-3.5 mk-icon-sm" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     Search
                 </button>
                 <a href="{{ route('marketplace.index') }}" class="text-xs text-gray-500 hover:text-gray-300 font-medium flex items-center gap-1">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <svg class="w-3.5 h-3.5 mk-icon-sm" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                     Reset
                 </a>
             </div>
@@ -87,7 +87,7 @@
     @else
         <div class="flex items-center justify-center py-20">
             <div class="text-center space-y-2">
-                <svg class="w-12 h-12 text-gray-700 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                <svg class="w-12 h-12 mk-icon-lg text-gray-700 mx-auto" width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                 <h3 class="font-semibold text-gray-100" style="font-family: 'Space Grotesk', sans-serif;">No vehicles found</h3>
                 <p class="text-sm text-gray-500">Try adjusting your filters to broaden results.</p>
             </div>

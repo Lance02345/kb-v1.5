@@ -12,6 +12,11 @@
     @else
         <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
     @endif
+    <style>
+        .mk-icon { width: 1rem; height: 1rem; display: inline-block; flex: none; }
+        .mk-icon-sm { width: .875rem; height: .875rem; display: inline-block; flex: none; }
+        .mk-icon-lg { width: 3rem; height: 3rem; display: inline-block; flex: none; }
+    </style>
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 <body class="bg-[#0c0f14] text-gray-100" style="font-family: Inter, sans-serif;">
