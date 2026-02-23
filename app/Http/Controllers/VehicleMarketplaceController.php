@@ -65,8 +65,7 @@ class VehicleMarketplaceController extends Controller
                 $query->where('price', '<=', (float) $request->input('max_price'));
             })
             ->latest('id')
-            ->paginate(16)
-            ->withQueryString();
+            ->paginate(16);
 
         return view('vehicles.index', compact('vehicles', 'makes', 'models', 'cities'));
     }
