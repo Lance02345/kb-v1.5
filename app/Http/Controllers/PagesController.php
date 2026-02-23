@@ -24,17 +24,29 @@ Public function index (){
     $arr['cities'] = City::orderBy('city')->get();
     $arr['makes'] = Carmake::orderBy('make')->get();
     $arr['models'] = Carmodel::all();
-    $arr['carevents'] = Carevent::latest()->get();
-    $arr['listings'] = Listing::with(['category', 'city', 'package', 'vehicles.carmodel.carmake'])
-        ->where('category_id', 2)
-        ->latest()
-        ->take(24)
+    $arr['carevents'] = Carevent::query()->latest('id')->take(6)->get();
+
+    $baseVehicleQuery = Vehicle::query()
+        ->with(['carmodel.carmake', 'listing.category', 'listing.city', 'listing.package'])
+        ->whereHas('listing', function ($query) {
+            $query->where('category_id', 2)
+                ->whereIn('ads_status', ['Approved', 'Active']);
+        });
+
+    $arr['featuredVehicles'] = (clone $baseVehicleQuery)
+        ->whereHas('listing', function ($query) {
+            $query->where('package_id', 2);
+        })
+        ->latest('id')
+        ->take(9)
         ->get();
-    $arr['vehicles'] = Vehicle::with('carmodel.carmake')
-        ->whereIn('listing_id', $arr['listings']->pluck('id'))
+
+    $arr['latestVehicles'] = (clone $baseVehicleQuery)
+        ->latest('id')
+        ->take(12)
         ->get();
-    
-    return view ('pages.index')->with($arr);
+
+    return view('marketplace.index')->with($arr);
     
 }
 public function carmodel(Request $request) {
