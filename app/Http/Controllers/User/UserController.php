@@ -28,7 +28,7 @@ class UserController extends Controller
     $this->validate($request, [
         'name' => 'required|max:255',
         'phone_number' => 'required|max:14',
-        'avatar' => 'image|max:2048|mimes:jpeg,png,jpg,gif,svg',
+        'avatar' => 'file|max:2048|mimes:jpeg,png,jpg,gif,svg,heic,heif',
 
     ]);
     if($request->hasFile('avatar')){

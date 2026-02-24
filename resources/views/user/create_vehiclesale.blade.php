@@ -571,18 +571,39 @@ body .sale-form-section .form-control,
 body .sale-form-section input,
 body .sale-form-section textarea,
 body .sale-form-section select {
-  border: 1px solid #334155;
-  border-radius: 10px;
-  background: #0f172a;
-  color: #fff;
+  border: 1px solid #334155 !important;
+  border-radius: 10px !important;
+  background: #0f172a !important;
+  color: #fff !important;
+  -webkit-text-fill-color: #fff;
 }
 
 body .sale-form-section .form-control:focus,
 body .sale-form-section input:focus,
 body .sale-form-section textarea:focus,
 body .sale-form-section select:focus {
-  border-color: #fbbf24;
-  box-shadow: 0 0 0 0.15rem rgba(251, 191, 36, 0.2);
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 0 0.15rem rgba(251, 191, 36, 0.2) !important;
+}
+
+body .sale-form-section input::placeholder,
+body .sale-form-section textarea::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1;
+}
+
+body .sale-form-section input:-webkit-autofill,
+body .sale-form-section input:-webkit-autofill:hover,
+body .sale-form-section input:-webkit-autofill:focus,
+body .sale-form-section textarea:-webkit-autofill,
+body .sale-form-section textarea:-webkit-autofill:hover,
+body .sale-form-section textarea:-webkit-autofill:focus,
+body .sale-form-section select:-webkit-autofill,
+body .sale-form-section select:-webkit-autofill:hover,
+body .sale-form-section select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 1000px #0f172a inset !important;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 body .sale-form-section .card,

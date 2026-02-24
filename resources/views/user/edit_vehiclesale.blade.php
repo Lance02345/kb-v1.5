@@ -434,6 +434,7 @@ body select {
   border-radius: 10px !important;
   background: #0f172a !important;
   color: #fff !important;
+  -webkit-text-fill-color: #fff;
 }
 
 body .form-control:focus,
@@ -442,6 +443,26 @@ body textarea:focus,
 body select:focus {
   border-color: #fbbf24 !important;
   box-shadow: 0 0 0 0.15rem rgba(251, 191, 36, 0.2) !important;
+}
+
+body input::placeholder,
+body textarea::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1;
+}
+
+body input:-webkit-autofill,
+body input:-webkit-autofill:hover,
+body input:-webkit-autofill:focus,
+body textarea:-webkit-autofill,
+body textarea:-webkit-autofill:hover,
+body textarea:-webkit-autofill:focus,
+body select:-webkit-autofill,
+body select:-webkit-autofill:hover,
+body select:-webkit-autofill:focus {
+  -webkit-text-fill-color: #fff !important;
+  box-shadow: 0 0 0 1000px #0f172a inset !important;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 body .sale-form-section .card {

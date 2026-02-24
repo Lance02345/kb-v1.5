@@ -30,9 +30,9 @@ class GarageController extends Controller
             'garage_title' => 'required',
             'garage_location' => 'required',
             'garage_description' => 'required',
-            'front_img' => 'required|image|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff', // Example rules; customize as needed
-            'back_img' => 'image|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'right_img' => 'image|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'front_img' => 'required|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff', // Example rules; customize as needed
+            'back_img' => 'file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'right_img' => 'file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
 
         ]);
         $garage = new Garage();

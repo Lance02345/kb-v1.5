@@ -26,6 +26,54 @@
     <style>
         body { font-family: Inter, sans-serif; }
         .font-display { font-family: 'Space Grotesk', sans-serif; }
+        :root { color-scheme: dark; }
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="password"],
+        input[type="date"],
+        input[type="time"],
+        input[type="search"],
+        input[type="file"],
+        select,
+        textarea {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(51, 65, 85, 1);
+            border-radius: 0.75rem;
+            color: #e2e8f0;
+            width: 100%;
+        }
+        input::placeholder,
+        textarea::placeholder {
+            color: #94a3b8;
+            opacity: 1;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: rgba(251, 191, 36, 0.75);
+            box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.25);
+            outline: none;
+        }
+        select option {
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:hover,
+        textarea:-webkit-autofill:focus,
+        select:-webkit-autofill,
+        select:-webkit-autofill:hover,
+        select:-webkit-autofill:focus {
+            -webkit-text-fill-color: #e2e8f0;
+            box-shadow: 0 0 0 1000px rgba(15, 23, 42, 0.9) inset;
+            transition: background-color 9999s ease-in-out 0s;
+        }
         .listing-step-dot {
             align-items: center;
             border-radius: 9999px;

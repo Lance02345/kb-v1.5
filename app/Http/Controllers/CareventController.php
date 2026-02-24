@@ -48,7 +48,7 @@ class CareventController extends Controller
             'event_duration' => 'required',
             'user_id' => 'required', 
 
-            'event_image' => ' required|image|max:2048|mimes:jpeg,png,jpg,gif,svg',
+            'event_image' => ' required|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heic,heif',
         ]);
 
         if($request->hasFile('event_image')){

@@ -377,15 +377,15 @@ class ListingController extends Controller
             'duty_type' => 'required',
             'interior_type' => 'required',
             'engine_size' => 'required',
-            'front_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'back_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'right_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'left_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'interiorf_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'interiorb_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'opt_img1' => '|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'opt_img2' => 'image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'opt_img3' => 'image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
+            'front_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'back_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'right_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'left_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'interiorf_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'interiorb_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'opt_img1' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'opt_img2' => 'file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'opt_img3' => 'file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
             'vehicle_type' => 'required',
             'color' => 'required',
         ]);
@@ -428,10 +428,18 @@ class ListingController extends Controller
                     $vehicle->$fieldName = $imageStore;
     
                     Log::info('Image processed and saved.', ['field' => $fieldName, 'filename' => $imageStore]);
-                } catch (\Exception $e) {
-                    Log::error('Error processing image.', [
+                } catch (\Throwable $e) {
+                    $image = $request->file($fieldName);
+                    $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+                    $extension = $image->getClientOriginalExtension();
+                    $imageStore = $imagename . '_' . time() . '.' . $extension;
+                    $image->storeAs('public/photos', $imageStore);
+                    $vehicle->$fieldName = $imageStore;
+
+                    Log::warning('Image watermarking failed, stored original image instead.', [
                         'field' => $fieldName,
                         'message' => $e->getMessage(),
+                        'filename' => $imageStore,
                     ]);
                 }
             }
@@ -726,15 +734,15 @@ class ListingController extends Controller
             'package_id' => 'required',
             'vehicle_type' => 'required',
             'color' => 'required',
-            'front_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'back_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'right_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'left_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'interiorf_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'interiorb_img' => 'required|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'opt_img1' => '|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'opt_img2' => '|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
-            'opt_img3' => '|image|max:20480|mimes:jpeg,png,jpg,gif,svg,heic',
+            'front_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'back_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'right_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'left_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'interiorf_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'interiorb_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'opt_img1' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'opt_img2' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'opt_img3' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
             'pickup_date' => 'nullable|required|date',
             'return_date' => 'nullable|required|date|after:pickup_date',
         ]);
