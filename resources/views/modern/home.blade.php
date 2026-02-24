@@ -74,6 +74,33 @@
 
     <section class="space-y-4">
         <div class="flex items-center justify-between">
+            <h2 class="font-display text-2xl font-semibold text-white">Spare Parts</h2>
+            <a href="{{ route('spareparts') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">See all parts</a>
+        </div>
+        @if(($latestSpareParts ?? collect())->count())
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                @foreach($latestSpareParts as $sparePart)
+                    <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15">
+                        <a href="{{ route('sparepart', $sparePart->id) }}">
+                            <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover">
+                        </a>
+                        <div class="space-y-2 p-4">
+                            <h3 class="font-display text-lg font-semibold text-white">
+                                <a href="{{ route('sparepart', $sparePart->id) }}" class="hover:text-amber-200">{{ $sparePart->make }} - {{ $sparePart->item_name }}</a>
+                            </h3>
+                            <p class="text-xs text-slate-400">{{ $sparePart->condition }} · {{ $sparePart->location }}</p>
+                            <span class="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200">Ksh {{ number_format((float) $sparePart->price) }}</span>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        @else
+            <div class="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-sm text-slate-400">No spare parts yet.</div>
+        @endif
+    </section>
+
+    <section class="space-y-4">
+        <div class="flex items-center justify-between">
             <h2 class="font-display text-2xl font-semibold text-white">Events</h2>
             <a href="{{ route('carevent') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">See all events</a>
         </div>
