@@ -38,7 +38,8 @@
                             <td class="px-4 py-3">{{ $invoice->due_date }}</td>
                             <td class="px-4 py-3">Ksh {{ number_format((float) $invoice->total) }}</td>
                             <td class="px-4 py-3">
-                                <span class="rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200">{{ $invoice->status }}</span>
+                                @php($status = strtoupper((string) $invoice->status))
+                                <span class="rounded-full px-2.5 py-1 text-xs font-semibold {{ $status === 'PAID' ? 'border border-emerald-300/30 bg-emerald-300/10 text-emerald-200' : 'border border-rose-300/30 bg-rose-300/10 text-rose-200' }}">{{ $status }}</span>
                             </td>
                             <td class="px-4 py-3">
                                 <div class="flex flex-wrap gap-2">

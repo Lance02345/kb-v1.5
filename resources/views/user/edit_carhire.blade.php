@@ -529,9 +529,42 @@ body .btn-primary:hover {
   background: #fbbf24 !important;
 }
 
-  
+body fieldset .card {
+  border: 1px solid #334155;
+  border-radius: 12px;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 12px;
+}
+
+body fieldset .card h3 {
+  color: #f8fafc;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
 input[type="file"] {
   display: block;
+  width: 100%;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  background: #0b1327;
+  color: #e2e8f0;
+  padding: 8px;
+}
+
+input[type="file"]::file-selector-button {
+  border: 0;
+  border-radius: 8px;
+  background: #fcd34d;
+  color: #0f172a;
+  font-weight: 700;
+  margin-right: 10px;
+  padding: 6px 10px;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: #fbbf24;
 }
 .imageThumb {
   max-height: 100px;

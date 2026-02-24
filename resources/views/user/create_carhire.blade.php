@@ -6,17 +6,25 @@
 
 <section class="section-sm">
     <div class="container py-5">
-      <form action="{{ route('user.store_carhire')}}" method="POST" id="step-form-horizontal" class="step-form-horizontal" enctype="multipart/form-data">     
+      <form action="{{ route('user.store_carhire')}}" method="POST" id="step-form-horizontal" class="step-form-horizontal" enctype="multipart/form-data" data-stepper-form>     
         @csrf
+            <div class="mb-4 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide text-slate-300">
+              <span data-step-indicator class="active rounded-full border border-amber-300/40 bg-amber-300/10 px-3 py-1 text-amber-200">Intro</span>
+              <span data-step-indicator class="rounded-full border border-slate-700 px-3 py-1">Location</span>
+              <span data-step-indicator class="rounded-full border border-slate-700 px-3 py-1">Hire Terms</span>
+              <span data-step-indicator class="rounded-full border border-slate-700 px-3 py-1">Vehicle</span>
+              <span data-step-indicator class="rounded-full border border-slate-700 px-3 py-1">Photos</span>
+              <span data-step-indicator class="rounded-full border border-slate-700 px-3 py-1">Package</span>
+            </div>
             <!-- Post Your ad start -->
-            <fieldset class="border border-gary p-4 mb-5">
+            <fieldset data-step-panel class="border border-gary p-4 mb-5">
               <div class="row">
                 <div class="col-lg-12">
                   <h1 style=" text-align: center;">Post your Car for Hire</h1>
                 </div>
               </div>
              </fieldset>
-            <fieldset class="border border-gary p-4 mb-5">
+            <fieldset data-step-panel class="border border-gary p-4 mb-5">
               <h3 style=" text-align: center;">Location Details</h3>
                 <section>
                 <div class="row">
@@ -58,7 +66,7 @@
                 </section>
             </fieldset>
 
-        <fieldset class="border border-gary p-4 mb-5 4" >
+        <fieldset data-step-panel class="border border-gary p-4 mb-5 4" >
           <h4 style=" text-align: center;">Car Hiring Section</h4>
           <section>
           <div class="row">
@@ -97,7 +105,7 @@
           </section>
       </fieldset>
 <!-- Post Your ad start -->
-<fieldset class="border border-gary p-4 mb-5">
+<fieldset data-step-panel class="border border-gary p-4 mb-5">
   <div class="row">
 
           <div class="col-lg-4"> 
@@ -239,7 +247,7 @@
  
   </div>
 </fieldset>
-<fieldset class="border border-gary p-4 mb-5">
+<fieldset data-step-panel class="border border-gary p-4 mb-5">
   <h4 style=" text-align: center;">Upload your cars image</h4>
   <h6 class="font-weight-bold pt-4 pb-1">Kindly follow the below processes</h6>
   <div class="row">
@@ -333,7 +341,7 @@
   </div>
 </fieldset>
 
-<fieldset class="border border-gary p-4 mb-5">
+<fieldset data-step-panel class="border border-gary p-4 mb-5">
   <h4 style=" text-align: center;">Choose your boosting Plan</h4>
   <section>
   <div class="row">
@@ -382,10 +390,9 @@
 </fieldset>
 
 
-<button type="submit" class="btn btn-primary d-block mt-2">Post Your Listing</button>
+@include('user.partials.listing-stepper-controls', ['submitText' => 'Post Your Listing'])
 </form>
-    
-        </form>
+
     </div>
 </section>
 <script src="{{ asset('js/gsdk-bootstrap-wizard.js')}}"></script>
@@ -517,9 +524,42 @@ body .btn-primary:hover {
   background: #fbbf24 !important;
 }
 
-  
+body fieldset .card {
+  border: 1px solid #334155;
+  border-radius: 12px;
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 12px;
+}
+
+body fieldset .card h3 {
+  color: #f8fafc;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
 input[type="file"] {
   display: block;
+  width: 100%;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  background: #0b1327;
+  color: #e2e8f0;
+  padding: 8px;
+}
+
+input[type="file"]::file-selector-button {
+  border: 0;
+  border-radius: 8px;
+  background: #fcd34d;
+  color: #0f172a;
+  font-weight: 700;
+  margin-right: 10px;
+  padding: 6px 10px;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background: #fbbf24;
 }
 .imageThumb {
   max-height: 100px;
@@ -674,4 +714,5 @@ $(document).on('change','.make',function(){
 });
 });
   </script>
+  @include('user.partials.listing-stepper-script')
   @endsection

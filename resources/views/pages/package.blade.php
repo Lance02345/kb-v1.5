@@ -1,64 +1,53 @@
-@extends('layouts.kingsbridge')
+@extends('layouts.modern-app')
+
+@section('title', 'Packages - Kingsbridge Motors')
+@section('description', 'Compare listing packages and choose the best fit for your ad goals.')
+
 @section('content')
+@include('modern._nav')
 
+<main class="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
+        <h1 class="font-display text-3xl font-bold text-white">Best Price Guaranteed</h1>
+        <p class="mt-2 text-sm text-slate-300">Flexible plans for casual sellers, dealers, and power users.</p>
+    </section>
 
-<section class="section bg-gray">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="heading text-center pb-5">
-                    <h2 class="font-weight-bold">Best Price Guaranteed</h2>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="package-content bg-light border text-center p-5 my-2 my-lg-0">
-                    <div class="package-content-heading border-bottom">
-                        <i class="fa fa-paper-plane"></i>
-                        <h2>Basic Package</h2>
-                        <h4 class="py-3"> <span>$10.00</span> Per Month</h4>
-                    </div>
-                    <ul>
-                        <li class="my-4"> <i class="fa fa-check"></i> Free Ad Posting</li>
-                        <li class="my-4"> <i class="fa fa-check"></i>15 Features Ad Availability</li>
-                        <li class="my-4"> <i class="fa fa-check"></i>For 15 Days</li>
-                        <li class="my-4"> <i class="fa fa-check"></i>100% Secure</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary">Buy Now</a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="package-content bg-light border text-center my-2 my-lg-0 p-5">
-                    <div class="package-content-heading border-bottom">
-                            <i class="fa fa-plane"></i>
-                        <h2>Standard Package</h2>
-                        <h4 class="py-3"> <span>$30.00</span> Per Month</h4>
-                    </div>
-                    <ul>
-                        <li class="my-4"> <i class="fa fa-check"></i> Free Ad Posting</li>
-                        <li class="my-4"> <i class="fa fa-check"></i>15 Features Ad Availability</li>
-                        <li class="my-4"> <i class="fa fa-check"></i>For 15 Days</li>
-                        <li class="my-4"> <i class="fa fa-check"></i>100% Secure</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary">Buy Now</a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mx-sm-auto">
-                <div class="package-content bg-light border text-center p-5 my-2 my-lg-0">
-                    <div class="package-content-heading border-bottom">
-                            <i class="fa fa-rocket"></i>
-                        <h2>Premium Package</h2>
-                        <h4 class="py-3"> <span>$50.00</span> Per Month</h4>
-                    </div>
-                    <ul>
-                        <li class="my-4"> <i class="fa fa-check"></i> Free Ad Posting</li>
-                        <li class="my-4"> <i class="fa fa-check"></i>15 Features Ad Availability</li>
-                        <li class="my-4"> <i class="fa fa-check"></i>For 15 Days</li>
-                        <li class="my-4"> <i class="fa fa-check"></i>100% Secure</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary">Buy Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+    <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+            <p class="text-xs uppercase tracking-wide text-slate-400">Starter</p>
+            <h2 class="mt-1 font-display text-2xl font-semibold text-white">Basic Package</h2>
+            <p class="mt-3 text-2xl font-bold text-amber-300">$10<span class="text-sm font-medium text-slate-400">/month</span></p>
+            <ul class="mt-5 space-y-2 text-sm text-slate-300">
+                <li>Free ad posting</li>
+                <li>Featured visibility</li>
+                <li>15-day campaign</li>
+                <li>Secure payments</li>
+            </ul>
+        </article>
+
+        <article class="rounded-2xl border border-amber-300/50 bg-amber-300/10 p-6">
+            <p class="text-xs uppercase tracking-wide text-amber-200">Popular</p>
+            <h2 class="mt-1 font-display text-2xl font-semibold text-white">Standard Package</h2>
+            <p class="mt-3 text-2xl font-bold text-amber-300">$30<span class="text-sm font-medium text-slate-300">/month</span></p>
+            <ul class="mt-5 space-y-2 text-sm text-slate-200">
+                <li>Priority placement</li>
+                <li>More featured slots</li>
+                <li>Longer campaign window</li>
+                <li>Secure payments</li>
+            </ul>
+        </article>
+
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+            <p class="text-xs uppercase tracking-wide text-slate-400">Pro</p>
+            <h2 class="mt-1 font-display text-2xl font-semibold text-white">Premium Package</h2>
+            <p class="mt-3 text-2xl font-bold text-amber-300">$50<span class="text-sm font-medium text-slate-400">/month</span></p>
+            <ul class="mt-5 space-y-2 text-sm text-slate-300">
+                <li>Maximum visibility</li>
+                <li>Top search priority</li>
+                <li>Extended campaign duration</li>
+                <li>Secure payments</li>
+            </ul>
+        </article>
+    </section>
+</main>
 @endsection

@@ -72,7 +72,7 @@ class InvoiceController extends Controller
     {
         $invoiced = Invoice::findorFail($invoice);
         $data = ['invoice' => $invoiced];
-        $pdf = Pdf::loadView('user.show_invoice', $data);
+        $pdf = Pdf::loadView('user.invoice_pdf', $data);
         return $pdf->download('invoice.pdf');
     }
     
@@ -93,7 +93,7 @@ class InvoiceController extends Controller
             'invoice' => $invoice
         ]; 
             
-        $pdf = PDF::loadView('user.show_invoice', $data);
+        $pdf = PDF::loadView('user.invoice_pdf', $data);
      
         return $pdf->download('itsolutionstuff.pdf');
     }

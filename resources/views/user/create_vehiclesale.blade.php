@@ -12,16 +12,17 @@
       </div>
 
       <ul class="vehicle-sale-steps">
-        <li class="active">1. Location</li>
-        <li>2. Vehicle Details</li>
-        <li>3. Pricing</li>
-        <li>4. Photos</li>
+        <li data-step-indicator class="active">1. Intro</li>
+        <li data-step-indicator>2. Location</li>
+        <li data-step-indicator>3. Vehicle Details</li>
+        <li data-step-indicator>4. Pricing</li>
+        <li data-step-indicator>5. Photos</li>
       </ul>
 
-      <form action="{{ route('user.store_vehiclesale')}}" method="POST" id="step-form-horizontal" class="step-form-horizontal vehicle-sale-form" enctype="multipart/form-data">     
+      <form action="{{ route('user.store_vehiclesale')}}" method="POST" id="step-form-horizontal" class="step-form-horizontal vehicle-sale-form" enctype="multipart/form-data" data-stepper-form>     
         @csrf
            <!-- Post Your ad start -->
-           <fieldset class="border border-gary p-4 mb-5 sale-form-section">
+           <fieldset data-step-panel class="border border-gary p-4 mb-5 sale-form-section">
             <div class="row">
               <div class="col-lg-12">
                 <h2 class="sale-section-title">Post your vehicle for sale</h2>
@@ -29,7 +30,7 @@
             </div>
            </fieldset>
 
-           <fieldset class="border border-gary p-4 mb-5 sale-form-section">
+           <fieldset data-step-panel class="border border-gary p-4 mb-5 sale-form-section">
             <h3 class="sale-section-title">Location Details</h3>
             <section>
             <div class="row">
@@ -71,7 +72,7 @@
             </section>
         </fieldset>
 <!-- Post Your ad start -->
-<fieldset class="border border-gary p-4 mb-5 sale-form-section">
+<fieldset data-step-panel class="border border-gary p-4 mb-5 sale-form-section">
   <div class="row">
 
           <div class="col-lg-4"> 
@@ -330,7 +331,7 @@
 
 
 
-<fieldset class="border border-gary p-4 mb-5 sale-form-section">
+<fieldset data-step-panel class="border border-gary p-4 mb-5 sale-form-section">
   <div class="row">
       <div class="col-lg-12">
           <h3 class="sale-section-title">Listing Pricing Information</h3>
@@ -365,7 +366,7 @@
   </div>
 
 </fieldset>
-<fieldset class="border border-gary p-4 mb-5 sale-form-section">
+<fieldset data-step-panel class="border border-gary p-4 mb-5 sale-form-section">
   <h4 class="sale-section-title">Upload your vehicle images</h4>
   <h6 class="font-weight-bold pt-4 pb-1">First image must be the front of the vehicle, the rest can come in any order.</h6>
   <div class="row">
@@ -458,7 +459,7 @@
     </div>
   </div>
 </fieldset>
-<button type="submit" class="btn btn-primary btn-sale-submit d-block mt-2 float-right">Continue to Package Selection</button>
+@include('user.partials.listing-stepper-controls', ['submitText' => 'Continue to Package Selection'])
 </form>
 
     </div>
@@ -993,4 +994,5 @@ $(document).on('change','.make',function(){
 });
 });
   </script>
+  @include('user.partials.listing-stepper-script')
   @endsection

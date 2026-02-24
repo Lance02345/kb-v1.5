@@ -4,12 +4,12 @@
             <span class="text-amber-300">KINGS</span>BRIDGE MOTORS
         </a>
 
-        <nav class="hidden items-center gap-6 text-sm text-slate-300 md:flex">
-            <a href="{{ route('index') }}" class="{{ request()->routeIs('index') ? 'text-white' : 'hover:text-white' }}">Home</a>
-            <a href="{{ route('marketplace.index') }}" class="{{ request()->routeIs('marketplace.index') ? 'text-white' : 'hover:text-white' }}">Marketplace</a>
-            <a href="{{ route('spareparts') }}" class="{{ request()->routeIs('spareparts') || request()->routeIs('spare_parts_search') ? 'text-white' : 'hover:text-white' }}">Vehicle Parts</a>
-            <a href="{{ route('carevent') }}" class="{{ request()->routeIs('carevent') ? 'text-white' : 'hover:text-white' }}">Car Events</a>
-            <a href="{{ route('about_us') }}" class="{{ request()->routeIs('about_us') ? 'text-white' : 'hover:text-white' }}">About</a>
+        <nav class="hidden items-center gap-6 text-sm md:flex">
+            <a href="{{ route('index') }}" class="{{ request()->routeIs('index') ? 'text-white' : 'text-slate-300 hover:text-white' }}">Home</a>
+            <a href="{{ route('marketplace.index') }}" class="{{ request()->routeIs('marketplace.index') ? 'text-white' : 'text-slate-300 hover:text-white' }}">Marketplace</a>
+            <a href="{{ route('spareparts') }}" class="{{ request()->routeIs('spareparts') || request()->routeIs('spare_parts_search') ? 'text-white' : 'text-slate-300 hover:text-white' }}">Vehicle Parts</a>
+            <a href="{{ route('carevent') }}" class="{{ request()->routeIs('carevent') ? 'text-white' : 'text-slate-300 hover:text-white' }}">Car Events</a>
+            <a href="{{ route('about_us') }}" class="{{ request()->routeIs('about_us') ? 'text-white' : 'text-slate-300 hover:text-white' }}">About</a>
         </nav>
 
         <div class="flex items-center gap-2">

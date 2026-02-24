@@ -1,285 +1,95 @@
-@extends('layouts.kingsbridge')
+@extends('layouts.modern-app')
+
+@section('title', 'Edit Event - Kingsbridge Motors')
+@section('description', 'Update your car event information.')
+
 @section('content')
+@include('modern._nav')
 
-<section class="section-sm">
-@if(session('success'))
-<div class="mt-3 alert alert-success">
-<span> {{ session('success') }} </span>
-</div>
-@endif
+<main class="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+    @if(session('success'))
+        <div class="rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">{{ session('success') }}</div>
+    @endif
 
-    <div class="container">
-      <form action="{{ route('user.update_carevent',$carevent->id)}}" method="POST" id="step-form-horizontal" class="step-form-horizontal" enctype="multipart/form-data">     
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
+        <h1 class="font-display text-3xl font-bold text-white">Edit Car Event</h1>
+        <p class="mt-2 text-sm text-slate-300">Update event details and re-upload the poster if needed.</p>
+    </section>
+
+    <form action="{{ route('user.update_carevent', $carevent->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @method('put')
-            <!-- Post Your ad start -->
-            <a href="{{ route('user.carevent')}}" class="btn btn-primary  mb-2">Back</a>
-            <fieldset class="border border-gary p-4 mb-5">
-              <div class="row">
-                <div class="col-lg-12">
-                  <h1 style=" text-align: center;">Edit your Car Event</h1>
+        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+
+        <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
+            <div class="grid gap-4 sm:grid-cols-2">
+                <div class="sm:col-span-2">
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Event Title</label>
+                    <input type="text" name="event_title" value="{{ old('event_title', $carevent->event_title) }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    @error('event_title')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
                 </div>
-              </div>
-             </fieldset>
 
-<!-- Post Your ad start -->
-<fieldset class="border border-gary p-4 mb-5">
-  <div class="row">
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Date</label>
+                    <input type="date" name="event_date" value="{{ old('event_date', $carevent->event_date) }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    @error('event_date')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                </div>
 
-            <div class="col-lg-12"> 
-          <h6 class="font-weight-bold pt-4 pb-1">The Event Title:</h6>
-          <input type="text" value="{{$carevent->event_title}}"  name="event_title" class="border w-100 p-2 bg-white text-capitalize @error('year_of_build') is-invalid @enderror" placeholder="Car Event Title">
-              @error('year_of_build')
-                  <span class="invalid"  role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-              @enderror
-            </div>
-            <div class="col-lg-6"> 
-              <h6 class="font-weight-bold pt-4 pb-1">Pick a Date</h6>
-              <input name="event_date" value="{{$carevent->event_date}}"type="date" class="border w-100 p-2 bg-white text-capitalize" >
-              @error('event_date') 
-                <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
-              @enderror
-          </div>
-     
-           <div class="col-lg-6">
-              <h6 class="font-weight-bold pt-4 pb-1">Time</h6>
-              <input name="event_time" value="{{$carevent->event_time}}"="time" class="border w-100 p-2 bg-white text-capitalize" >
-              @error('event_time') 
-               <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
-              @enderror
-          </div>
-          <div class="col-lg-6">
-              <h6 class="font-weight-bold pt-4 pb-1">Event Duration</h6>
-              <input name="event_duration" value="{{$carevent->event_duration}}" type="number" class="border w-100 p-2 bg-white text-capitalize" >
-              @error('event_duration') 
-               <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
-              @enderror
-          </div>
-          <div class="col-lg-6">
-            <h6 class="font-weight-bold pt-4 pb-1">Ticket Price AUD</h6>
-            <input name="ticket_price" value="{{$carevent->ticket_price}}"" type="text" class="border w-100 p-2 bg-white text-capitalize" >
-            @error('ticket_price') 
-             <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
-            @enderror
-        </div>
-          <div class="col-lg-12"> 
-            <h6 class="font-weight-bold pt-4 pb-1">Event Location:</h6>
-            <input type="text" value="{{$carevent->event_location}}" name="event_location" class="border w-100 p-2 bg-white text-capitalize @error('event_location') is-invalid @enderror" >
-                @error('event_location')
-                    <span class="invalid"  role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
-    
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Time</label>
+                    <input type="time" name="event_time" value="{{ old('event_time', $carevent->event_time) }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    @error('event_time')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                </div>
 
-        
-          <div class="col-lg-12">
-          <h6 class="font-weight-bold pt-4 pb-1">Description:</h6>
-          <textarea name="event_description"  class="description ckeditor form-control" name="wysiwyg-editor">
-            {{ $carevent->event_description }}
-          </textarea>
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Event Duration</label>
+                    <input type="number" name="event_duration" value="{{ old('event_duration', $carevent->event_duration) }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    @error('event_duration')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                </div>
 
-          @error('event_description')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-          @enderror
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Ticket Price (Ksh)</label>
+                    <input type="number" name="ticket_price" value="{{ old('ticket_price', $carevent->ticket_price) }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    @error('ticket_price')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                </div>
 
-          </div>
-          <div class="col-lg-12"> 
-            <h6 class="font-weight-bold pt-4 pb-1">Event Organizer:</h6>
-            <input type="text" value="{{ Auth::user()->name}}" name="organizer" class="border w-100 p-2 bg-white text-capitalize @error('organizer') is-invalid @enderror" >
-                @error('organizer')
-                    <span class="invalid"  role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-              </div>
-              <img class="img-square-wrapper" src="/storage/photos/{{ $carevent->event_image }}" alt="image description">
-              <div class="col-lg-12">
-                <div class="card">
-                  <div class="row">
-                    <div class="space column">
-                        <h3>Poster Image</h3>
-                        <input type="file" id="files"  name="event_image"/>
-                      </div>
-                      @error('event_image')
-                            <span class="invalid"  role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                      @enderror
+                <div class="sm:col-span-2">
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Event Location</label>
+                    <input type="text" name="event_location" value="{{ old('event_location', $carevent->event_location) }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    @error('event_location')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="sm:col-span-2">
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Description</label>
+                    <textarea name="event_description" rows="6" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">{{ old('event_description', $carevent->event_description) }}</textarea>
+                    @error('event_description')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Organizer</label>
+                    <input type="text" name="organizer" value="{{ old('organizer', $carevent->organizer ?? Auth::user()->name) }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    @error('organizer')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Poster Image</label>
+                    <input type="file" name="event_image" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
+                    @error('event_image')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                @if($carevent->event_image)
+                    <div class="sm:col-span-2">
+                        <p class="mb-2 text-xs uppercase tracking-wide text-slate-400">Current Poster</p>
+                        <img src="{{ asset('storage/photos/' . $carevent->event_image) }}" alt="{{ $carevent->event_title }}" class="h-52 w-full max-w-xl rounded-xl border border-slate-700 object-cover">
                     </div>
-              </div>
- 
-  </div>
-</fieldset>
+                @endif
+            </div>
+        </section>
 
-
-<input type="hidden" name="user_id" value="{{ Auth::user()->id}}" >
-
-<button type="submit" class="btn btn-primary d-block mt-2">Update Your Event</button>
-</form>
-    
-        </form>
-    </div>
-</section>
-<script src="{{ asset('js/gsdk-bootstrap-wizard.js')}}"></script>
-<script src="{{ asset('js/jquery-1.10.2.js')}}"></script>
-<script src="{{ asset('js/bootstrap.min.js')}}"></script>
-<script src="{{ asset('js/jquery.bootstrap.wizard.js')}}"></script>
-<script src="{{ asset('js/wizard.js')}}"></script>  
-
-<script>
-
-  
-$(document).ready(function(){
-// Prepare the preview for profile picture
-    $("#wizard-picture").change(function(){
-        readURL(this);
-    });
-});
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
-        }
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-
-  
-  $('.wizard-card').bootstrapWizard({
-        'tabClass': 'nav nav-pills',
-        'nextSelector': '.btn-next',
-        'previousSelector': '.btn-previous',
-
-         onInit : function(tab, navigation, index){
-
-           //check number of tabs and fill the entire row
-           var $total = navigation.find('li').length;
-           $width = 100/$total;
-
-           $display_width = $(document).width();
-
-           console.log($total);
-
-           if($display_width < 600 && $total > 3){
-               $width = 50;
-           }
-
-           navigation.find('li').css('width',$width + '%');
-
-        },
-        
-        onTabClick : function(tab, navigation, index){
-            // Disable the posibility to click on tabs
-            return false;
-        },
-        onTabShow: function(tab, navigation, index) {
-            var $total = navigation.find('li').length;
-            var $current = index+1;
-
-            var wizard = navigation.closest('.wizard-card');
-
-            // If it's the last tab then hide the last button and show the finish instead
-            if($current >= $total) {
-                $(wizard).find('.btn-next').hide();
-                $(wizard).find('.btn-finish').show();
-            } else {
-                $(wizard).find('.btn-next').show();
-                $(wizard).find('.btn-finish').hide();
-            }
-        }
-    });
-        
-         
-  </script>
-<script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script type="text/javascript">
-  $(document).ready(function () {
-      $('.ckeditor').ckeditor();
-  });
-</script>
-
-
-<style>
-  
-input[type="file"] {
-  display: block;
-}
-.imageThumb {
-  max-height: 100px;
-  border: 2px solid;
-  padding: 1px;
-  cursor: pointer;
-}
-.pip {
-  display: inline-block;
-  margin: 10px 10px 0 0;
-}
-.remove {
-  display: block;
-  background: #444;
-  border: 1px solid black;
-  color: white;
-  text-align: center;
-  cursor: pointer;
-}
-.remove:hover {
-  background: white;
-  color: black;
-}
-</style>
-
-<script>
-
-
-
-$(document).ready(function() {
-    if (window.File && window.FileList && window.FileReader) {
-      $("#files").on("change", function(e) {
-        var files = e.target.files,
-          filesLength = files.length;
-        for (var i = 0; i < filesLength; i++) {
-          var f = files[i]
-          var fileReader = new FileReader();
-          fileReader.onload = (function(e) {
-            var file = e.target;
-            $("<span class=\"pip\">" +
-              "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-              "<br/><span class=\"remove\">Remove image</span>" +
-              "</span>").insertAfter("#files");
-            $(".remove").click(function(){
-              $(this).parent(".pip").remove();
-            });
-            
-            // Old code here
-            /*$("<img></img>", {
-              class: "imageThumb",
-              src: e.target.result,
-              title: file.name + " | Click to remove"
-            }).insertAfter("#files").click(function(){$(this).remove();});*/
-            
-          });
-          fileReader.readAsDataURL(f);
-        }
-      });
-    } else {
-      alert("Your browser doesn't support to File API")
-    }
-  });
-
-
-
-
-  </script>
-
-
-  @endsection
+        <div class="flex flex-wrap gap-2">
+            <button type="submit" class="rounded-xl bg-amber-300 px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-amber-200">Update Event</button>
+            <a href="{{ route('user.userevent') }}" class="rounded-xl border border-slate-700 px-5 py-2.5 text-sm font-semibold text-slate-200 hover:border-slate-500">Back to My Events</a>
+        </div>
+    </form>
+</main>
+@endsection

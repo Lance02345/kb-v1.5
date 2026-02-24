@@ -1,139 +1,98 @@
-@extends('layouts.kingsbridge')
+@extends('layouts.modern-app')
+
+@section('title', 'Create Spare Part Listing - Kingsbridge Motors')
+@section('description', 'Post your spare part with photos and details.')
+
 @section('content')
+@include('modern._nav')
 
-<section class="section-sm">
-    <div class="container">
-        <form action="{{ route('user.sparepartsstore')}}" method="POST" id="step-form-horizontal" class="step-form-horizontal" enctype="multipart/form-data">
-            @csrf
-            <!-- Post Spare Parts ad start -->
-            <fieldset class="border border-gary p-4 mb-5">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 style="text-align: center;">Post Spare Parts Ad</h1>
-                    </div>
+<main class="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
+        <h1 class="font-display text-3xl font-bold text-white">Post Spare Parts Ad</h1>
+        <p class="mt-2 text-sm text-slate-300">Add clear details and photos so buyers can identify the exact part quickly.</p>
+    </section>
+
+    <form action="{{ route('user.sparepartsstore') }}" method="POST" enctype="multipart/form-data" class="space-y-6" data-stepper-form>
+        @csrf
+
+        <div class="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide text-slate-300">
+            <span data-step-indicator class="active rounded-full border border-amber-300/40 bg-amber-300/10 px-3 py-1 text-amber-200">Details</span>
+            <span data-step-indicator class="rounded-full border border-slate-700 px-3 py-1">Photos</span>
+        </div>
+
+        <section data-step-panel class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
+            <h2 class="font-display text-xl font-semibold text-white">Part Details</h2>
+            <p class="mt-1 text-sm text-slate-400">Example format: Toyota Mark X 2019 Front Bumper.</p>
+
+            <div class="mt-5 grid gap-5 md:grid-cols-2">
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Make</label>
+                    <input type="text" name="make" value="{{ old('make') }}" placeholder="Spare part make" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
+                    @error('make')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
                 </div>
-            </fieldset>
 
-            <!-- Spare Parts Details -->
-            <fieldset class="border border-gary p-4 mb-5">
-            <h4 style="text-align: center;">Merge Your Make and Model (e.g Toyota Mark X 2019).</h4>
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h6 class="font-weight-bold pt-4 pb-1">Make:</h6>
-                        <input type="text" value="{{ old('make')}}" name="make" class="border w-100 p-2 bg-white text-capitalize @error('make') is-invalid @enderror" placeholder="Spare Parts Make">
-                        @error('make')
-                            <span class="invalid" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-lg-12">
-                        <h6 class="font-weight-bold pt-4 pb-1">Item Name:</h6>
-                        <input type="text" value="{{ old('item_name')}}" name="item_name" class="border w-100 p-2 bg-white text-capitalize @error('item_name') is-invalid @enderror" placeholder="Spare Parts Item Name">
-                        @error('item_name')
-                            <span class="invalid" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-lg-12">
-                        <h6 class="font-weight-bold pt-4 pb-1">Item Description:</h6>
-                        <textarea name="item_description" class="description ckeditor form-control" name="wysiwyg-editor">{{ old('item_description')}}</textarea>
-                        @error('item_description')
-                            <span class="invalid" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-lg-6">
-                        <h6 class="font-weight-bold pt-4 pb-1">Condition:</h6>
-                        <select name="condition" class="border w-100 p-2 bg-white text-capitalize @error('condition') is-invalid @enderror">
-                            <option value="Used" {{ old('condition') == 'used' ? 'selected' : '' }}>Used</option>
-                            <option value="New" {{ old('condition') == 'new' ? 'selected' : '' }}>New</option>
-                        </select>
-                        @error('condition')
-                            <span class="invalid" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-lg-6">
-                        <h6 class="font-weight-bold pt-4 pb-1">Price (in Ksh):</h6>
-                        <input name="price" value="{{ old('price')}}" type="text" class="border w-100 p-2 bg-white text-capitalize">
-                        @error('price')
-                            <span class="invalid" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-
-                    <div class="col-lg-12">
-                        <h6 class="font-weight-bold pt-4 pb-1">Location:</h6>
-                        <input type="text" value="{{ old('location')}}" name="location" class="border w-100 p-2 bg-white text-capitalize @error('location') is-invalid @enderror">
-                        @error('location')
-                            <span class="invalid" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Item Name</label>
+                    <input type="text" name="item_name" value="{{ old('item_name') }}" placeholder="Item name" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
+                    @error('item_name')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
                 </div>
-            </fieldset>
 
-            <fieldset class="border border-gary p-4 mb-5">
-    <h4 style="text-align: center;">Upload Photos to showcase your spare part.</h4>
-    <h6 class="font-weight-bold pt-4 pb-1">Images can come in any order.</h6>
-    <div class="row">
-        <div class="space column">
-            <div class="card">
-                <h3>First-image</h3>
-                <input type="file" id="front_img" name="front_img"/>
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Condition</label>
+                    <select name="condition" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                        <option value="Used" {{ old('condition') === 'Used' ? 'selected' : '' }}>Used</option>
+                        <option value="New" {{ old('condition') === 'New' ? 'selected' : '' }}>New</option>
+                    </select>
+                    @error('condition')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Price (Ksh)</label>
+                    <input type="number" name="price" value="{{ old('price') }}" placeholder="0" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
+                    @error('price')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Location</label>
+                    <input type="text" name="location" value="{{ old('location') }}" placeholder="City / area" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
+                    @error('location')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Item Description</label>
+                    <textarea name="item_description" rows="6" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">{{ old('item_description') }}</textarea>
+                    @error('item_description')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
             </div>
-            @error('front_img')
-                <span class="invalid" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
-        <div class="space column">
-            <div class="card">
-                <h3>Second-image</h3>
-                <input type="file" id="back_img" name="back_img" />
+        </section>
+
+        <section data-step-panel class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
+            <h2 class="font-display text-xl font-semibold text-white">Upload Photos</h2>
+            <p class="mt-1 text-sm text-slate-400">First image is required. Add up to 3 photos.</p>
+
+            <div class="mt-5 grid gap-4 md:grid-cols-3">
+                <label class="rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
+                    <span class="mb-2 block font-semibold text-white">First Image</span>
+                    <input type="file" name="front_img" class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
+                    @error('front_img')<span class="mt-2 block text-xs font-medium text-rose-300">{{ $message }}</span>@enderror
+                </label>
+
+                <label class="rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
+                    <span class="mb-2 block font-semibold text-white">Second Image</span>
+                    <input type="file" name="back_img" class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
+                    @error('back_img')<span class="mt-2 block text-xs font-medium text-rose-300">{{ $message }}</span>@enderror
+                </label>
+
+                <label class="rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
+                    <span class="mb-2 block font-semibold text-white">Third Image</span>
+                    <input type="file" name="right_img" class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
+                    @error('right_img')<span class="mt-2 block text-xs font-medium text-rose-300">{{ $message }}</span>@enderror
+                </label>
             </div>
-            @error('back_img')
-                <span class="invalid" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
-        <div class="space column">
-            <div class="card">
-                <h3>Third-image</h3>
-                <input type="file" id="right_img" name="right_img"/>
-            </div>
-            @error('right_img')
-                <span class="invalid" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
-        <!-- Add more photo upload fields for optional photos if needed -->
-    </div>
-</fieldset>
+        </section>
 
-
-            <input type="hidden" name="user_id" value="{{ Auth::user()->id}}" >
-
-            <button type="submit" class="btn btn-primary d-block mt-2">Post Spare Parts Ad</button>
-        </form>
-    </div>
-</section>
-
-<!-- Add the necessary JavaScript scripts here (ckeditor, file preview, etc.) -->
-<!-- ... Your JavaScript scripts ... -->
-
+        @include('user.partials.listing-stepper-controls', ['submitText' => 'Post Spare Parts Ad'])
+    </form>
+</main>
+@include('user.partials.listing-stepper-script')
 @endsection

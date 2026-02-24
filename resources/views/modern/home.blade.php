@@ -87,6 +87,24 @@
     </section>
 
     <section class="space-y-4">
+        <h2 class="font-display text-2xl font-semibold text-white">Why Us</h2>
+        <div class="grid gap-4 md:grid-cols-3">
+            <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+                <h3 class="font-display text-lg font-semibold text-white">Verified Listings</h3>
+                <p class="mt-2 text-sm text-slate-300">Every listing goes through moderation so buyers browse with confidence.</p>
+            </article>
+            <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+                <h3 class="font-display text-lg font-semibold text-white">Trusted Seller Tools</h3>
+                <p class="mt-2 text-sm text-slate-300">Simple ad creation, package boosts, and invoice tracking in one dashboard.</p>
+            </article>
+            <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+                <h3 class="font-display text-lg font-semibold text-white">Local Market Reach</h3>
+                <p class="mt-2 text-sm text-slate-300">Connect with active buyers, sellers, and event communities across Kenya.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="space-y-4">
         <h2 class="font-display text-2xl font-semibold text-white">Our Partners</h2>
         <div class="flex items-center justify-center rounded-2xl border border-slate-800 bg-slate-900 p-8">
             <img src="{{ asset('images/GarageGallery Logo.jpg') }}" alt="GarageGallery" class="max-h-24 w-auto rounded-md object-contain">

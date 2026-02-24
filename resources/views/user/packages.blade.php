@@ -1,71 +1,72 @@
-@extends('layouts.kingsbridge')
+@extends('layouts.modern-app')
+
+@section('title', 'Choose Package - Kingsbridge Motors')
+@section('description', 'Select a package to boost your listing visibility.')
+
 @section('content')
+@include('modern._nav')
 
-<section class="section-sm">
-    <div class="container">
-      <form action="{{ route('user.packageupdate', $listing->id)}}" method="POST" id="step-form-horizontal" class="step-form-horizontal" enctype="multipart/form-data">     
+<main class="mx-auto max-w-6xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
+        <h1 class="font-display text-3xl font-bold text-white">Choose Your Boosting Plan</h1>
+        <p class="mt-2 text-sm text-slate-300">Select one package then continue to checkout.</p>
+    </section>
+
+    <form action="{{ route('user.packageupdate', $listing->id) }}" method="POST" class="space-y-6">
         @csrf
-  
+        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+        <input type="hidden" name="listing_id" value="{{ $listing->id }}">
+        <input type="hidden" name="package_duration" id="selectedPackageDuration" value="">
 
-<fieldset class="border border-gary p-4 mb-5">
-  <h4 style=" text-align: center;">Choose your boosting Plan</h4>
-  <section>
-  <div class="row">
-      <div class="col-lg-12">
-          <h3>Ad Boost Plan</h3>
+        <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            @foreach ($packages as $package)
+                <label class="group block cursor-pointer rounded-2xl border border-slate-800 bg-slate-900 p-5 transition hover:border-amber-300/60">
+                    <input
+                        type="radio"
+                        name="package_id"
+                        value="{{ $package->id }}"
+                        data-duration="{{ $package->package_duration }}"
+                        class="peer sr-only"
+                        {{ (old('package_id') == $package->id) ? 'checked' : '' }}
+                    >
 
-          <h6 class="font-weight-bold pt-4 pb-1">Boost your Listing</h6>
-       
-      </div>
-  </div>
-  <input type="hidden" name="user_id" value="{{ Auth::user()->id}}" >
-  <input type="hidden" name="listing_id" value="{{ $listing->id }}" >
-  <div class="container">
-    <style>
-    .package-content {
-        height: 800px; /* Adjust the height as needed */
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
+                    <div class="rounded-xl border border-slate-800 bg-slate-950 p-4 peer-checked:border-amber-300/70 peer-checked:bg-amber-300/10">
+                        <p class="text-xs uppercase tracking-wide text-slate-400">Package</p>
+                        <h2 class="mt-1 font-display text-2xl font-semibold text-white">{{ $package->package_name }}</h2>
+                        <p class="mt-2 text-2xl font-bold text-amber-300">Ksh {{ number_format((float) $package->package_amount) }}</p>
+                        <p class="mt-1 text-xs text-slate-400">{{ $package->package_duration }} day duration</p>
+                        <p class="mt-4 text-sm text-slate-300">{{ $package->description }}</p>
+                    </div>
+                </label>
+            @endforeach
+        </section>
 
-<div class="row">
-    @foreach ($packages as $package)
-    <div class="col-lg-4 col-md-6">
-        <div class="package-content bg-light border text-center p-5 my-2 my-lg-0">
-            <div class="package-content-heading border-bottom">
-                <i class="fa fa-paper-plane"></i>
-                <h2>{{ $package->package_name }}</h2>
-                <h2>{{ $package->package_amount }}</h2>
-                <h4 class="py-3"> <span>{{ $package->package_duration }}</span> Vehicle(s)</h4>
-            </div>
-            <ul>
-                <li class="my-4"> <i class="fa fa-check"></i>{{ $package->description }}</li>
-                <!-- <li class="my-4"> <i class="fa fa-check"></i>For 15 Days</li> -->
-                <li class="my-4"> <i class="fa fa-check"></i>100% Secure</li>
-            </ul>
-            <input type="radio" id="inputGroupSelect" class="form-control" name="package_id" value="{{ $package->id }}" {{ (old('package_id')==$package->id)? 'checked':'' }}>
-            <input type="hidden" name="package_duration" value="{{ $package->package_duration }}" >
+        @error('package_id')
+            <p class="text-sm font-medium text-rose-300">{{ $message }}</p>
+        @enderror
 
-            @error('package_id')
-            <span class="invalid" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-            @enderror
+        <div class="flex justify-end">
+            <button type="submit" class="rounded-xl bg-amber-300 px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-amber-200">Continue to Checkout</button>
         </div>
-    </div>
-    @endforeach
-</div>
-</div>
- </section>
-</fieldset>
-<button type="submit" class="btn btn-primary d-block mt-2 float-right">Click to Checkout</button>
-</form>
-    
-        </form>
-    </div>
-</section>
+    </form>
+</main>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const durationInput = document.getElementById('selectedPackageDuration');
+        const radios = document.querySelectorAll('input[name=\"package_id\"]');
 
-  @endsection
+        const syncDuration = function (radio) {
+            durationInput.value = radio ? (radio.dataset.duration || '') : '';
+        };
+
+        const checked = document.querySelector('input[name=\"package_id\"]:checked');
+        syncDuration(checked);
+
+        radios.forEach(function (radio) {
+            radio.addEventListener('change', function () {
+                syncDuration(radio);
+            });
+        });
+    });
+</script>
+@endsection
