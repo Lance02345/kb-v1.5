@@ -15,13 +15,84 @@
     @if(file_exists($tailwindCssPath))
         <link href="{{ asset('css/tailwind.css') }}?v={{ filemtime($tailwindCssPath) }}" rel="stylesheet">
     @else
-        <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com"></script>
     @endif
-    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         body { font-family: Inter, sans-serif; }
         .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .listing-step-dot {
+            align-items: center;
+            border-radius: 9999px;
+            display: inline-flex;
+            font-size: 11px;
+            font-weight: 700;
+            height: 22px;
+            justify-content: center;
+            margin-right: 8px;
+            width: 22px;
+        }
+        .listing-step-indicator.completed {
+            border-color: rgba(16, 185, 129, 0.45);
+            background: rgba(16, 185, 129, 0.12);
+            color: #86efac;
+        }
+        .listing-step-indicator.completed .listing-step-dot {
+            background: rgba(16, 185, 129, 0.3);
+            color: #dcfce7;
+        }
+        .listing-step-progress {
+            height: 6px;
+            width: 100%;
+            border-radius: 9999px;
+            background: rgba(51, 65, 85, 0.6);
+            overflow: hidden;
+        }
+        .listing-step-progress > span {
+            display: block;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #fbbf24, #34d399);
+            transition: width .25s ease;
+        }
+        .listing-upload-dropzone {
+            border: 1px dashed rgba(148, 163, 184, 0.55);
+            transition: border-color .2s ease, background-color .2s ease;
+        }
+        .listing-upload-dropzone.drag-over {
+            border-color: rgba(251, 191, 36, 0.95);
+            background: rgba(251, 191, 36, 0.08);
+        }
+        .listing-upload-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .listing-upload-item {
+            align-items: center;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(51, 65, 85, 0.95);
+            border-radius: 10px;
+            display: inline-flex;
+            gap: 8px;
+            max-width: 260px;
+            padding: 6px 8px;
+        }
+        .listing-upload-item img {
+            border-radius: 6px;
+            height: 38px;
+            object-fit: cover;
+            width: 38px;
+        }
+        .listing-upload-item span {
+            color: #cbd5e1;
+            display: inline-block;
+            font-size: 11px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     </style>
 
     @livewireStyles

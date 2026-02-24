@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="rounded-button">
-    <a href="{{ route('admin.carmodel.index')}}" class="btn mb-1 btn-rounded btn-primary">Back</a>
+    <a href="{{ route('admin.carmodel.index')}}" class="btn btn-primary">Back</a>
     </div>
 <div class="row">
 <div class="col-lg-12">
@@ -47,7 +47,7 @@
                     </div>
               
                 
-                    <button type="submit" class="btn btn-dark">Add</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
                     
                 </form>
             </div>

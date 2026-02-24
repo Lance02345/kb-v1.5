@@ -27,19 +27,19 @@
             <div class="mt-5 grid gap-5 md:grid-cols-2">
                 <div>
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Make</label>
-                    <input type="text" name="make" value="{{ old('make') }}" placeholder="Spare part make" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
+                    <input type="text" name="make" required value="{{ old('make') }}" placeholder="Spare part make" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
                     @error('make')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Item Name</label>
-                    <input type="text" name="item_name" value="{{ old('item_name') }}" placeholder="Item name" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
+                    <input type="text" name="item_name" required value="{{ old('item_name') }}" placeholder="Item name" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
                     @error('item_name')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Condition</label>
-                    <select name="condition" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    <select name="condition" required class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
                         <option value="Used" {{ old('condition') === 'Used' ? 'selected' : '' }}>Used</option>
                         <option value="New" {{ old('condition') === 'New' ? 'selected' : '' }}>New</option>
                     </select>
@@ -48,19 +48,19 @@
 
                 <div>
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Price (Ksh)</label>
-                    <input type="number" name="price" value="{{ old('price') }}" placeholder="0" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
+                    <input type="number" name="price" required value="{{ old('price') }}" placeholder="0" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
                     @error('price')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
                 <div class="md:col-span-2">
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Location</label>
-                    <input type="text" name="location" value="{{ old('location') }}" placeholder="City / area" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
+                    <input type="text" name="location" required value="{{ old('location') }}" placeholder="City / area" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
                     @error('location')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
                 <div class="md:col-span-2">
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Item Description</label>
-                    <textarea name="item_description" rows="6" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">{{ old('item_description') }}</textarea>
+                    <textarea name="item_description" required rows="6" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">{{ old('item_description') }}</textarea>
                     @error('item_description')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
                 </div>
             </div>
@@ -73,7 +73,7 @@
             <div class="mt-5 grid gap-4 md:grid-cols-3">
                 <label class="rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
                     <span class="mb-2 block font-semibold text-white">First Image</span>
-                    <input type="file" name="front_img" class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
+                    <input type="file" name="front_img" required class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
                     @error('front_img')<span class="mt-2 block text-xs font-medium text-rose-300">{{ $message }}</span>@enderror
                 </label>
 

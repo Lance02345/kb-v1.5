@@ -9,7 +9,7 @@
 <div class="container-fluid">
   
         <div class="rounded-button">
-           <a href="{{route('admin.county.create')}}"> <button type="button" class="btn mb-3 btn-rounded btn-primary">Create</button> </a>
+           <a href="{{route('admin.county.create')}}" class="btn btn-primary">Create</a>
         
         </div>
     
@@ -20,7 +20,7 @@
                     @if( count ($counties) > 0)
                     <h4 class="card-title">Counties</h4>
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered zero-configuration">
+                        <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
                                     <th>county</th>
@@ -36,7 +36,7 @@
                                     <td>{{$county->country}}</td>
                                     <td>
                                         <a href="{{ route('admin.county.edit',$county->id)}}" ><i class="fa fa-pencil color-muted m-r-5"></i> </a>
-                                        <a href="javascript:void(0)" onclick="$(this).parent().find('form').submit()" class="btn btn-app"><i class="fa fa-close color-danger sweet-wrong"></i></a>
+                                        <a href="javascript:void(0)" onclick="$(this).parent().find('form').submit()" class="btn btn-link p-0"><i class="fa fa-close color-danger sweet-wrong"></i></a>
                                         <form action="{{ route('admin.county.destroy',$county->id)}}" method="post" onsubmit="return confirm('Are you sure want to delete?');">
                                             @method('DELETE')
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">

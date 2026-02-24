@@ -25,25 +25,25 @@
             <div class="grid gap-4 sm:grid-cols-2">
                 <div class="sm:col-span-2">
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Event Title</label>
-                    <input type="text" name="event_title" value="{{ old('event_title') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none" placeholder="Car event title">
+                    <input type="text" name="event_title" required value="{{ old('event_title') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none" placeholder="Car event title">
                     @error('event_title')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Date</label>
-                    <input type="date" name="event_date" value="{{ old('event_date') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    <input type="date" name="event_date" required value="{{ old('event_date') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
                     @error('event_date')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Time</label>
-                    <input type="time" name="event_time" value="{{ old('event_time') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    <input type="time" name="event_time" required value="{{ old('event_time') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
                     @error('event_time')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Event Duration</label>
-                    <input type="number" name="event_duration" value="{{ old('event_duration') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none" placeholder="Days or hours">
+                    <input type="number" name="event_duration" required value="{{ old('event_duration') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none" placeholder="Days or hours">
                     @error('event_duration')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
@@ -55,19 +55,19 @@
 
                 <div class="sm:col-span-2">
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Event Location</label>
-                    <input type="text" name="event_location" value="{{ old('event_location') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none" placeholder="Event venue / city">
+                    <input type="text" name="event_location" required value="{{ old('event_location') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none" placeholder="Event venue / city">
                     @error('event_location')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
                 <div class="sm:col-span-2">
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Description</label>
-                    <textarea name="event_description" rows="6" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">{{ old('event_description') }}</textarea>
+                    <textarea name="event_description" required rows="6" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">{{ old('event_description') }}</textarea>
                     @error('event_description')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
                 <div>
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Organizer</label>
-                    <input type="text" name="organizer" value="{{ old('organizer', Auth::user()->name) }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    <input type="text" name="organizer" required value="{{ old('organizer', Auth::user()->name) }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
                     @error('organizer')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
@@ -76,7 +76,7 @@
 
         <section data-step-panel class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
             <label class="mb-2 block text-sm font-semibold text-slate-200">Poster Image</label>
-            <input type="file" name="event_image" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
+            <input type="file" name="event_image" required class="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
             @error('event_image')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
         </section>
 

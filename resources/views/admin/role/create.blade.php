@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="rounded-button">
-    <a href="{{ route('admin.role.index')}}" class="btn mb-1 btn-rounded btn-primary">Back</a>
+    <a href="{{ route('admin.role.index')}}" class="btn btn-primary">Back</a>
     </div>
 <div class="row">
 <div class="col-lg-12">
@@ -42,7 +42,7 @@
     
                     
                 
-                    <button type="submit" class="btn btn-dark">Add</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
                     
                 </form>
             </div>
@@ -51,25 +51,4 @@
 </div>
 </div>
 </div>
-@section('css_role_page')
-    <link rel="stylesheet" href="/css/admin/bootstrap-tagsinput.css">
-@endsection
-
-@section('js_role_page')
-    <script src="/js/admin/bootstrap-tagsinput.js"></script>
-
-    <script>
-
-        $(document).ready(function(){
-            $('#role_name').keyup(function(e){
-                var str = $('#role_name').val();
-                str = str.replace(/\W+(?!$)/g, '-').toLowerCase();//rplace stapces with dash
-                $('#role_slug').val(str);
-                $('#role_slug').attr('placeholder', str);
-            });
-        });
-        
-    </script>
-
-@endsection
 @endsection

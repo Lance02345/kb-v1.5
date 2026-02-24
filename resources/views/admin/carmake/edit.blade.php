@@ -21,7 +21,7 @@
                             @enderror
                     </div>
                 
-                    <button type="submit" class="btn btn-dark">Update</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
         </div>

@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="rounded-button">
-    <a href="{{ route('admin.user.index')}}" class="btn mb-1 btn-rounded btn-primary">Back</a>
+    <a href="{{ route('admin.user.index')}}" class="btn btn-primary">Back</a>
     </div>
 <div class="row">
 <div class="col-lg-12">
@@ -44,7 +44,7 @@
                         <span class="help-block">{{ trans('cruds.user.fields.roles_helper') }}</span>
                     </div>
                     
-                    <button type="submit" class="btn btn-dark">Update</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                     
                 </form>
             </div>

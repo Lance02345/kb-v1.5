@@ -146,8 +146,6 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'admin', 'as' => 'admin.
     Route::get ('vehicle',  [AdminListingController::class, 'vehicles'])->name('listing.vehicles');
     Route::get ('carhirelist',  [AdminListingController::class, 'carhirelist'])->name('listing.carhirelist');
     Route::get ('invoice',  [AdminInvoiceController::class, 'index'])->name('invoice.index');
-    Route::get ('unpaid_invoice',  [AdminInvoiceController::class, 'unpaid_invoice'])->name('invoice.unpaid_invoice');
-    Route::get ('paid_invoice',  [AdminInvoiceController::class, 'paid_invoice'])->name('invoice.paid_invoice');
     Route::get ('invoice_edit/{invoice}',  [AdminInvoiceController::class, 'invoice_edit'])->name('invoice.invoice_edit');
     Route::put ('invoice_update/{invoice}',  [AdminInvoiceController::class, 'invoice_update'])->name('invoice.invoice_update');
 

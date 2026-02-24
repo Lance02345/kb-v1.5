@@ -14,17 +14,6 @@ class AdminInvoiceController extends Controller
 
         return view('admin.invoice.index')->with($arr);
     }
-
-    public function paid_invoice ()
-    {
-        $arr['invoices'] = Invoice::where('status','PAID')->get();
-        return view('admin.invoice.paid_invoice')->with($arr);
-    }
-    public function upaid_invoice()
-    {
-        $arr['invoices'] = Invoice::where('status','UNPAID')->get();
-        return view('admin.invoice.unpaid_invoice')->with($arr);
-    }
     public function invoice_edit( Invoice $invoice)
     {
         $arr['invoice'] = $invoice;

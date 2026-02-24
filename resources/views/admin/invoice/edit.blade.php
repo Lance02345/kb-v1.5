@@ -2,7 +2,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="rounded-button">
-    <a href="{{ route('admin.invoice.index')}}" class="btn mb-1 btn-rounded btn-primary">Back</a>
+    <a href="{{ route('admin.invoice.index')}}" class="btn btn-primary">Back</a>
     </div>
 <div class="row">
 <div class="col-lg-12">
@@ -15,7 +15,7 @@
                     @method('PUT')
                     <div class="form-group">
                         <label>Invoice Status</label>
-                    <select style="background-color : greenyellow;" name="invoice_status" class="form-control t @error('invoice_paid') is-invalid @enderror">
+                    <select name="invoice_status" class="form-control @error('invoice_paid') is-invalid @enderror">
                         <option>{{$invoice->status}}</option>
                         <option>PAID</option>
                         <option>UNPAID</option>
@@ -28,7 +28,7 @@
                             @enderror
                     </div>
                    
-                    <button type="submit" class="btn btn-dark">Update</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                     
                 </form>
             </div>
