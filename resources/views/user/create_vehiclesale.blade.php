@@ -538,7 +538,7 @@ function readURL(input) {
         
          
   </script>
-<script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+<script src="//cdn.ckeditor.com/4.25.1-lts/standard/ckeditor.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function () {

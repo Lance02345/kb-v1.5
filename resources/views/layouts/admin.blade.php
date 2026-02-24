@@ -14,7 +14,40 @@
     <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/plugins/sweetalert/css/sweetalert.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/plugins/tables/css/datatable/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/admin-modern.css') }}?v={{ @filemtime(public_path('css/admin-modern.css')) }}" rel="stylesheet">
+    @php($adminModernPath = public_path('css/admin-modern.css'))
+    @if(file_exists($adminModernPath))
+        <link href="{{ asset('css/admin-modern.css') }}?v={{ filemtime($adminModernPath) }}" rel="stylesheet">
+    @endif
+    <style>
+        /* Critical fallback styles if admin-modern.css is unavailable in deployment */
+        body.kb-admin { background: #0b1020; color: #e5e7eb; }
+        .kb-admin-shell { display: flex; min-height: 100vh; }
+        .kb-admin-sidebar { width: 270px; background: #0b1225; border-right: 1px solid #263248; position: fixed; inset: 0 auto 0 0; overflow-y: auto; z-index: 40; }
+        .kb-admin-brand { padding: 18px 20px; border-bottom: 1px solid rgba(148,163,184,.15); color: #fff; font-weight: 700; }
+        .kb-admin-brand span { color: #fbbf24; }
+        .kb-admin-nav { padding: 12px; }
+        .kb-admin-nav .group-label { color: #94a3b8; font-size: 11px; font-weight: 700; letter-spacing: .08em; margin: 14px 8px 8px; text-transform: uppercase; }
+        .kb-admin-link { display: flex; align-items: center; gap: 10px; border-radius: 10px; color: #cbd5e1; font-size: 13px; font-weight: 600; margin: 4px 0; padding: 9px 10px; text-decoration: none; }
+        .kb-admin-link:hover { background: rgba(148,163,184,.1); color: #fff; text-decoration: none; }
+        .kb-admin-link.active { background: rgba(251,191,36,.14); border: 1px solid rgba(251,191,36,.45); color: #fde68a; }
+        .kb-admin-main { flex: 1; margin-left: 270px; }
+        .kb-admin-topbar { background: rgba(8,13,26,.92); border-bottom: 1px solid #263248; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; }
+        .kb-admin-title { margin: 0; font-size: 18px; color: #fff; }
+        .kb-admin-subtitle { color: #94a3b8; font-size: 12px; }
+        .kb-admin-content { padding: 20px; }
+        .kb-admin .card { border: 1px solid #263248; border-radius: 14px; background: #111827; color: #e5e7eb; }
+        .kb-admin .table { color: #e5e7eb; }
+        .kb-admin .table td, .kb-admin .table th { border-color: rgba(148,163,184,.2); }
+        .kb-admin .btn-primary { background: #fbbf24; border-color: #f59e0b; color: #111827 !important; font-weight: 700; }
+        .kb-admin .alert-success { border: 1px solid rgba(16,185,129,.35); background: rgba(16,185,129,.12); color: #d1fae5; }
+        .kb-admin-toggle { display: none; }
+        @media (max-width: 992px) {
+            .kb-admin-toggle { display: inline-flex; width: 36px; height: 36px; border: 1px solid #263248; border-radius: 10px; background: #0b1327; color: #e2e8f0; align-items: center; justify-content: center; }
+            .kb-admin-sidebar { transform: translateX(-100%); transition: transform .2s ease; }
+            .kb-admin-sidebar.open { transform: translateX(0); }
+            .kb-admin-main { margin-left: 0; }
+        }
+    </style>
 
     @livewireStyles
     @stack('styles')
