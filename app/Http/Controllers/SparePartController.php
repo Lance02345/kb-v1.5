@@ -79,8 +79,8 @@ class SparePartController extends Controller
                 $extension = $image->getClientOriginalExtension();
                 $imageStore = $imageName . '_' . time() . '.' . $extension;
 
-                // Open the image using Intervention/Image
-                $img = Image::make($image);
+                // Respect phone EXIF orientation before watermark/save to avoid sideways photos.
+                $img = Image::make($image)->orientate();
 
                 // Load the watermark image
                 $watermark = Image::make(public_path('watermark/king.png'));

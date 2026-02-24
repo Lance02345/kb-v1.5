@@ -408,7 +408,8 @@ class ListingController extends Controller
                     $imageStore = $fieldName . '_' . time() . '_' . uniqid() . '.' . $extension;
 
                     try {
-                        $img = Image::make($image);
+                        // Respect phone EXIF orientation before watermark/save to avoid sideways photos.
+                        $img = Image::make($image)->orientate();
                         $watermark = Image::make(public_path('watermark/king.png'));
                         $img->insert($watermark, 'bottom-right', 10, 10);
                         $img->save(public_path('storage/photos/' . $imageStore));
