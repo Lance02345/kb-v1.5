@@ -25,9 +25,11 @@
         <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             @foreach($carevents as $carevent)
                 <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
-                    <img src="{{ $carevent->event_image ? asset('storage/photos/' . $carevent->event_image) : asset('images/land1.jpg') }}" alt="{{ $carevent->event_title }}" class="h-52 w-full object-cover">
+                    <a href="{{ route('events.show', ['id' => $carevent->id]) }}" class="block">
+                        <img src="{{ $carevent->event_image ? asset('storage/photos/' . $carevent->event_image) : asset('images/land1.jpg') }}" alt="{{ $carevent->event_title }}" class="h-52 w-full object-cover">
+                    </a>
                     <div class="space-y-3 p-4">
-                        <h2 class="font-display text-xl font-semibold text-white">{{ $carevent->event_title }}</h2>
+                        <h2 class="font-display text-xl font-semibold text-white"><a href="{{ route('events.show', ['id' => $carevent->id]) }}" class="hover:text-amber-200">{{ $carevent->event_title }}</a></h2>
                         <div class="space-y-1 text-sm text-slate-300">
                             <p>Location: <span class="text-white">{{ $carevent->event_location }}</span></p>
                             <p>Date: <span class="text-white">{{ $carevent->event_date }}</span></p>

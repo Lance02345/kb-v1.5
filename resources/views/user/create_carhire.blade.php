@@ -6,6 +6,14 @@
 
 <section class="section-sm">
     <div class="container py-5">
+      @if($errors->any())
+        <div class="mb-4 rounded-xl border border-rose-300/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+          {{ $errors->first('submit') ?: $errors->first() }}
+        </div>
+        <script>
+          alert(@json($errors->first('submit') ?: $errors->first()));
+        </script>
+      @endif
       <form action="{{ route('user.store_carhire')}}" method="POST" id="step-form-horizontal" class="step-form-horizontal" enctype="multipart/form-data" data-stepper-form>     
         @csrf
             <div class="mb-4 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide text-slate-300">

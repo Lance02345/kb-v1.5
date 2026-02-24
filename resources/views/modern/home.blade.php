@@ -27,7 +27,16 @@
     </div>
 </section>
 
-<main class="w-full space-y-12 px-4 py-10 sm:px-6 lg:px-10">
+	<main class="w-full space-y-12 px-4 py-10 sm:px-6 lg:px-10">
+    <section class="space-y-4">
+        <h2 class="font-display text-2xl font-semibold text-white">Our Services</h2>
+        <div class="grid gap-3 sm:grid-cols-3">
+            <a href="{{ route('marketplace.index') }}" class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white hover:border-amber-300 hover:text-amber-200">Cars on Sale</a>
+            <a href="{{ route('spareparts') }}" class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white hover:border-amber-300 hover:text-amber-200">Spare Parts</a>
+            <a href="{{ route('carevent') }}" class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white hover:border-amber-300 hover:text-amber-200">Events</a>
+        </div>
+    </section>
+
     <section class="grid gap-4 sm:grid-cols-3">
         <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Live Listings</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($latestVehicles ?? collect())->count() }}</p></article>
         <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Featured Cars</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($featuredVehicles ?? collect())->count() }}</p></article>
@@ -72,9 +81,11 @@
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 @foreach($carevents as $event)
                     <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15">
-                        <img src="{{ $event->event_image ? asset('storage/photos/' . $event->event_image) : asset('images/land1.jpg') }}" alt="{{ $event->event_title }}" class="aspect-[16/10] w-full object-cover">
+                        <a href="{{ route('events.show', ['id' => $event->id]) }}" class="block">
+                            <img src="{{ $event->event_image ? asset('storage/photos/' . $event->event_image) : asset('images/land1.jpg') }}" alt="{{ $event->event_title }}" class="aspect-[16/10] w-full object-cover">
+                        </a>
                         <div class="space-y-2 p-4">
-                            <h3 class="font-display text-lg font-semibold text-white">{{ $event->event_title }}</h3>
+                            <h3 class="font-display text-lg font-semibold text-white"><a href="{{ route('events.show', ['id' => $event->id]) }}" class="hover:text-amber-200">{{ $event->event_title }}</a></h3>
                             <p class="text-xs text-slate-400">{{ $event->event_location }} · {{ $event->event_date }} · {{ $event->event_time }}</p>
                             <span class="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200">Ticket Ksh {{ number_format((float) $event->ticket_price) }}</span>
                         </div>
@@ -111,7 +122,7 @@
                 <img src="{{ asset('images/GarageGallery Logo.jpg') }}" alt="GarageGallery" class="max-h-24 w-auto rounded-md object-contain">
             </div>
             <div class="flex items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/40 p-5">
-                <img src="{{ asset('images/nexuraAfrica.jpg') }}" alt="NexuraAfrica" class="max-h-24 w-auto rounded-md object-contain">
+                <img src="{{ asset('images/nexraAfrica.jpg') }}" alt="NexraAfrica" class="max-h-24 w-auto rounded-md object-contain" onerror="this.onerror=null;this.src='{{ asset('images/nexuraAfrica.jpg') }}';">
             </div>
         </div>
     </section>

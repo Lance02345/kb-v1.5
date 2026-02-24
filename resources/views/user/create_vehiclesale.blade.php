@@ -5,10 +5,18 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
 <section class="section-sm">
-    <div class="container py-5">
-      <div class="vehicle-sale-hero">
-        <h1>Create Vehicle Sale Listing</h1>
-        <p>Complete all sections below to publish a high-quality listing faster.</p>
+	    <div class="container py-5">
+        @if($errors->any())
+          <div class="mb-4 rounded-xl border border-rose-300/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+            {{ $errors->first('submit') ?: $errors->first() }}
+          </div>
+          <script>
+            alert(@json($errors->first('submit') ?: $errors->first()));
+          </script>
+        @endif
+	      <div class="vehicle-sale-hero">
+	        <h1>Create Vehicle Sale Listing</h1>
+	        <p>Complete all sections below to publish a high-quality listing faster.</p>
       </div>
 
       <ul class="vehicle-sale-steps">

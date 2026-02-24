@@ -354,10 +354,8 @@ public function events(){
 
 public function show($id)
 {
-    // Retrieve the event by its ID
-    $carevent = Carevent::find($id);
-  // Pass the retrieved event to the view for display
-    return view('pages.single_event', compact('carevent'));
+    $carevent = Carevent::findOrFail($id);
+    return view('modern.single_event', compact('carevent'));
 }
 
 Public function register(){

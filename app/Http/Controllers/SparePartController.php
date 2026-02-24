@@ -125,24 +125,11 @@ class SparePartController extends Controller
 
     }
 
-    public function sparepart(SparePart $sparePart, Listing $listing, $id, user $user)
+    public function sparepart($id)
     {
-
-
-        $sparePart = SparePart::find($id);
-        $vehicles = Vehicle::all();
-        $listings = Listing::all();
-        $sparePart = SparePart::with('user')->find($id);
-        if ($sparePart) {
-            // Now you can access the user who posted the spare part
-            $userWhoPosted = $sparePart->user;
-
-            // Other logic...
-        } else {
-            // Handle the case where the spare part is not found
-        }
-        return view('pages.sparepart', compact('sparePart', 'userWhoPosted', 'listings', 'vehicles', 'user'));
-
+        $sparePart = SparePart::with('user')->findOrFail($id);
+        $userWhoPosted = $sparePart->user;
+        return view('modern.sparepart', compact('sparePart', 'userWhoPosted'));
 
     }
 
