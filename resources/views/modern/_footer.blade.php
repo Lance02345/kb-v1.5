@@ -1,5 +1,5 @@
 <footer class="border-t border-slate-800 bg-[#060a16]">
-    <div class="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-4 lg:px-8">
+    <div class="grid w-full gap-8 px-4 py-10 sm:px-6 lg:grid-cols-4 lg:px-10">
         <div>
             <a href="{{ route('index') }}" class="font-display text-lg font-semibold tracking-wide text-white">
                 <span class="text-amber-300">KINGS</span>BRIDGE MOTORS
@@ -42,7 +42,7 @@
         </div>
     </div>
 
-    <div class="border-t border-slate-800 px-4 py-4 text-center text-xs text-slate-500 sm:px-6 lg:px-8">
+    <div class="border-t border-slate-800 px-4 py-4 text-center text-xs text-slate-500 sm:px-6 lg:px-10">
         &copy; {{ date('Y') }} Kingsbridge Motors. All rights reserved.
     </div>
 </footer>

@@ -6,7 +6,7 @@
 @section('content')
 @include('modern._nav')
 
-<main class="mx-auto flex min-h-[calc(100vh-64px)] w-full max-w-7xl items-center px-4 py-10 sm:px-6 lg:px-8">
+<main class="flex min-h-[calc(100vh-64px)] w-full items-center px-4 py-10 sm:px-6 lg:px-10">
     <section class="grid w-full gap-6 lg:grid-cols-2">
         <article class="rounded-2xl border border-slate-800 bg-slate-900 p-8">
             <p class="text-xs uppercase tracking-[0.2em] text-amber-300">Welcome back</p>

@@ -23,7 +23,7 @@
     $title = trim(($vehicle->carmodel?->carmake?->make ?? '') . ' ' . ($vehicle->carmodel?->model ?? '') . ' ' . ($vehicle->year_of_build ?? ''));
 @endphp
 
-<main class="mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+<main class="w-full space-y-8 px-4 py-8 sm:px-6 lg:px-10">
     <section class="grid gap-6 lg:grid-cols-3">
         <article class="space-y-5 rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-2">
             <div class="flex flex-wrap items-start justify-between gap-3">

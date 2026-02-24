@@ -6,7 +6,7 @@
 @section('content')
 @include('modern._nav')
 
-<main class="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+<main class="w-full space-y-8 px-4 py-8 sm:px-6 lg:px-10">
     <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
         <h1 class="font-display text-3xl font-bold text-white">Best Price Guaranteed</h1>
         <p class="mt-2 text-sm text-slate-300">Flexible plans for casual sellers, dealers, and power users.</p>

@@ -6,7 +6,7 @@
 @section('content')
 @include('modern._nav')
 
-<main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+<main class="w-full px-4 py-10 sm:px-6 lg:px-10">
     <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>

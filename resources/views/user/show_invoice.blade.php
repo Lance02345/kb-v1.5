@@ -8,7 +8,7 @@
 
 @php($invoiceStatus = strtoupper((string) $invoice->status))
 
-<main class="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+<main class="w-full space-y-6 px-4 py-8 sm:px-6 lg:px-10">
     <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
         <div class="flex flex-wrap items-start justify-between gap-3 border-b border-slate-800 pb-4">
             <div>

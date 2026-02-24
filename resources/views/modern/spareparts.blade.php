@@ -7,14 +7,14 @@
 @include('modern._nav')
 
 <section class="border-b border-slate-800 bg-[#0b1020]">
-    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+    <div class="w-full px-4 py-14 sm:px-6 lg:px-10">
         <p class="mb-3 inline-flex items-center rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-medium text-amber-200">Marketplace</p>
         <h1 class="font-display text-4xl font-bold text-white sm:text-5xl">Vehicle Parts</h1>
         <p class="mt-3 text-slate-300">Find genuine and aftermarket parts from trusted sellers.</p>
     </div>
 </section>
 
-<main class="mx-auto max-w-7xl space-y-6 px-4 py-10 sm:px-6 lg:px-8">
+<main class="w-full space-y-6 px-4 py-10 sm:px-6 lg:px-10">
     <section class="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 sm:p-5">
         <form method="GET" action="{{ route('spare_parts_search') }}" class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-6">
             <input type="text" name="make" value="{{ request('make') }}" placeholder="Make" class="h-11 rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-amber-400 focus:outline-none">

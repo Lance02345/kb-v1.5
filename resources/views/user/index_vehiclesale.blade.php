@@ -15,7 +15,7 @@
     $expired = $pool->filter(fn($l) => strtolower((string) $l->ads_status) === 'expired')->count();
 @endphp
 
-<main class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+<main class="w-full space-y-6 px-4 py-8 sm:px-6 lg:px-10">
     @if(session('success'))
         <div class="rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">{{ session('success') }}</div>
     @endif

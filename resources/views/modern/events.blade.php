@@ -7,14 +7,14 @@
 @include('modern._nav')
 
 <section class="border-b border-slate-800 bg-[#0b1020]">
-    <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+    <div class="w-full px-4 py-14 sm:px-6 lg:px-10">
         <p class="mb-3 inline-flex items-center rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-medium text-amber-200">Community</p>
         <h1 class="font-display text-4xl font-bold text-white sm:text-5xl">Car Events</h1>
         <p class="mt-3 text-slate-300">Track meets, launches, cruises, and other community events.</p>
     </div>
 </section>
 
-<main class="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+<main class="w-full px-4 py-10 sm:px-6 lg:px-10">
     @if($carevents->count())
         <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             @foreach($carevents as $carevent)

@@ -23,7 +23,7 @@
     $title = trim(($vehicle->title ? $vehicle->title . ' ' : '') . ($vehicle->carmodel?->carmake?->make ?? '') . ' ' . ($vehicle->carmodel?->model ?? '') . ' ' . ($vehicle->year_of_build ?? ''));
 @endphp
 
-<main class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+<main class="w-full space-y-6 px-4 py-8 sm:px-6 lg:px-10">
     <div class="flex flex-wrap gap-2">
         <a href="{{ route('user.index_vehiclesale') }}" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Back</a>
         <a href="{{ route('user.edit_vehiclesale', [$listing->id, $vehicle->id]) }}" class="rounded-lg bg-amber-300 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Edit Listing</a>
