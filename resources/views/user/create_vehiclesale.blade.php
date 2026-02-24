@@ -1,8 +1,11 @@
-@extends('layouts.kingsbridge')
+@extends('layouts.modern-app')
 @section('content')
+@include('modern._nav')
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
 <section class="section-sm">
-    <div class="container">
+    <div class="container py-5">
       <div class="vehicle-sale-hero">
         <h1>Create Vehicle Sale Listing</h1>
         <p>Complete all sections below to publish a high-quality listing faster.</p>
@@ -462,7 +465,7 @@
 </section>
 <script src="{{ asset('js/gsdk-bootstrap-wizard.js')}}"></script>
 <script src="{{ asset('js/jquery-1.10.2.js')}}"></script>
-<script src="{{ asset('js/bootstrap.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/jquery.bootstrap.wizard.js')}}"></script>
 <script src="{{ asset('js/wizard.js')}}"></script>  
 
@@ -544,6 +547,58 @@ function readURL(input) {
 
 
 <style>
+body .vehicle-sale-hero h1,
+body .sale-section-title,
+body .vehicle-sale-steps li,
+body h6,
+body h4 {
+  color: #fff;
+}
+
+body .vehicle-sale-hero p,
+body .vehicle-sale-steps {
+  color: #cbd5e1;
+}
+
+body .sale-form-section {
+  border-color: #1f2937 !important;
+  border-radius: 16px;
+  background: #111827;
+}
+
+body .sale-form-section .form-control,
+body .sale-form-section input,
+body .sale-form-section textarea,
+body .sale-form-section select {
+  border: 1px solid #334155;
+  border-radius: 10px;
+  background: #0f172a;
+  color: #fff;
+}
+
+body .sale-form-section .form-control:focus,
+body .sale-form-section input:focus,
+body .sale-form-section textarea:focus,
+body .sale-form-section select:focus {
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 0.15rem rgba(251, 191, 36, 0.2);
+}
+
+body .invalid strong {
+  color: #fca5a5;
+}
+
+body .btn-sale-submit {
+  border: 0;
+  border-radius: 10px;
+  background: #fcd34d;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+body .btn-sale-submit:hover {
+  background: #fbbf24;
+}
   
 input[type="file"] {
   display: block;

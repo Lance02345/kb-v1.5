@@ -1,190 +1,72 @@
-@extends('layouts.kingsbridge')
+@extends('layouts.modern-app')
+
+@section('title', 'Car Hire Listings - Kingsbridge Motors')
+@section('description', 'Manage your car hire listings.')
+
 @section('content')
+@include('modern._nav')
 
-<!--==================================
-=            User Profile            =
-===================================-->
-@if(session('success'))
-<div class="mt-3 alert alert-success">
- <span> {{ session('success') }} </span>
-</div>
-@endif
-<section class="section-sm">
-	<!-- Container Start -->
-	<div class="container">
-@if(session('success'))
-<div class="mt-3 alert alert-success">
- <span> {{ session('success') }} </span>
-</div>
-@endif
-		<!-- Row Start -->
-		<div class="row">
-			<div class="col-md-10 offset-md-1 col-lg-4 offset-lg-0">
-				<div class="sidebar">
-					<!-- User Widget -->
-					<div class="widget user-dashboard-profile user">
-						<!-- User Image -->
-						<div class="image d-flex justify-content-center">
-							<img src="/storage/photos/{{ auth()->user()->avatar}}" alt="" class="">
-						</div>
-						<!-- User Name -->
-						<h5 class="text-center">{{ auth()->user()->name }}</h5>
-						<p>Joined {{ auth()->user()->created_at->diffForHumans() }}</p>
-						<a href="{{ route('user.user_profile', Auth::user()->id )}}" class="btn btn-main-sm">Edit Profile</a>
-					</div>
-		
+<main class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+    @if(session('success'))
+        <div class="rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">{{ session('success') }}</div>
+    @endif
 
-					<!-- delete-account modal -->
-											  <!-- delete account popup modal start-->
-                <!-- Modal -->
-                <div class="modal fade" id="deleteaccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                  aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header border-bottom-0">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body text-center">
-                        <img src="images/account/Account1.png" class="img-fluid mb-2" alt="">
-                        <h6 class="py-2">Are you sure you want to delete your account?</h6>
-                        <p>Do you really want to delete these records? This process cannot be undone.</p>
-                        <textarea name="message" id="" cols="40" rows="4" class="w-100 rounded"></textarea>
-                      </div>
-                      <div class="modal-footer border-top-0 mb-3 mx-5 justify-content-lg-between justify-content-center">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger">Delete</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- delete account popup modal end-->
-					<!-- delete-account modal -->
-
-				</div>
-			</div>
-			@if ( count($listings) > 0)
-			<div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
-				<!-- Recently Favorited -->
-                <a href="{{ route('user.create_carhire')}}" class="btn btn-primary mb-3">Add a Carhire Listing</a>
-				<div class=" dashboard-container my-list">
-				
-				
-						
-						
-							@foreach($listings as $listing)
-							<tr>
-								@foreach ($vehicles as $vehicle)
-										@if($listing->id == $vehicle->listing_id)
-										
-	
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12 mt-3">
-          
-                <div class="mdl-card mdl-shadow--2dp mdl-card--horizontal">
-					<div class="mdl-card__media">
-						<img class="img-square-wrapper" src="/storage/photos/{{ $vehicle->front_img }}" alt="image description">
-					</div>
-					  <div class="mdl-card__title">
-						<h2 style="font-weight: 450; font-size:20px;" 
-						class="mdl-card__title-text">{{ $vehicle->carmodel->carmake->make}} {{ $vehicle->carmodel->model}} {{ $vehicle->carmodel->model_year}} 
-							- <small>{{ $listing->package->package_name }} <span style="color: red;"> {{ $listing->category->category_name }} </span></h2>
-						
-					  </div>
-					  <div class="mdl-card__supporting-text">
-						<p class="card-text">
-							<ul class="list-horizontal">
-								<li class="li-size"><b>Listing ID: </b><span class="car-li">{{ $listing->id }}</span></li>
-								<li class="li-size"><b>Price: </b><span class="car-li"> {{ $vehicle->price}}</span></li>
-								<li class="li-size"><b>Status: </b><span class="car-li">{{ $listing->ads_status }}</span></li>
-								<li class="li-size"><b>Category: </b><span class="car-li">{{ $vehicle->vehicle_type }}</span></li>
-								<li class="li-size"><b>Invoice: </b><span class="car-li"><a href="{{ route('user.invoice', [$listing->id, $vehicle->id])}}"> Click Here </a></span></li>
-								<li class="li-size"><b>Visitors </b><span class="car-li fa fa-users "></span>: 5000</li>
-								<li class="li-size"><b>Duration <span class="car-li fa fa-count "></span>: 30 left
-							
-								</li> 
-								<li class="li-size"><b>Chats <span class="car-li fa fa-comments "></span>: 50</li>
-							</ul>
-						</p>
-					  </div>
-				<div class="my-list-footer">
-						<small class="text-muted">  
-							<div class="change-icons">
-							<td class="action" data-title="Action">
-								<div class="change-icons">
-									<ul class="list-inline justify-content-center">
-										<li class="list-inline-item">
-											<a data-toggle="tooltip" data-placement="top" title="View" class="view" href="{{ route('user.show_carhire', [$listing->id, $vehicle->id])}}">
-												<i class="fa fa-eye"></i>
-											</a>
-										</li>
-										<li class="list-inline-item">
-											<a data-toggle="tooltip" data-placement="top" title="Edit" class="edit" href="{{ route('user.edit_carhire', [$listing->id, $vehicle->id])}}">
-												<i class="fa fa-pencil"></i>
-											</a>
-										</li>
-										<li class="list-inline-item">
-									
-											<a href="javascript:void(0)" onclick="$(this).parent().find('form').submit()" data-toggle="tooltip" data-placement="top" title="Delete" class="delete">
-												<i class="fa fa-trash"></i>
-											</a>
-											<form action="{{ route('user.delete_carhire', [$listing->id, $vehicle->id])}}" method="post" onsubmit="return confirm('Are you sure want to delete?');">
-											  @method('DELETE')
-											  <input type="hidden" name="_token" value="{{ csrf_token() }}">
-											</form>
-										</li>
-									</ul>
-								</div>
-							</td>
-							</div>
-							</small>
-					
-				</div>
-				  </div>
-         
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:p-6">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h1 class="font-display text-3xl font-bold text-white">My Car Hire Listings</h1>
+                <p class="mt-1 text-sm text-slate-300">Manage your rental listings and pricing details.</p>
+            </div>
+            <a href="{{ route('user.create_carhire') }}" class="rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Add Car Hire</a>
         </div>
-    </div>
-</div>
-@endif
-@endforeach
-@endforeach
-				</div>
-				
-				<!-- pagination 
-				<div class="pagination justify-content-center">
-					<nav aria-label="Page navigation example">
-						<ul class="pagination">
-							<li class="page-item">
-								<a class="page-link" href="#" aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-									<span class="sr-only">Previous</span>
-								</a>
-							</li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item active"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item">
-								<a class="page-link" href="#" aria-label="Next">
-									<span aria-hidden="true">&raquo;</span>
-									<span class="sr-only">Next</span>
-								</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				pagination -->
+    </section>
 
-			</div>
-			@else
-			<h1> No List Founds...Please Add your first Listing 
-			
-			</h1>
-			@endif
-		</div>
-		<!-- Row End -->
-	</div>
-	<!-- Container End -->
-</section>
+    @if(($listings ?? collect())->count() > 0)
+        <section class="space-y-4">
+            @foreach($listings as $listing)
+                @php $vehicle = ($vehicles ?? collect())->firstWhere('listing_id', $listing->id); @endphp
+                @continue(!$vehicle)
+
+                <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+                    <div class="grid lg:grid-cols-12">
+                        <img src="{{ $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : asset('images/land1.jpg') }}" alt="Car hire" class="h-64 w-full object-cover lg:col-span-4 lg:h-full">
+                        <div class="space-y-4 p-5 lg:col-span-8">
+                            <div class="flex flex-wrap items-start justify-between gap-2">
+                                <div>
+                                    <h2 class="font-display text-xl font-semibold text-white">{{ $vehicle->carmodel?->carmake?->make }} {{ $vehicle->carmodel?->model }} {{ $vehicle->year_of_build }}</h2>
+                                    <p class="mt-1 text-xs text-slate-400">Listing #{{ $listing->id }} · {{ $listing->category?->category_name }} · {{ $listing->ads_status }}</p>
+                                </div>
+                                <span class="rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-xs font-semibold text-cyan-200">Ksh {{ number_format((float) $vehicle->price_per_day) }}/day</span>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2 text-sm text-slate-300 md:grid-cols-4">
+                                <p>Pick Up: <span class="text-white">{{ $vehicle->pickup_date }}</span></p>
+                                <p>Return: <span class="text-white">{{ $vehicle->return_date }}</span></p>
+                                <p>Days: <span class="text-white">{{ $vehicle->rent_days }}</span></p>
+                                <p>Mileage: <span class="text-white">{{ number_format((int)$vehicle->mileage) }} km</span></p>
+                            </div>
+
+                            <div class="flex flex-wrap gap-2">
+                                <a href="{{ route('user.show_carhire', [$listing->id, $vehicle->id]) }}" class="rounded-lg bg-amber-300 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">View</a>
+                                <a href="{{ route('user.edit_carhire', [$listing->id, $vehicle->id]) }}" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Edit</a>
+                                <a href="{{ route('user.invoice', [$listing->id, $vehicle->id]) }}" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Invoice</a>
+                                <form action="{{ route('user.delete_carhire', [$listing->id, $vehicle->id]) }}" method="post" onsubmit="return confirm('Are you sure want to delete this listing?');">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit" class="rounded-lg border border-rose-400/40 bg-rose-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-rose-200 hover:bg-rose-400/20">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            @endforeach
+        </section>
+    @else
+        <section class="rounded-2xl border border-slate-800 bg-slate-900 p-10 text-center">
+            <h2 class="font-display text-2xl font-semibold text-white">No car hire listings yet</h2>
+            <p class="mt-2 text-sm text-slate-300">Create your first car hire listing now.</p>
+            <a href="{{ route('user.create_carhire') }}" class="mt-4 inline-flex rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Create Listing</a>
+        </section>
+    @endif
+</main>
 @endsection

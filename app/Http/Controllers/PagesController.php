@@ -21,6 +21,18 @@ class PagesController extends Controller
 {
     
 Public function index (){
+    $arr = $this->marketplacePayload();
+    return view('modern.home')->with($arr);
+}
+
+public function marketplace()
+{
+    $arr = $this->marketplacePayload();
+    return view('marketplace.index')->with($arr);
+}
+
+private function marketplacePayload()
+{
     $arr['cities'] = City::orderBy('city')->get();
     $arr['makes'] = Carmake::orderBy('make')->get();
     $arr['models'] = Carmodel::all();
@@ -46,8 +58,7 @@ Public function index (){
         ->take(12)
         ->get();
 
-    return view('marketplace.index')->with($arr);
-    
+    return $arr;
 }
 public function carmodel(Request $request) {
     $data = Carmodel::select('model','id')->where('make_id',$request->id)->get();
@@ -295,7 +306,7 @@ Public function dashboard(){
 }
 Public function signup(){
 
-    return view ('pages.signup');
+    return view('auth.register');
     
 }
 
@@ -333,7 +344,7 @@ public function storeuser(Request $request, User $user)
 
 Public function login(){
 
-    return view ('pages.login');
+    return view('auth.login');
     
 }
 
@@ -351,7 +362,7 @@ public function show($id)
 
 Public function register(){
 
-    return view ('pages.register');
+    return view('auth.register');
     
 }
 

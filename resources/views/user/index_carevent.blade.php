@@ -1,158 +1,59 @@
-@extends('layouts.kingsbridge')
+@extends('layouts.modern-app')
+
+@section('title', 'My Events - Kingsbridge Motors')
+@section('description', 'Manage your car events.')
+
 @section('content')
+@include('modern._nav')
 
-<!--==================================
-=            User Profile            =
-===================================-->
+<main class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+    @if(session('success'))
+        <div class="rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">{{ session('success') }}</div>
+    @endif
 
-<section class="section-sm">
-	<!-- Container Start -->
-	<div class="container">
-		@if(session('success'))
-		<div class="mt-3 alert alert-success">
-		 <span> {{ session('success') }} </span>
-		</div>
-		@endif		
-		<!-- Row Start -->
-		<div class="row">
-			<div class="col-md-10 offset-md-1 col-lg-4 offset-lg-0">
-				<div class="sidebar">
-					<!-- User Widget -->
-					<div class="widget user-dashboard-profile user">
-						<!-- User Image -->
-						<div class="image d-flex justify-content-center">
-							<img src="/storage/photos/{{ auth()->user()->avatar}}" alt="" class="">
-						</div>
-						<!-- User Name -->
-						<h5 class="text-center">{{ auth()->user()->name }}</h5>
-						<p>Joined {{ auth()->user()->created_at->diffForHumans() }}</p>
-						<a href="{{ route('user.user_profile', Auth::user()->id )}}" class="btn btn-main-sm">Edit Profile</a>
-					</div>
-					<!-- Dashboard Links -->
-					
-					<div class="widget user-dashboard-menu">
-						<h3>My Events</h3>
-						<ul>
-							<li> <a href=""><i class="fa fa-car"></i>Car Events <span> {{$carevents->count()}}</a> </li>
-						<!--	<li> <a href="{{ route('user.index_carhire')}}"><i class="fa fa-car"></i>Vehicles for Hire <span></a> </li> -->
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:p-6">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h1 class="font-display text-3xl font-bold text-white">My Events</h1>
+                <p class="mt-2 text-sm text-slate-300">Create, edit, and remove your published car events.</p>
+            </div>
+            <a href="{{ route('user.create_carevent') }}" class="rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Create Event</a>
+        </div>
+    </section>
 
-						</ul>
-					</div>
-				
-				
-				</div>
-			</div>
-			@if ( count($carevents) > 0)
-			<div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
-				<a href="{{ route('user.create_carevent')}}" class="btn btn-primary mb-2">Create a Car Event</a>
-							@foreach($carevents as $carevent)
-				
+    @if($carevents->count() > 0)
+        <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            @foreach($carevents as $carevent)
+                <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+                    <img src="{{ $carevent->event_image ? asset('storage/photos/' . $carevent->event_image) : asset('images/land1.jpg') }}" alt="{{ $carevent->event_title }}" class="h-52 w-full object-cover">
+                    <div class="space-y-3 p-4">
+                        <h2 class="font-display text-xl font-semibold text-white">{{ $carevent->event_title }}</h2>
+                        <div class="space-y-1 text-sm text-slate-300">
+                            <p>Location: <span class="text-white">{{ $carevent->event_location }}</span></p>
+                            <p>Date: <span class="text-white">{{ $carevent->event_date }}</span></p>
+                            <p>Time: <span class="text-white">{{ $carevent->event_time }}</span></p>
+                            <p>Organizer: <span class="text-white">{{ $carevent->organizer }}</span></p>
+                            <p>Ticket: <span class="text-white">Ksh {{ number_format((float) $carevent->ticket_price) }}</span></p>
+                        </div>
 
-<div class=" dashboard-container my-list">
-	<div class="container-fluid">
-		<div class="row">		
-			<div class="col-lg-12 mt-3">
-				<div class="listing-container">
-					<div class="listing-image">
-					  <img class="img-square-wrapper" src="/storage/photos/{{ $carevent->event_image }}" alt="image description">
-					</div>
-					<div class="listing-info">
-					  <div class="mdl-card__title">
-						<h2 style="font-weight: 450; font-size:20px;" class="mdl-card__title-text"> {{ $carevent->event_title }}</h2>
-					  </div>
-					  <div class="mdl-card__supporting-text">
-						<p class="card-text">
-						  <ul class="list-horizontal">
-							<li><b>Location:</b> <span>{{ $carevent->event_location }}</span></li>
-							<li><b>Date:</b> <span>{{ $carevent->event_date }}</span></li>
-							<li><b>Time:</b> <span>{{ $carevent->event_time }}</span></li>
-							<li><b>Organizer:</b> <span>{{ $carevent->organizer }}</span></li>
-							<li><b>Ticket:</b> <span>Kes: {{ $carevent->ticket_price }}</span></li>
-					
-						  </ul>
-						  
-						</p>
-					  </div>
-					</div>
-				  </div>
-						  
-			
-					<div class="my-list-footer">
-							<small class="text-muted">  
-								<div class="change-icons">
-								<td class="action" data-title="Action">
-									<div class="change-icons">
-										<ul class="list-inline justify-content-center">
-											
-											
-											<li class="list-inline-item">
-												<a data-toggle="tooltip" data-placement="top" title="Edit" class="edit" href="{{ route('user.edit_carevent', $carevent->id)}}">
-													<i class="fa fa-pencil"></i>
-												</a>
-											</li>
-											<li class="list-inline-item">
-										
-												<a href="javascript:void(0)" onclick="$(this).parent().find('form').submit()" data-toggle="tooltip" data-placement="top" title="Delete" class="delete">
-													<i class="fa fa-trash"></i>
-												</a>
-												<form action="{{ route('user.delete_carevent', $carevent->id)}}" method="post" onsubmit="return confirm('Are you sure want to delete?');">
-												  @method('DELETE')
-												  <input type="hidden" name="_token" value="{{ csrf_token() }}">
-												</form>
-											</li>
-											
-										</ul>
-									</div>
-								</td>
-								</div>
-								</small>
-						
-					</div>
-					  </div>
-			 
-			</div>
-		</div>
-								
-	</div>
-
-@endforeach
-				</div>
-				
-				<!-- pagination 
-				<div class="pagination justify-content-center">
-					<nav aria-label="Page navigation example">
-						<ul class="pagination">
-							<li class="page-item">
-								<a class="page-link" href="#" aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-									<span class="sr-only">Previous</span>
-								</a>
-							</li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item active"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item">
-								<a class="page-link" href="#" aria-label="Next">
-									<span aria-hidden="true">&raquo;</span>
-									<span class="sr-only">Next</span>
-								</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				pagination -->
-
-			</div>
-			@else
-			<div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
-				<a href="{{ route('user.create_carevent')}}" class="btn btn-primary mb-2">Create a Car Event</a>
-			<h1> No Events Founds......
-			
-			</h1>
-			@endif
-		</div>
-		<!-- Row End -->
-	</div>
-	<!-- Container End -->
-</section>
+                        <div class="flex gap-2">
+                            <a href="{{ route('user.edit_carevent', $carevent->id) }}" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Edit</a>
+                            <form action="{{ route('user.delete_carevent', $carevent->id) }}" method="post" onsubmit="return confirm('Are you sure want to delete this event?');">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="rounded-lg border border-rose-400/40 bg-rose-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-rose-200 hover:bg-rose-400/20">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            @endforeach
+        </section>
+    @else
+        <section class="rounded-2xl border border-slate-800 bg-slate-900 p-10 text-center">
+            <h2 class="font-display text-2xl font-semibold text-white">No events yet</h2>
+            <p class="mt-2 text-sm text-slate-300">Create your first event and start reaching enthusiasts.</p>
+            <a href="{{ route('user.create_carevent') }}" class="mt-4 inline-flex rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Create Event</a>
+        </section>
+    @endif
+</main>
 @endsection

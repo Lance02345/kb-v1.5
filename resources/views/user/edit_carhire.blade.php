@@ -1,8 +1,11 @@
-@extends('layouts.kingsbridge')
+@extends('layouts.modern-app')
 @section('content')
+@include('modern._nav')
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
 <section class="section-sm">
-    <div class="container">
+    <div class="container py-5">
 @if(session('success'))
 <div class="mt-3 alert alert-success">
  <span> {{ session('success') }} </span>
@@ -399,7 +402,7 @@
 </section>
 <script src="{{ asset('js/gsdk-bootstrap-wizard.js')}}"></script>
 <script src="{{ asset('js/jquery-1.10.2.js')}}"></script>
-<script src="{{ asset('js/bootstrap.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('js/jquery.bootstrap.wizard.js')}}"></script>
 <script src="{{ asset('js/wizard.js')}}"></script>  
 
@@ -481,6 +484,51 @@ function readURL(input) {
 
 
 <style>
+body .sale-form-section,
+body fieldset.border {
+  border-color: #1f2937 !important;
+  border-radius: 16px;
+  background: #111827;
+}
+
+body h1, body h2, body h3, body h4, body h5, body h6 {
+  color: #fff;
+}
+
+body p, body label {
+  color: #cbd5e1;
+}
+
+body .form-control,
+body input,
+body textarea,
+body select {
+  border: 1px solid #334155 !important;
+  border-radius: 10px !important;
+  background: #0f172a !important;
+  color: #fff !important;
+}
+
+body .form-control:focus,
+body input:focus,
+body textarea:focus,
+body select:focus {
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 0 0.15rem rgba(251, 191, 36, 0.2) !important;
+}
+
+body .btn-primary {
+  border: 0;
+  border-radius: 10px;
+  background: #fcd34d !important;
+  color: #0f172a !important;
+  font-weight: 700;
+}
+
+body .btn-primary:hover {
+  background: #fbbf24 !important;
+}
+
   
 input[type="file"] {
   display: block;

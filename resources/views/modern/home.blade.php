@@ -1,0 +1,78 @@
+@extends('layouts.modern-app')
+
+@section('title', 'Kingsbridge Motors - Home')
+@section('description', 'Buy, sell, and discover vehicles across Kenya with a modern automotive marketplace.')
+
+@section('content')
+@include('modern._nav')
+
+<section class="relative h-[420px] overflow-hidden sm:h-[500px]">
+    <img
+        src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1920&h=900&fit=crop"
+        alt="Luxury cars on a city road"
+        class="absolute inset-0 h-full w-full object-cover"
+    >
+    <div class="absolute inset-0 bg-gradient-to-br from-black/45 via-[#0b1020]/70 to-[#0b1020]"></div>
+
+    <div class="relative z-10 mx-auto flex h-full max-w-7xl items-end px-4 pb-12 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+            <p class="mb-3 inline-flex items-center rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-medium text-amber-200">
+                Modern automotive hub
+            </p>
+            <h1 class="font-display text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+                Buy Smarter. Sell Faster. Drive Better.
+            </h1>
+            <p class="mt-4 text-sm text-slate-200 sm:text-base">
+                Explore verified listings, discover spare parts, and connect with Kenya's vehicle community in one place.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-3">
+                <a href="{{ route('marketplace.index') }}" class="rounded-lg bg-amber-300 px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-amber-200">Browse Marketplace</a>
+                <a href="{{ Auth::check() ? route('user.new_listing') : route('login') }}" class="rounded-lg border border-slate-500 bg-slate-950/40 px-5 py-2.5 text-sm font-semibold text-white hover:border-slate-300">Create Listing</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<main class="mx-auto max-w-7xl space-y-12 px-4 py-10 sm:px-6 lg:px-8">
+    <section class="grid gap-4 sm:grid-cols-3">
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Live Listings</p>
+            <p class="mt-2 font-display text-3xl font-bold text-white">{{ ($latestVehicles ?? collect())->count() }}</p>
+        </article>
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Featured Cars</p>
+            <p class="mt-2 font-display text-3xl font-bold text-white">{{ ($featuredVehicles ?? collect())->count() }}</p>
+        </article>
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Upcoming Events</p>
+            <p class="mt-2 font-display text-3xl font-bold text-white">{{ ($carevents ?? collect())->count() }}</p>
+        </article>
+    </section>
+
+    <section class="space-y-4">
+        <div class="flex items-center justify-between">
+            <h2 class="font-display text-2xl font-semibold text-white">Featured Picks</h2>
+            <a href="{{ route('marketplace.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">View marketplace</a>
+        </div>
+        @if(($featuredVehicles ?? collect())->count())
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                @foreach($featuredVehicles->take(6) as $vehicle)
+                    @include('livewire.partials.marketplace-card', ['vehicle' => $vehicle, 'badge' => 'Featured'])
+                @endforeach
+            </div>
+        @else
+            <div class="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-sm text-slate-400">No featured listings yet.</div>
+        @endif
+    </section>
+
+    <section class="rounded-2xl border border-amber-300/30 bg-amber-300/10 p-6 sm:p-8">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <h3 class="font-display text-2xl font-semibold text-white">Ready to post your first ad?</h3>
+                <p class="mt-1 text-sm text-slate-200">Create a listing in minutes and reach buyers across the country.</p>
+            </div>
+            <a href="{{ Auth::check() ? route('user.new_listing') : route('register') }}" class="rounded-lg bg-amber-300 px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-amber-200">Get started</a>
+        </div>
+    </section>
+</main>
+@endsection

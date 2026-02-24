@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', [PagesController::class, 'index'])->name('index');
-Route::get('/marketplace', [PagesController::class, 'index'])->name('marketplace.index');
+Route::get('/marketplace', [PagesController::class, 'marketplace'])->name('marketplace.index');
 Route :: get ('carmodel',  [PagesController::class, 'carmodel'])->name('carmodel');
 Route :: get ('category',  [PagesController::class, 'category'])->name('category');
 Route :: get ('single',  [PagesController::class, 'single'])->name('single');

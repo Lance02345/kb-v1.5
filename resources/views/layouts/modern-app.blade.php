@@ -28,6 +28,7 @@
 </head>
 <body class="min-h-screen bg-[#0b1020] text-slate-100 antialiased">
     @yield('content')
+    @include('modern._footer')
 
     @livewireScripts
 </body>
