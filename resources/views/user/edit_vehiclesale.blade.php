@@ -1,8 +1,11 @@
-@extends('layouts.kingsbridge')
+@extends('layouts.modern-app')
 @section('content')
+@include('modern._nav')
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
 <section class="section-sm">
-    <div class="container">
+    <div class="container py-5">
 
       @if(session('success'))
       <div class="mt-3 alert alert-success">
@@ -408,6 +411,99 @@
 
 
 <style>
+body .sale-form-section,
+body fieldset.border {
+  border-color: #1f2937 !important;
+  border-radius: 16px;
+  background: #111827;
+}
+
+body h1, body h2, body h3, body h4, body h5, body h6 {
+  color: #fff;
+}
+
+body p, body label {
+  color: #cbd5e1;
+}
+
+body .form-control,
+body input,
+body textarea,
+body select {
+  border: 1px solid #334155 !important;
+  border-radius: 10px !important;
+  background: #0f172a !important;
+  color: #fff !important;
+}
+
+body .form-control:focus,
+body input:focus,
+body textarea:focus,
+body select:focus {
+  border-color: #fbbf24 !important;
+  box-shadow: 0 0 0 0.15rem rgba(251, 191, 36, 0.2) !important;
+}
+
+body .sale-form-section .card {
+  border: 1px solid #334155 !important;
+  border-radius: 12px !important;
+  background: #0f172a !important;
+  color: #e2e8f0 !important;
+}
+
+body .sale-form-section .card h3 {
+  color: #e2e8f0 !important;
+}
+
+body .sale-form-section input[type="file"] {
+  width: 100%;
+  border: 1px solid #334155 !important;
+  border-radius: 10px !important;
+  background: #0b1225 !important;
+  color: #e2e8f0 !important;
+  padding: 8px 10px !important;
+}
+
+body .sale-form-section input[type="file"]::file-selector-button {
+  border: 0;
+  border-radius: 8px;
+  background: #fcd34d;
+  color: #0f172a;
+  font-weight: 700;
+  margin-right: 10px;
+  padding: 6px 10px;
+}
+
+body .cke {
+  border: 1px solid #334155 !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+body .cke_top,
+body .cke_bottom {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+body .cke_contents {
+  background: #ffffff !important;
+}
+
+body .btn-primary,
+body .btn-sale-submit {
+  border: 0;
+  border-radius: 10px;
+  background: #fcd34d !important;
+  color: #0f172a !important;
+  font-weight: 700;
+}
+
+body .btn-primary:hover,
+body .btn-sale-submit:hover {
+  background: #fbbf24 !important;
+}
+
 input[type="file"] {
   display: block;
 }

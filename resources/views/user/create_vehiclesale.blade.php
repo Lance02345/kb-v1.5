@@ -584,6 +584,55 @@ body .sale-form-section select:focus {
   box-shadow: 0 0 0 0.15rem rgba(251, 191, 36, 0.2);
 }
 
+body .sale-form-section .card,
+body .sale-form-section .package-content {
+  border: 1px solid #334155 !important;
+  border-radius: 12px !important;
+  background: #0f172a !important;
+  color: #e2e8f0 !important;
+}
+
+body .sale-form-section .card h3,
+body .sale-form-section .package-content h2,
+body .sale-form-section .package-content h4 {
+  color: #e2e8f0 !important;
+}
+
+body .sale-form-section input[type="file"] {
+  width: 100%;
+  border: 1px solid #334155 !important;
+  border-radius: 10px !important;
+  background: #0b1225 !important;
+  color: #e2e8f0 !important;
+  padding: 8px 10px !important;
+}
+
+body .sale-form-section input[type="file"]::file-selector-button {
+  border: 0;
+  border-radius: 8px;
+  background: #fcd34d;
+  color: #0f172a;
+  font-weight: 700;
+  margin-right: 10px;
+  padding: 6px 10px;
+}
+
+body .cke {
+  border: 1px solid #334155 !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+body .cke_top,
+body .cke_bottom {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+}
+
+body .cke_contents {
+  background: #ffffff !important;
+}
+
 body .invalid strong {
   color: #fca5a5;
 }

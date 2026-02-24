@@ -1,132 +1,60 @@
+@extends('layouts.modern-app')
 
+@section('title', 'Invoices - Kingsbridge Motors')
+@section('description', 'View and download your invoices.')
 
-@extends('layouts.kingsbridge')
 @section('content')
+@include('modern._nav')
 
-<!--==================================
-=            User Profile            =
-===================================-->
-@if(session('success'))
-<div class="mt-3 alert alert-success">
- <span> {{ session('success') }} </span>
-</div>
-@endif
-<section class="section-sm">
-	<!-- Container Start -->
-	<div class="container">
-		<!-- Row Start -->
-		<div class="row">
-			<div class="col-md-10 offset-md-1 col-lg-4 offset-lg-0">
-				<div class="sidebar">
-					<!-- User Widget -->
-					<div class="widget user-dashboard-profile user">
-						<!-- User Image -->
-						<div class="image d-flex justify-content-center">
-							<img src="/storage/photos/{{ auth()->user()->avatar}}" alt="" class="">
-						</div>
-						<!-- User Name -->
-						<h5 class="text-center">{{ auth()->user()->name }}</h5>
-						<p>Joined {{ auth()->user()->created_at->diffForHumans() }}</p>
-						<a href="{{ route('user.user_profile', Auth::user()->id )}}" class="btn btn-main-sm">Edit Profile</a>
-					</div>
-					<!-- Dashboard Links -->
-					<div class="widget user-dashboard-menu">
-						<h3>My list</h3>
-						<ul>
-							<li> <a href="{{ route('user.index_vehiclesale')}}"><i class="fa fa-car"></i>Vehicles for Sale <span>{{$listings->where('category_id','2')->count()}}</a> </li>
-						<!--	<li> <a href="{{ route('user.index_carhire')}}"><i class="fa fa-car"></i>Vehicles for Hire <span>{{$listings->where('category_id','1')->count()}}</a> </li> -->
+<main class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+    @if(session('success'))
+        <div class="rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">{{ session('success') }}</div>
+    @endif
 
-						</ul>
-					</div>
-					<div class="widget user-dashboard-menu">
-						<ul>
-							<li> <a href=""><i class="fa fa-heart"></i>Favourite</a> </li>
-	
-						</ul>
-					</div>
-					<div class="widget user-dashboard-menu">
-						<h3>Listing Status</h3>
-						<ul>
-							<li> <a href="{{ route('user.active_list')}}"><i class="fa fa-circle"></i>Active <span>{{$listings->where('ads_status','Approved')->count()}}</span></a> </li>
-							<li> <a href="{{ route('user.pending_list')}}"><i class="fa fa-file-archive-o"></i>Pending <span>{{$listings->where('ads_status','Pending')->count()}}</span></a></a> </li>
-							<li> <a href="{{ route('user.expired_list')}}"><i class="fa fa-flag"></i>Expired <span>{{$listings->where('ads_status','Expired')->count()}}</span></a></a> </li>
-							<li> <a href="{{ route('user.sold_list')}}"><i class="fa fa-money"></i>Sold <span>{{$listings->where('ads_status','Sold')->count()}}</span></a></a> </li>
-						
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-10 offset-md-1 col-lg-8 offset-lg-0">
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-5 sm:p-6">
+        <h1 class="font-display text-3xl font-bold text-white">My Invoices</h1>
+        <p class="mt-2 text-sm text-slate-300">Track your invoice status and download receipts.</p>
+    </section>
 
-<div class=" dashboard-container my-list">
-<div class="container-fluid">
-<div class="row">
-<div class="table">
-	<table class="table" >
-		<thead>
-		  <tr>
-			<th scope="col">#Invoice</th>
-			<th scope="col">Invoice date</th>
-			<th scope="col">Due Date</th>
-			<th scope="col">Total</th>
-			<th scope="col">Status</th>
-			<th scope="col">Action</th>
-		  </tr>
-		</thead>
-		<tbody>
-
-@foreach($invoices as $invoice)
-@if (auth::id() == $invoice->user_id)                   
-		  <tr>
-			<th scope="row">{{ $invoice->id}} </th>
-			<td>{{ $invoice->generate_date}}</td>
-			<td> {{ $invoice->due_date}} </td>
-			<td> {{ $invoice->total}} </td>
-			<td> {{ $invoice->status}} </td>
-			<td> <a href="{{ route('user.invoice.show',$invoice->id)}}">view</a> |  <a href="{{ route('user.generatePDF',$invoice->id)}}">download</a></td>
-		  </tr>
-@endif		  
-@endforeach
-		</tbody>
-	  </table>
-
-</div>
- 
-</div>
-</div>
-					
-</div>
-
-	</div>	
-				<!-- pagination 
-				<div class="pagination justify-content-center">
-					<nav aria-label="Page navigation example">
-						<ul class="pagination">
-							<li class="page-item">
-								<a class="page-link" href="#" aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-									<span class="sr-only">Previous</span>
-								</a>
-							</li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item active"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item">
-								<a class="page-link" href="#" aria-label="Next">
-									<span aria-hidden="true">&raquo;</span>
-									<span class="sr-only">Next</span>
-								</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				pagination -->
-
-			</div>
-		
-		</div>
-		<!-- Row End -->
-	</div>
-	<!-- Container End -->
-</section>
+    <section class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-left text-sm text-slate-300">
+                <thead class="bg-slate-950/40 text-xs uppercase tracking-wide text-slate-400">
+                    <tr>
+                        <th class="px-4 py-3">Invoice #</th>
+                        <th class="px-4 py-3">Invoice Date</th>
+                        <th class="px-4 py-3">Due Date</th>
+                        <th class="px-4 py-3">Total</th>
+                        <th class="px-4 py-3">Status</th>
+                        <th class="px-4 py-3">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($invoices as $invoice)
+                        @continue(auth()->id() != $invoice->user_id)
+                        <tr class="border-t border-slate-800">
+                            <td class="px-4 py-3 text-white">{{ $invoice->id }}</td>
+                            <td class="px-4 py-3">{{ $invoice->generate_date }}</td>
+                            <td class="px-4 py-3">{{ $invoice->due_date }}</td>
+                            <td class="px-4 py-3">Ksh {{ number_format((float) $invoice->total) }}</td>
+                            <td class="px-4 py-3">
+                                <span class="rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200">{{ $invoice->status }}</span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex flex-wrap gap-2">
+                                    <a href="{{ route('user.invoice.show', $invoice->id) }}" class="rounded-lg border border-slate-700 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">View</a>
+                                    <a href="{{ route('user.generatePDF', $invoice->id) }}" class="rounded-lg bg-amber-300 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Download</a>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-4 py-12 text-center text-sm text-slate-400">No invoices found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
 @endsection

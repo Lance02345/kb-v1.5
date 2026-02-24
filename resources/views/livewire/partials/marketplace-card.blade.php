@@ -6,9 +6,10 @@
   $category = optional(optional($listing)->category)->category_name ?? ($vehicle->vehicle_type ?: 'Vehicle');
   $city = optional(optional($listing)->city)->city ?? 'Nairobi';
   $image = $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=900&h=700&fit=crop';
+  $href = $listing ? route('vehicle', [$listing->id, $vehicle->id]) : '#';
 @endphp
 
-<article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
+<a href="{{ $href }}" class="group block overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
   <div class="relative aspect-[4/3] overflow-hidden">
     <img src="{{ $image }}" alt="{{ $make }} {{ $model }}" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
     <span class="absolute left-3 top-3 rounded-full border border-emerald-300/30 bg-emerald-300/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-200">
@@ -42,4 +43,4 @@
       <span class="font-display text-lg font-bold text-amber-300">Ksh {{ number_format((float) $vehicle->price) }}</span>
     </div>
   </div>
-</article>
+</a>

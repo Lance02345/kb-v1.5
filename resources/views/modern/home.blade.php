@@ -16,15 +16,9 @@
 
     <div class="relative z-10 mx-auto flex h-full max-w-7xl items-end px-4 pb-12 sm:px-6 lg:px-8">
         <div class="max-w-3xl">
-            <p class="mb-3 inline-flex items-center rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-medium text-amber-200">
-                Modern automotive hub
-            </p>
-            <h1 class="font-display text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
-                Buy Smarter. Sell Faster. Drive Better.
-            </h1>
-            <p class="mt-4 text-sm text-slate-200 sm:text-base">
-                Explore verified listings, discover spare parts, and connect with Kenya's vehicle community in one place.
-            </p>
+            <p class="mb-3 inline-flex items-center rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-medium text-amber-200">Modern automotive hub</p>
+            <h1 class="font-display text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">Buy Smarter. Sell Faster. Drive Better.</h1>
+            <p class="mt-4 text-sm text-slate-200 sm:text-base">Explore verified listings, discover spare parts, and connect with Kenya's vehicle community in one place.</p>
             <div class="mt-6 flex flex-wrap gap-3">
                 <a href="{{ route('marketplace.index') }}" class="rounded-lg bg-amber-300 px-5 py-2.5 text-sm font-semibold text-slate-900 hover:bg-amber-200">Browse Marketplace</a>
                 <a href="{{ Auth::check() ? route('user.new_listing') : route('login') }}" class="rounded-lg border border-slate-500 bg-slate-950/40 px-5 py-2.5 text-sm font-semibold text-white hover:border-slate-300">Create Listing</a>
@@ -35,24 +29,15 @@
 
 <main class="mx-auto max-w-7xl space-y-12 px-4 py-10 sm:px-6 lg:px-8">
     <section class="grid gap-4 sm:grid-cols-3">
-        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Live Listings</p>
-            <p class="mt-2 font-display text-3xl font-bold text-white">{{ ($latestVehicles ?? collect())->count() }}</p>
-        </article>
-        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Featured Cars</p>
-            <p class="mt-2 font-display text-3xl font-bold text-white">{{ ($featuredVehicles ?? collect())->count() }}</p>
-        </article>
-        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-            <p class="text-xs uppercase tracking-[0.2em] text-slate-400">Upcoming Events</p>
-            <p class="mt-2 font-display text-3xl font-bold text-white">{{ ($carevents ?? collect())->count() }}</p>
-        </article>
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Live Listings</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($latestVehicles ?? collect())->count() }}</p></article>
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Featured Cars</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($featuredVehicles ?? collect())->count() }}</p></article>
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Upcoming Events</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($carevents ?? collect())->count() }}</p></article>
     </section>
 
     <section class="space-y-4">
         <div class="flex items-center justify-between">
-            <h2 class="font-display text-2xl font-semibold text-white">Featured Picks</h2>
-            <a href="{{ route('marketplace.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">View marketplace</a>
+            <h2 class="font-display text-2xl font-semibold text-white">Trending Ads</h2>
+            <a href="{{ route('marketplace.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">View all</a>
         </div>
         @if(($featuredVehicles ?? collect())->count())
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -63,6 +48,49 @@
         @else
             <div class="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-sm text-slate-400">No featured listings yet.</div>
         @endif
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="font-display text-2xl font-semibold text-white">Latest Arrivals</h2>
+        @if(($latestVehicles ?? collect())->count())
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                @foreach($latestVehicles->take(6) as $vehicle)
+                    @include('livewire.partials.marketplace-card', ['vehicle' => $vehicle, 'badge' => 'Live'])
+                @endforeach
+            </div>
+        @else
+            <div class="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-sm text-slate-400">No listings found.</div>
+        @endif
+    </section>
+
+    <section class="space-y-4">
+        <div class="flex items-center justify-between">
+            <h2 class="font-display text-2xl font-semibold text-white">Events</h2>
+            <a href="{{ route('carevent') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">See all events</a>
+        </div>
+        @if(($carevents ?? collect())->count())
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                @foreach($carevents as $event)
+                    <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15">
+                        <img src="{{ $event->event_image ? asset('storage/photos/' . $event->event_image) : asset('images/land1.jpg') }}" alt="{{ $event->event_title }}" class="aspect-[16/10] w-full object-cover">
+                        <div class="space-y-2 p-4">
+                            <h3 class="font-display text-lg font-semibold text-white">{{ $event->event_title }}</h3>
+                            <p class="text-xs text-slate-400">{{ $event->event_location }} · {{ $event->event_date }} · {{ $event->event_time }}</p>
+                            <span class="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200">Ticket Ksh {{ number_format((float) $event->ticket_price) }}</span>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        @else
+            <div class="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-sm text-slate-400">No events yet.</div>
+        @endif
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="font-display text-2xl font-semibold text-white">Our Partners</h2>
+        <div class="flex items-center justify-center rounded-2xl border border-slate-800 bg-slate-900 p-8">
+            <img src="{{ asset('images/GarageGallery Logo.jpg') }}" alt="GarageGallery" class="max-h-24 w-auto rounded-md object-contain">
+        </div>
     </section>
 
     <section class="rounded-2xl border border-amber-300/30 bg-amber-300/10 p-6 sm:p-8">
