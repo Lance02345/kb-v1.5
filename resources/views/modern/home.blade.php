@@ -14,7 +14,7 @@
     >
     <div class="absolute inset-0 bg-gradient-to-br from-black/45 via-[#0b1020]/70 to-[#0b1020]"></div>
 
-    <div class="relative z-10 mx-auto flex h-full max-w-7xl items-end px-4 pb-12 sm:px-6 lg:px-8">
+    <div class="relative z-10 flex h-full w-full items-end px-4 pb-12 sm:px-6 lg:px-10">
         <div class="max-w-3xl">
             <p class="mb-3 inline-flex items-center rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-medium text-amber-200">Modern automotive hub</p>
             <h1 class="font-display text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">Buy Smarter. Sell Faster. Drive Better.</h1>
@@ -27,7 +27,7 @@
     </div>
 </section>
 
-<main class="mx-auto max-w-7xl space-y-12 px-4 py-10 sm:px-6 lg:px-8">
+<main class="w-full space-y-12 px-4 py-10 sm:px-6 lg:px-10">
     <section class="grid gap-4 sm:grid-cols-3">
         <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Live Listings</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($latestVehicles ?? collect())->count() }}</p></article>
         <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Featured Cars</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($featuredVehicles ?? collect())->count() }}</p></article>

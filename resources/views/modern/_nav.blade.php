@@ -1,5 +1,5 @@
 <header class="sticky top-0 z-50 border-b border-slate-800/80 bg-[#050812]/90 backdrop-blur">
-    <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-10">
         <a href="{{ route('index') }}" class="font-display text-lg font-semibold tracking-wide text-white">
             <span class="text-amber-300">KINGS</span>BRIDGE MOTORS
         </a>
