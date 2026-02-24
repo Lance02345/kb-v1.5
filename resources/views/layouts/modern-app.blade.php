@@ -15,7 +15,12 @@
     @if(file_exists($tailwindCssPath))
         <link href="{{ asset('css/tailwind.css') }}?v={{ filemtime($tailwindCssPath) }}" rel="stylesheet">
     @else
-        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
+    @endif
+    <script src="https://cdn.tailwindcss.com"></script>
+    @if(request()->boolean('legacy_ui'))
+        <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     @endif
 
     <style>
@@ -97,7 +102,7 @@
 
     @livewireStyles
 </head>
-<body class="min-h-screen bg-[#0b1020] text-slate-100 antialiased">
+<body class="min-h-screen bg-[#0b1020] text-slate-100 antialiased {{ request()->boolean('legacy_ui') ? 'kb-modern' : '' }}">
     @yield('content')
     @include('modern._footer')
 
