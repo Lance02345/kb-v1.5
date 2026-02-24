@@ -23,6 +23,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 use PhpParser\Node\Expr\List_;
 use App\Models\User;
@@ -506,89 +507,49 @@ class ListingController extends Controller
 
         $currentId = $listing->id;
 
-        //Handle File Upload
+        // Handle file uploads with orientation fix and watermark fallback.
         if ($request->hasFile('front_img')) {
-            $imagenamewithExt = $request->file('front_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('front_img')->getClientOriginalExtension();
-            $front_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('front_img')->storeAs('public/photos', $front_imgStore);
+            $front_imgStore = $this->storeProcessedVehicleImage($request->file('front_img'), 'front_img');
         }
 
         if ($request->hasFile('back_img')) {
-            $imagenamewithExt = $request->file('back_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('back_img')->getClientOriginalExtension();
-            $back_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('back_img')->storeAs('public/photos', $back_imgStore);
+            $back_imgStore = $this->storeProcessedVehicleImage($request->file('back_img'), 'back_img');
         }
 
         if ($request->hasFile('right_img')) {
-            $imagenamewithExt = $request->file('right_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('right_img')->getClientOriginalExtension();
-            $right_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('right_img')->storeAs('public/photos', $right_imgStore);
+            $right_imgStore = $this->storeProcessedVehicleImage($request->file('right_img'), 'right_img');
         }
 
         if ($request->hasFile('left_img')) {
-            $imagenamewithExt = $request->file('left_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('left_img')->getClientOriginalExtension();
-            $left_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('left_img')->storeAs('public/photos', $left_imgStore);
+            $left_imgStore = $this->storeProcessedVehicleImage($request->file('left_img'), 'left_img');
         }
 
         if ($request->hasFile('interiorf_img')) {
-            $imagenamewithExt = $request->file('interiorf_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('interiorf_img')->getClientOriginalExtension();
-            $interiorf_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('interiorf_img')->storeAs('public/photos', $interiorf_imgStore);
+            $interiorf_imgStore = $this->storeProcessedVehicleImage($request->file('interiorf_img'), 'interiorf_img');
         }
-        //interior back image upload code
+        // interior back image upload code
         if ($request->hasFile('interiorb_img')) {
-            $imagenamewithExt = $request->file('interiorb_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('interiorb_img')->getClientOriginalExtension();
-            $interiorb_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('interiorb_img')->storeAs('public/photos', $interiorb_imgStore);
+            $interiorb_imgStore = $this->storeProcessedVehicleImage($request->file('interiorb_img'), 'interiorb_img');
         }
 
         if ($request->hasFile('engine_img')) {
-            $imagenamewithExt = $request->file('engine_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('engine_img')->getClientOriginalExtension();
-            $engine_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('engine_img')->storeAs('public/photos', $engine_imgStore);
+            $engine_imgStore = $this->storeProcessedVehicleImage($request->file('engine_img'), 'engine_img');
         }
 
         if ($request->hasFile('opt_img1')) {
-            $imagenamewithExt = $request->file('opt_img1')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('opt_img1')->getClientOriginalExtension();
-            $opt_img1Store = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('opt_img1')->storeAs('public/photos', $opt_img1Store);
+            $opt_img1Store = $this->storeProcessedVehicleImage($request->file('opt_img1'), 'opt_img1');
         } else {
             $opt_img1Store = '';
         }
 
         if ($request->hasFile('opt_img2')) {
-            $imagenamewithExt = $request->file('opt_img2')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('opt_img2')->getClientOriginalExtension();
-            $opt_img2Store = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('opt_img2')->storeAs('public/photos', $opt_img2Store);
+            $opt_img2Store = $this->storeProcessedVehicleImage($request->file('opt_img2'), 'opt_img2');
         } else {
             $opt_img2Store = '';
         }
 
         if ($request->hasFile('opt_img3')) {
-            $imagenamewithExt = $request->file('opt_img3')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('opt_img3')->getClientOriginalExtension();
-            $opt_img3Store = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('opt_img3')->storeAs('public/photos', $opt_img3Store);
+            $opt_img3Store = $this->storeProcessedVehicleImage($request->file('opt_img3'), 'opt_img3');
         } else {
             $opt_img3Store = '';
         }
@@ -833,81 +794,45 @@ class ListingController extends Controller
         $currentId = $listing->id;
 
 
-        //Handle File Upload
+        // Handle file uploads with orientation fix and watermark fallback.
         if ($request->hasFile('front_img')) {
-            $imagenamewithExt = $request->file('front_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('front_img')->getClientOriginalExtension();
-            $front_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('front_img')->storeAs('public/photos', $front_imgStore);
+            $front_imgStore = $this->storeProcessedVehicleImage($request->file('front_img'), 'front_img');
         }
 
         if ($request->hasFile('back_img')) {
-            $imagenamewithExt = $request->file('back_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('back_img')->getClientOriginalExtension();
-            $back_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('back_img')->storeAs('public/photos', $back_imgStore);
+            $back_imgStore = $this->storeProcessedVehicleImage($request->file('back_img'), 'back_img');
         }
 
         if ($request->hasFile('right_img')) {
-            $imagenamewithExt = $request->file('right_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('right_img')->getClientOriginalExtension();
-            $right_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('right_img')->storeAs('public/photos', $right_imgStore);
+            $right_imgStore = $this->storeProcessedVehicleImage($request->file('right_img'), 'right_img');
         }
 
         if ($request->hasFile('left_img')) {
-            $imagenamewithExt = $request->file('left_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('left_img')->getClientOriginalExtension();
-            $left_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('left_img')->storeAs('public/photos', $left_imgStore);
+            $left_imgStore = $this->storeProcessedVehicleImage($request->file('left_img'), 'left_img');
         }
 
         if ($request->hasFile('interiorf_img')) {
-            $imagenamewithExt = $request->file('interiorf_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('interiorf_img')->getClientOriginalExtension();
-            $interiorf_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('interiorf_img')->storeAs('public/photos', $interiorf_imgStore);
+            $interiorf_imgStore = $this->storeProcessedVehicleImage($request->file('interiorf_img'), 'interiorf_img');
         }
-        //interior back image upload code
+        // interior back image upload code
         if ($request->hasFile('interiorb_img')) {
-            $imagenamewithExt = $request->file('interiorb_img')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('interiorb_img')->getClientOriginalExtension();
-            $interiorb_imgStore = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('interiorb_img')->storeAs('public/photos', $interiorb_imgStore);
+            $interiorb_imgStore = $this->storeProcessedVehicleImage($request->file('interiorb_img'), 'interiorb_img');
         }
 
         if ($request->hasFile('opt_img1')) {
-            $imagenamewithExt = $request->file('opt_img1')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('opt_img1')->getClientOriginalExtension();
-            $opt_img1Store = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('opt_img1')->storeAs('public/photos', $opt_img1Store);
+            $opt_img1Store = $this->storeProcessedVehicleImage($request->file('opt_img1'), 'opt_img1');
         } else {
             $opt_img1Store = '';
         }
 
         if ($request->hasFile('opt_img2')) {
-            $imagenamewithExt = $request->file('opt_img2')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('opt_img2')->getClientOriginalExtension();
-            $opt_img2Store = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('opt_img2')->storeAs('public/photos', $opt_img2Store);
+            $opt_img2Store = $this->storeProcessedVehicleImage($request->file('opt_img2'), 'opt_img2');
         } else {
             $opt_img2Store = '';
         }
 
         if ($request->hasFile('opt_img3')) {
-            $imagenamewithExt = $request->file('opt_img3')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('opt_img3')->getClientOriginalExtension();
-            $opt_img3Store = $imagename . '_' . time() . '.' . $extension;
-            $path = $request->file('opt_img3')->storeAs('public/photos', $opt_img3Store);
+            $opt_img3Store = $this->storeProcessedVehicleImage($request->file('opt_img3'), 'opt_img3');
         } else {
             $opt_img3Store = '';
         }
@@ -1000,6 +925,29 @@ class ListingController extends Controller
     //     $listing->delete();
     //     return redirect()->route('user.index_carhire')->with('success', 'removed successfully');
     // }
+
+    private function storeProcessedVehicleImage(UploadedFile $image, string $fieldPrefix): string
+    {
+        $extension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
+        $imageName = $fieldPrefix . '_' . time() . '_' . uniqid() . '.' . $extension;
+
+        try {
+            // Respect phone EXIF orientation before watermark/save to avoid sideways photos.
+            $img = Image::make($image)->orientate();
+            $watermark = Image::make(public_path('watermark/king.png'));
+            $img->insert($watermark, 'bottom-right', 10, 10);
+            $img->save(public_path('storage/photos/' . $imageName));
+        } catch (\Throwable $e) {
+            $image->storeAs('public/photos', $imageName);
+            Log::warning('Image processing failed during update, stored original image instead.', [
+                'field' => $fieldPrefix,
+                'message' => $e->getMessage(),
+                'filename' => $imageName,
+            ]);
+        }
+
+        return $imageName;
+    }
 
     public function invoice(Listing $listing, Vehicle $vehicle)
     {
