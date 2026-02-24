@@ -74,28 +74,28 @@
                
                 <div class="col-lg-6"> 
                 <h6 class="font-weight-bold pt-4 pb-1">Pick Up Date</h6>
-                <input name="pickup_date" value="{{ old('pickup_date')}}" type="date" class="border w-100 p-2 bg-white text-capitalize" >
+                <input name="pickup_date" value="{{ old('pickup_date')}}" type="date" class="border w-100 p-2 text-capitalize" >
                 @error('pickup_date') 
                   <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
                 @enderror
             </div>
             <div class="col-lg-6"> 
                 <h6 class="font-weight-bold pt-4 pb-1">Return  Date</h6>
-                <input name="return_date" value="{{ old('return_date')}}" type="date" class="border w-100 p-2 bg-white text-capitalize" >
+                <input name="return_date" value="{{ old('return_date')}}" type="date" class="border w-100 p-2 text-capitalize" >
                 @error('return_date') 
                   <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
                 @enderror
             </div>
              <div class="col-lg-6">
                 <h6 class="font-weight-bold pt-4 pb-1">Hiring Days</h6>
-                <input name="rent_days" value="{{ old('rent_days')}}" type="number" class="border w-100 p-2 bg-white text-capitalize" >
+                <input name="rent_days" value="{{ old('rent_days')}}" type="number" class="border w-100 p-2 text-capitalize" >
                 @error('rent_days') 
                  <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
                 @enderror
             </div>
             <div class="col-lg-6"> 
                 <h6 class="font-weight-bold pt-4 pb-1">Price Per Date</h6>
-                <input name="price_per_day" value="{{ old('price_per_day')}}" type="number" class="border w-100 p-2 bg-white text-capitalize" >
+                <input name="price_per_day" value="{{ old('price_per_day')}}" type="number" class="border w-100 p-2 text-capitalize" >
                 @error('price_per_day') 
                     <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
                @enderror
@@ -140,7 +140,7 @@
             </div>
             <div class="col-lg-4"> 
           <h6 class="font-weight-bold pt-4 pb-1">Year of Build:</h6>
-          <input type="number" value="{{ old('year_of_build')}}" name="year_of_build" class="border w-100 p-2 bg-white text-capitalize @error('year_of_build') is-invalid @enderror" placeholder="1964">
+          <input type="number" value="{{ old('year_of_build')}}" name="year_of_build" class="border w-100 p-2 text-capitalize @error('year_of_build') is-invalid @enderror" placeholder="1964">
               @error('year_of_build')
                   <span class="invalid"  role="alert">
                       <strong>{{ $message }}</strong>

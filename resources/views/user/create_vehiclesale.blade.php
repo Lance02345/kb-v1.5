@@ -106,7 +106,7 @@
             </div>
             <div class="col-lg-4"> 
           <h6 class="font-weight-bold pt-4 pb-1">Year of Build:</h6>
-          <input type="number" value="{{ old('year_of_build')}}" name="year_of_build" class="border w-100 p-2 bg-white text-capitalize @error('year_of_build') is-invalid @enderror" placeholder="1964">
+          <input type="number" value="{{ old('year_of_build')}}" name="year_of_build" class="border w-100 p-2 text-capitalize @error('year_of_build') is-invalid @enderror" placeholder="1964">
               @error('year_of_build')
                   <span class="invalid"  role="alert">
                       <strong>{{ $message }}</strong>
@@ -145,7 +145,7 @@
           </div>
           <div class="col-lg-6">
           <h6 class="font-weight-bold pt-4 pb-1">Mileage:</h6>
-          <input type="number" name="mileage" class="border w-100 p-2 bg-white text-capitalize" 
+          <input type="number" name="mileage" class="border w-100 p-2 text-capitalize" 
             value="{{ old('mileage')}}" placeholder="Mileage go There">
           @error('mileage')
           <span class="invalid" role="alert">
@@ -339,7 +339,7 @@
 
 <div class="col-lg-6">
     <h6 class="font-weight-bold pt-4 pb-1">Price (in Ksh):</h6>
-    <input name="price" id="priceInput" value="{{ old('price')}}" type="text" class="border w-100 p-2 bg-white text-capitalize">
+    <input name="price" id="priceInput" value="{{ old('price')}}" type="text" class="border w-100 p-2 text-capitalize">
     @error('price')
         <span class="invalid" role="alert">
             <strong>{{ $message }}</strong>

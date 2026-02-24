@@ -104,7 +104,7 @@
         </div>
         <div class="col-lg-4"> 
       <h6 class="font-weight-bold pt-4 pb-1">Year of Build:</h6>
-      <input type="number" name="year_of_build" value="{{$vehicle->year_of_build}}" class="border w-100 p-2 bg-white text-capitalize @error('year_of_build') is-invalid @enderror" >
+      <input type="number" name="year_of_build" value="{{$vehicle->year_of_build}}" class="border w-100 p-2 text-capitalize @error('year_of_build') is-invalid @enderror" >
           @error('year_of_build')
               <span class="invalid"  role="alert">
                   <strong>{{ $message }}</strong>
@@ -121,7 +121,7 @@
               <option>Local Used</option>    
           </select>
           <h6 class="font-weight-bold pt-4 pb-1">Mileage:</h6>
-          <input type="number" name="mileage" class="border w-100 p-2 bg-white text-capitalize" value="{{$vehicle->mileage}}">
+          <input type="number" name="mileage" class="border w-100 p-2 text-capitalize" value="{{$vehicle->mileage}}">
           
           <h6 class="font-weight-bold pt-4 pb-1">Car Transmission</h6>
           <select name="transmission" id="inputGroupSelect" class="form-control">
@@ -143,7 +143,7 @@
         </select>
         <div class="col-lg-6">
     <h6 class="font-weight-bold pt-4 pb-1">Price (in Ksh):</h6>
-    <input name="price" id="priceInput" value="{{$vehicle->price}}" type="text" class="border w-100 p-2 bg-white text-capitalize">
+    <input name="price" id="priceInput" value="{{$vehicle->price}}" type="text" class="border w-100 p-2 text-capitalize">
     @error('price')
         <span class="invalid" role="alert">
             <strong>{{ $message }}</strong>

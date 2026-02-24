@@ -52,28 +52,28 @@
                
                 <div class="col-lg-6"> 
                 <h6 class="font-weight-bold pt-4 pb-1">Pick Up Date</h6>
-                <input name="pickup_date" value="{{$vehicle->pickup_date}}" type="date" class="border w-100 p-2 bg-white text-capitalize" >
+                <input name="pickup_date" value="{{$vehicle->pickup_date}}" type="date" class="border w-100 p-2 text-capitalize" >
                 @error('pickup_date') 
                   <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
                 @enderror
             </div>
             <div class="col-lg-6"> 
                 <h6 class="font-weight-bold pt-4 pb-1">Return  Date</h6>
-                <input name="return_date"  type="date" value="{{$vehicle->return_date}}"  class="border w-100 p-2 bg-white text-capitalize" >
+                <input name="return_date"  type="date" value="{{$vehicle->return_date}}"  class="border w-100 p-2 text-capitalize" >
                 @error('return_date') 
                   <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
                 @enderror
             </div>
              <div class="col-lg-6">
                 <h6 class="font-weight-bold pt-4 pb-1">Hiring Days</h6>
-                <input name="rent_days" type="number" value="{{$vehicle->rent_days}}"  class="border w-100 p-2 bg-white text-capitalize" >
+                <input name="rent_days" type="number" value="{{$vehicle->rent_days}}"  class="border w-100 p-2 text-capitalize" >
                 @error('rent_days') 
                  <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
                 @enderror
             </div>
             <div class="col-lg-6"> 
                 <h6 class="font-weight-bold pt-4 pb-1">Price Per Date</h6>
-                <input name="price_per_day" type="number" value="{{$vehicle->price_per_day}}" class="border w-100 p-2 bg-white text-capitalize" >
+                <input name="price_per_day" type="number" value="{{$vehicle->price_per_day}}" class="border w-100 p-2 text-capitalize" >
                 @error('price_per_day') 
                     <span class="invalid" role="alert"> <strong>{{ $message }}</strong> </span> 
                @enderror
@@ -128,7 +128,7 @@
             </div>
             <div class="col-lg-4"> 
           <h6 class="font-weight-bold pt-4 pb-1">Year of Build:</h6>
-          <input type="number" name="year_of_build" value="{{$vehicle->year_of_build}}" class="border w-100 p-2 bg-white text-capitalize @error('year_of_build') is-invalid @enderror" >
+          <input type="number" name="year_of_build" value="{{$vehicle->year_of_build}}" class="border w-100 p-2 text-capitalize @error('year_of_build') is-invalid @enderror" >
               @error('year_of_build')
                   <span class="invalid"  role="alert">
                       <strong>{{ $message }}</strong>
@@ -166,7 +166,7 @@
           </div>
           <div class="col-lg-6">
           <h6 class="font-weight-bold pt-4 pb-1">Mileage:</h6>
-          <input type="number" name="mileage" class="border w-100 p-2 bg-white text-capitalize" 
+          <input type="number" name="mileage" class="border w-100 p-2 text-capitalize" 
             value="{{$vehicle->mileage}}" placeholder="Mileage go There">
           @error('mileage')
           <span class="invalid" role="alert">

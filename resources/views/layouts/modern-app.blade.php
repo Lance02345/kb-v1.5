@@ -61,6 +61,14 @@
             background-color: #0f172a;
             color: #e2e8f0;
         }
+        input.bg-white,
+        select.bg-white,
+        textarea.bg-white,
+        .form-control.bg-white {
+            background-color: rgba(15, 23, 42, 0.85) !important;
+            color: #e2e8f0 !important;
+            -webkit-text-fill-color: #e2e8f0 !important;
+        }
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
         input:-webkit-autofill:focus,
