@@ -106,8 +106,13 @@
 
     <section class="space-y-4">
         <h2 class="font-display text-2xl font-semibold text-white">Our Partners</h2>
-        <div class="flex items-center justify-center rounded-2xl border border-slate-800 bg-slate-900 p-8">
-            <img src="{{ asset('images/GarageGallery Logo.jpg') }}" alt="GarageGallery" class="max-h-24 w-auto rounded-md object-contain">
+        <div class="grid gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:grid-cols-2">
+            <div class="flex items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/40 p-5">
+                <img src="{{ asset('images/GarageGallery Logo.jpg') }}" alt="GarageGallery" class="max-h-24 w-auto rounded-md object-contain">
+            </div>
+            <div class="flex items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/40 p-5">
+                <img src="{{ asset('images/nexuraAfrica.jpg') }}" alt="NexuraAfrica" class="max-h-24 w-auto rounded-md object-contain">
+            </div>
         </div>
     </section>
 

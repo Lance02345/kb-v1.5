@@ -360,119 +360,114 @@ class ListingController extends Controller
     public function store_vehiclesale(Request $request, Listing $listing, Vehicle $vehicle)
     {
         Log::info('Starting store_vehiclesale process.');
-    
-        $this->validate($request, [
-            'category' => 'required',
-            'city' => 'required',
-            'model_id' => 'required',
-            'year_of_build' => 'required',
-            'condition' => 'required',
-            'mileage' => '',
-            'transmission' => 'required',
-            'fuel_type' => 'required',
-            'exchange' => 'required',
-            'price' => 'required',
-            'description' => 'required',
-            'body_type' => 'required',
-            'duty_type' => 'required',
-            'interior_type' => 'required',
-            'engine_size' => 'required',
-            'front_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'back_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'right_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'left_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'interiorf_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'interiorb_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'opt_img1' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'opt_img2' => 'file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'opt_img3' => 'file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'vehicle_type' => 'required',
-            'color' => 'required',
-        ]);
-    
-        Log::info('Validation successful.');
-    
-        $listing->category_id = $request->category;
-        $listing->city_id = $request->city;
-        $listing->user_id = $request->user_id;
-        $listing->ads_status = 'Pending';
-    
-        $listing->save();
-        Log::info('Listing saved successfully.', ['listing_id' => $listing->id]);
-    
-        $currentId = $listing->id;
-    
-        $imageFields = ['front_img', 'back_img', 'right_img', 'left_img', 'interiorf_img', 'interiorb_img', 'engine_img', 'opt_img1', 'opt_img2', 'opt_img3'];
-    
-        foreach ($imageFields as $fieldName) {
-            if ($request->hasFile($fieldName)) {
-                try {
-                    $image = $request->file($fieldName);
-                    $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                    $extension = $image->getClientOriginalExtension();
-                    $imageStore = $imagename . '_' . time() . '.' . $extension;
-    
-                    // Open the image using Intervention/Image
-                    $img = Image::make($image);
-    
-                    // Load the watermark image
-                    $watermark = Image::make(public_path('watermark/king.png'));
-    
-                    // Add the watermark to the image
-                    $img->insert($watermark, 'bottom-right', 10, 10);
-    
-                    // Save the watermarked image
-                    $img->save(public_path('storage/photos/' . $imageStore));
-    
-                    // Assign the image store path to the corresponding model field
-                    $vehicle->$fieldName = $imageStore;
-    
-                    Log::info('Image processed and saved.', ['field' => $fieldName, 'filename' => $imageStore]);
-                } catch (\Throwable $e) {
-                    $image = $request->file($fieldName);
-                    $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                    $extension = $image->getClientOriginalExtension();
-                    $imageStore = $imagename . '_' . time() . '.' . $extension;
-                    $image->storeAs('public/photos', $imageStore);
-                    $vehicle->$fieldName = $imageStore;
+        DB::beginTransaction();
 
-                    Log::warning('Image watermarking failed, stored original image instead.', [
-                        'field' => $fieldName,
-                        'message' => $e->getMessage(),
-                        'filename' => $imageStore,
-                    ]);
+        try {
+            $this->validate($request, [
+                'category' => 'required',
+                'city' => 'required',
+                'model_id' => 'required',
+                'year_of_build' => 'required',
+                'condition' => 'required',
+                'mileage' => '',
+                'transmission' => 'required',
+                'fuel_type' => 'required',
+                'exchange' => 'required',
+                'price' => 'required',
+                'description' => 'required',
+                'body_type' => 'required',
+                'duty_type' => 'required',
+                'interior_type' => 'required',
+                'engine_size' => 'required',
+                'front_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'back_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'right_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'left_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'interiorf_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'interiorb_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'opt_img1' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'opt_img2' => 'file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'opt_img3' => 'file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'vehicle_type' => 'required',
+                'color' => 'required',
+            ]);
+
+            $listing->category_id = $request->category;
+            $listing->city_id = $request->city;
+            $listing->user_id = $request->user_id;
+            $listing->ads_status = 'Pending';
+            $listing->save();
+
+            $currentId = $listing->id;
+            $imageFields = ['front_img', 'back_img', 'right_img', 'left_img', 'interiorf_img', 'interiorb_img', 'engine_img', 'opt_img1', 'opt_img2', 'opt_img3'];
+
+            foreach ($imageFields as $fieldName) {
+                if ($request->hasFile($fieldName)) {
+                    $image = $request->file($fieldName);
+                    $extension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
+                    $imageStore = $fieldName . '_' . time() . '_' . uniqid() . '.' . $extension;
+
+                    try {
+                        $img = Image::make($image);
+                        $watermark = Image::make(public_path('watermark/king.png'));
+                        $img->insert($watermark, 'bottom-right', 10, 10);
+                        $img->save(public_path('storage/photos/' . $imageStore));
+                        $vehicle->$fieldName = $imageStore;
+                    } catch (\Throwable $e) {
+                        $image->storeAs('public/photos', $imageStore);
+                        $vehicle->$fieldName = $imageStore;
+
+                        Log::warning('Image watermarking failed, stored original image instead.', [
+                            'field' => $fieldName,
+                            'message' => $e->getMessage(),
+                            'filename' => $imageStore,
+                        ]);
+                    }
                 }
             }
+
+            $price = str_replace(',', '', $request->input('price'));
+            $default_view = 0;
+
+            $vehicle->listing_id = $currentId;
+            $vehicle->model_id = $request->model_id;
+            $vehicle->year_of_build = $request->year_of_build;
+            $vehicle->title = $request->title;
+            $vehicle->condition = $request->condition;
+            $vehicle->mileage = $request->mileage;
+            $vehicle->transmission = $request->transmission;
+            $vehicle->fuel_type = $request->fuel_type;
+            $vehicle->exchange = $request->exchange;
+            $vehicle->price = $price;
+            $vehicle->description = $request->description;
+            $vehicle->body_type = $request->body_type;
+            $vehicle->duty_type = $request->duty_type;
+            $vehicle->interior_type = $request->interior_type;
+            $vehicle->engine_size = $request->engine_size;
+            $vehicle->vehicle_type = $request->vehicle_type;
+            $vehicle->color = $request->color;
+            $vehicle->views = $default_view;
+            $vehicle->save();
+
+            DB::commit();
+            Log::info('Vehicle saved successfully.', ['vehicle_id' => $vehicle->id]);
+
+            return redirect()->route('user.packages', $currentId)->with('success', 'Added');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('store_vehiclesale failed', [
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+                'user_id' => Auth::id(),
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+
+            return back()
+                ->withInput()
+                ->withErrors(['submit' => 'We could not submit your listing. Please try again or use JPG/PNG if the issue persists.']);
         }
-    
-        $price = str_replace(',', '', $request->input('price'));
-    
-        // Rest of your code to save the vehicle details
-        $default_view = 0;
-    
-        $vehicle->listing_id = $currentId;
-        $vehicle->model_id = $request->model_id;
-        $vehicle->year_of_build = $request->year_of_build;
-        $vehicle->title = $request->title;
-        $vehicle->condition = $request->condition;
-        $vehicle->mileage = $request->mileage;
-        $vehicle->transmission = $request->transmission;
-        $vehicle->fuel_type = $request->fuel_type;
-        $vehicle->exchange = $request->exchange;
-        $vehicle->price = $price;
-        $vehicle->description = $request->description;
-        $vehicle->body_type = $request->body_type;
-        $vehicle->duty_type = $request->duty_type;
-        $vehicle->interior_type = $request->interior_type;
-        $vehicle->engine_size = $request->engine_size;
-        $vehicle->vehicle_type = $request->vehicle_type;
-        $vehicle->color = $request->color;
-        $vehicle->views = $default_view;
-    
-        $vehicle->save();
-        Log::info('Vehicle saved successfully.', ['vehicle_id' => $vehicle->id]);
-    
-        return redirect()->route('user.packages', $currentId)->with('success', 'Added');
     }
     
     public function show_vehiclesale(Listing $listing, Vehicle $vehicle)
@@ -719,79 +714,98 @@ class ListingController extends Controller
 
     public function store_carhire(Request $request, Listing $listing, Vehicle $vehicle)
     {
-        $this->validate($request, [
-            'category_id' => 'required',
-            'city_id' => 'required',
-            'model_id' => 'required',
-            'year_of_build' => 'required',
-            'condition' => 'required',
-            'mileage' => 'required',
-            'transmission' => 'required',
-            'fuel_type' => 'required',
-            'exchange' => 'required',
-            'description' => 'required',
-            'body_type' => 'required',
-            'package_id' => 'required',
-            'vehicle_type' => 'required',
-            'color' => 'required',
-            'front_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'back_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'right_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'left_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'interiorf_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'interiorb_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'opt_img1' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'opt_img2' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'opt_img3' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-            'pickup_date' => 'nullable|required|date',
-            'return_date' => 'nullable|required|date|after:pickup_date',
-        ]);
+        DB::beginTransaction();
 
-        $listing->fill($request->only([
-            'category_id',
-            'city_id',
-            'package_id',
-            'user_id',
-            'ads_status'
-        ]))->save();
+        try {
+            $this->validate($request, [
+                'category_id' => 'required',
+                'city_id' => 'required',
+                'model_id' => 'required',
+                'year_of_build' => 'required',
+                'condition' => 'required',
+                'mileage' => 'required',
+                'transmission' => 'required',
+                'fuel_type' => 'required',
+                'exchange' => 'required',
+                'description' => 'required',
+                'body_type' => 'required',
+                'package_id' => 'required',
+                'vehicle_type' => 'required',
+                'color' => 'required',
+                'front_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'back_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'right_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'left_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'interiorf_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'interiorb_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'opt_img1' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'opt_img2' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'opt_img3' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'pickup_date' => 'nullable|required|date',
+                'return_date' => 'nullable|required|date|after:pickup_date',
+            ]);
 
-        $currentId = $listing->id;
+            $listing->fill($request->only([
+                'category_id',
+                'city_id',
+                'package_id',
+                'user_id',
+                'ads_status'
+            ]))->save();
 
-        $imageFields = ['front_img', 'back_img', 'right_img', 'left_img', 'interiorf_img', 'interiorb_img', 'opt_img1', 'opt_img2', 'opt_img3'];
+            $currentId = $listing->id;
+            $imageFields = ['front_img', 'back_img', 'right_img', 'left_img', 'interiorf_img', 'interiorb_img', 'opt_img1', 'opt_img2', 'opt_img3'];
 
-        foreach ($imageFields as $field) {
-            if ($request->hasFile($field)) {
-                $image = $request->file($field);
-                $imageName = $field . '_' . time() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('public/photos', $imageName);
-                $vehicle->{$field} = $imageName;
+            foreach ($imageFields as $field) {
+                if ($request->hasFile($field)) {
+                    $image = $request->file($field);
+                    $extension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
+                    $imageName = $field . '_' . time() . '_' . uniqid() . '.' . $extension;
+                    $image->storeAs('public/photos', $imageName);
+                    $vehicle->{$field} = $imageName;
+                }
             }
+
+            $vehicle->fill($request->only([
+                'model_id',
+                'year_of_build',
+                'condition',
+                'mileage',
+                'transmission',
+                'fuel_type',
+                'exchange',
+                'description',
+                'body_type',
+                'interior_type',
+                'engine_size',
+                'vehicle_type',
+                'color',
+                'rent_days',
+                'price_per_day',
+                'pickup_date',
+                'return_date'
+            ]));
+
+            $vehicle->listing_id = $currentId;
+            $vehicle->save();
+            DB::commit();
+
+            return redirect()->route('user.invoice', [$listing->id, $vehicle->id])->with('success', 'Added');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('store_carhire failed', [
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+                'user_id' => Auth::id(),
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+
+            return back()
+                ->withInput()
+                ->withErrors(['submit' => 'We could not submit your listing. Please try again or use JPG/PNG if the issue persists.']);
         }
-
-        $vehicle->fill($request->only([
-            'model_id',
-            'year_of_build',
-            'condition',
-            'mileage',
-            'transmission',
-            'fuel_type',
-            'exchange',
-            'description',
-            'body_type',
-            'interior_type',
-            'engine_size',
-            'vehicle_type',
-            'color',
-            'rent_days',
-            'price_per_day',
-            'pickup_date',
-            'return_date'
-        ]));
-
-        $vehicle->listing_id = $currentId;
-        $vehicle->save();
-
-        return redirect()->route('user.invoice', [$listing->id, $vehicle->id])->with('success', 'Added');
     }
 
 
