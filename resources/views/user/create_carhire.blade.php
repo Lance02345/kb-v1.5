@@ -743,5 +743,39 @@ $(document).on('change','.make',function(){
 });
 });
   </script>
+  <script>
+    (function () {
+      var form = document.querySelector('form[data-stepper-form]');
+      if (!form) return;
+
+      var MAX_FILE_BYTES = 20 * 1024 * 1024; // 20MB each
+      var MAX_TOTAL_BYTES = 40 * 1024 * 1024; // 40MB total
+
+      form.addEventListener('submit', function (event) {
+        var total = 0;
+        var tooLargeFile = null;
+        var inputs = form.querySelectorAll('input[type="file"]');
+
+        inputs.forEach(function (input) {
+          if (!input.files) return;
+          Array.prototype.forEach.call(input.files, function (file) {
+            total += file.size || 0;
+            if (!tooLargeFile && file.size > MAX_FILE_BYTES) tooLargeFile = file;
+          });
+        });
+
+        if (tooLargeFile) {
+          event.preventDefault();
+          alert('"' + tooLargeFile.name + '" is too large. Maximum is 20MB per file.');
+          return;
+        }
+
+        if (total > MAX_TOTAL_BYTES) {
+          event.preventDefault();
+          alert('Total selected images are too large. Keep total upload under 40MB.');
+        }
+      });
+    })();
+  </script>
   @include('user.partials.listing-stepper-script')
   @endsection

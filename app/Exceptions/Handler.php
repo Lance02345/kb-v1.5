@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Http\Exceptions\PostTooLargeException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -37,5 +38,20 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof PostTooLargeException) {
+            $message = 'Upload too large. Please use smaller photos or fewer files, then try again.';
+
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $message], 413);
+            }
+
+            return redirect()->back()->withErrors(['submit' => $message]);
+        }
+
+        return parent::render($request, $e);
     }
 }
