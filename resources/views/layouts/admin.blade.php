@@ -24,7 +24,7 @@
         /* Fallback styles for kb-admin2 if admin-modern.css is unavailable/cached */
         body.kb-admin2 { background: #0b1020; color: #e5e7eb; margin: 0; }
         .kb2-shell { display: grid; grid-template-columns: 270px minmax(0,1fr); min-height: 100vh; }
-        .kb2-sidebar { background: #0b1225; border-right: 1px solid #263248; }
+        .kb2-sidebar { background: #0b1225; border-right: 1px solid #263248; height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
         .kb2-brand { height: 72px; padding: 18px 20px; border-bottom: 1px solid rgba(148,163,184,.15); color: #fff; font-weight: 700; }
         .kb2-brand span { color: #fbbf24; }
         .kb2-nav { padding: 12px; }
@@ -48,7 +48,7 @@
         .kb-admin2 .alert-success { border: 1px solid rgba(16,185,129,.35); background: rgba(16,185,129,.12); color: #d1fae5; }
         @media (max-width: 992px) {
             .kb2-shell { grid-template-columns: 1fr; }
-            .kb2-sidebar { position: fixed; inset: 0 auto 0 0; width: 270px; z-index: 50; transform: translateX(-100%); transition: transform .2s ease; }
+            .kb2-sidebar { position: fixed; inset: 0 auto 0 0; width: 270px; z-index: 50; transform: translateX(-100%); transition: transform .2s ease; overscroll-behavior: contain; }
             .kb-admin2.kb2-nav-open .kb2-sidebar { transform: translateX(0); }
             .kb2-toggle { display: inline-flex; }
         }

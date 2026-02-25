@@ -250,6 +250,44 @@
       }
     });
   }
+
+  (function () {
+    var toggler = document.querySelector('.kb-mobile-toggle');
+    var menu = document.getElementById('navbarSupportedContent');
+    if (!toggler || !menu) return;
+
+    function closeMenu() {
+      menu.classList.remove('show');
+      toggler.setAttribute('aria-expanded', 'false');
+    }
+
+    toggler.addEventListener('click', function () {
+      if (window.innerWidth >= 992) return;
+      var isOpen = menu.classList.contains('show');
+      menu.classList.toggle('show', !isOpen);
+      toggler.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    menu.querySelectorAll('.nav-link').forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (window.innerWidth < 992) closeMenu();
+      });
+    });
+
+    document.addEventListener('click', function (event) {
+      if (window.innerWidth >= 992) return;
+      if (!menu.classList.contains('show')) return;
+      if (menu.contains(event.target) || toggler.contains(event.target)) return;
+      closeMenu();
+    });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 992) {
+        menu.classList.remove('show');
+        toggler.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
 </script>
 @stack('scripts')
 </body>
