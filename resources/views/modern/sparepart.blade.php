@@ -16,6 +16,18 @@
 
 <main class="w-full space-y-6 px-4 py-8 sm:px-6 lg:px-10">
     <a href="{{ route('spareparts') }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Back to Spare Parts</a>
+    @auth
+        @if((int) auth()->id() === (int) $sparePart->user_id)
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('user.sparepartsedit', $sparePart->id) }}" class="inline-flex rounded-lg bg-amber-300 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Edit Listing</a>
+                <form action="{{ route('user.sparepartsdestroy', $sparePart->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this spare part?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="inline-flex rounded-lg border border-rose-300/30 bg-rose-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-rose-200 hover:bg-rose-400/20">Delete Listing</button>
+                </form>
+            </div>
+        @endif
+    @endauth
 
     <section class="grid gap-6 lg:grid-cols-3">
         <article class="space-y-4 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 p-4 lg:col-span-2">

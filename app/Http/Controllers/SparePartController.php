@@ -16,6 +16,7 @@ use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
 
@@ -92,13 +93,70 @@ class SparePartController extends Controller
 
     public function myspareparts(SparePart $spareParts, Listing $listing)
     {
-
-        $spareParts = SparePart::where('user_id', Auth::id())->get();
+        $spareParts = SparePart::where('user_id', Auth::id())->latest('id')->get();
         $vehicles = Vehicle::all();
         $listings = Listing::where('ads_status', 'Expired')->where('user_id', Auth::id())->get();
         return view('user.spareparts_list', compact('spareParts', 'listings', 'vehicles'));
 
 
+    }
+
+    public function edit(SparePart $sparePart)
+    {
+        abort_if((int) $sparePart->user_id !== (int) Auth::id(), 403);
+        return view('user.edit_spareparts', compact('sparePart'));
+    }
+
+    public function update(Request $request, SparePart $sparePart)
+    {
+        abort_if((int) $sparePart->user_id !== (int) Auth::id(), 403);
+
+        $request->validate([
+            'make' => 'required',
+            'item_name' => 'required',
+            'item_description' => 'required',
+            'condition' => 'required|in:Used,New',
+            'location' => 'required',
+            'price' => 'required|numeric',
+            'front_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'back_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'right_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+        ]);
+
+        $sparePart->make = $request->make;
+        $sparePart->item_name = $request->item_name;
+        $sparePart->item_description = $request->item_description;
+        $sparePart->condition = $request->condition;
+        $sparePart->location = $request->location;
+        $sparePart->price = $request->price;
+
+        foreach (['front_img', 'back_img', 'right_img'] as $fieldName) {
+            if ($request->hasFile($fieldName)) {
+                if (!empty($sparePart->{$fieldName})) {
+                    Storage::delete('public/photos/' . $sparePart->{$fieldName});
+                }
+                $sparePart->{$fieldName} = $this->storeProcessedSparePartImage($request->file($fieldName), $fieldName);
+            }
+        }
+
+        $sparePart->save();
+
+        return redirect()->route('user.myspareparts')->with('success', 'Spare part updated successfully.');
+    }
+
+    public function destroy(SparePart $sparePart)
+    {
+        abort_if((int) $sparePart->user_id !== (int) Auth::id(), 403);
+
+        foreach (['front_img', 'back_img', 'right_img'] as $fieldName) {
+            if (!empty($sparePart->{$fieldName})) {
+                Storage::delete('public/photos/' . $sparePart->{$fieldName});
+            }
+        }
+
+        $sparePart->delete();
+
+        return redirect()->route('user.myspareparts')->with('success', 'Spare part deleted successfully.');
     }
 
     public function showspareparts(SparePart $spareParts, Listing $listing)

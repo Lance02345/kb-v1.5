@@ -200,9 +200,12 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
     Route :: post ('post_invoice',  [ListingController::class, 'post_invoice'])->name('post_invoice');
     Route :: get ('carevent',  [CareventController::class, 'index'])->name('carevent');
     Route :: get ('index_carevent',  [ListingController::class, 'userevent'])->name('userevent');
-        Route::get('/spareparts/create', [SparePartController::class, 'create'])->name('sparepartscreate');
+    Route::get('/spareparts/create', [SparePartController::class, 'create'])->name('sparepartscreate');
     Route::post('/spareparts', [SparePartController::class, 'store'])->name('sparepartsstore');
     Route::get('/myspareparts', [SparePartController::class, 'myspareparts'])->name('myspareparts');
+    Route::get('/spareparts/{sparePart}/edit', [SparePartController::class, 'edit'])->name('sparepartsedit');
+    Route::put('/spareparts/{sparePart}', [SparePartController::class, 'update'])->name('sparepartsupdate');
+    Route::delete('/spareparts/{sparePart}', [SparePartController::class, 'destroy'])->name('sparepartsdestroy');
 
     
     Route :: get ('create_carevent',  [CareventController::class, 'create_carevent'])->name('create_carevent');

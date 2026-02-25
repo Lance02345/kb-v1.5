@@ -37,7 +37,15 @@
                             <p>Location: <span class="text-white">{{ $sparePart->location }}</span></p>
                         </div>
                         <p class="line-clamp-2 text-sm text-slate-400">{{ $sparePart->item_description }}</p>
-                        <a href="{{ route('sparepart', $sparePart->id) }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">View Details</a>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="{{ route('sparepart', $sparePart->id) }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">View Details</a>
+                            <a href="{{ route('user.sparepartsedit', $sparePart->id) }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Edit</a>
+                            <form action="{{ route('user.sparepartsdestroy', $sparePart->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this spare part?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="inline-flex rounded-lg border border-rose-300/30 bg-rose-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-rose-200 hover:bg-rose-400/20">Delete</button>
+                            </form>
+                        </div>
                     </div>
                 </article>
             @endforeach
