@@ -125,6 +125,7 @@ body.kb-admin {
   border-radius: 14px;
   background: linear-gradient(180deg, var(--kb-admin-surface) 0%, var(--kb-admin-surface-2) 100%);
   box-shadow: 0 16px 28px rgba(2, 6, 23, 0.25);
+  color: #e2e8f0;
 }
 
 .kb-admin .container-fluid {
@@ -165,6 +166,11 @@ body.kb-admin {
   color: #e2e8f0;
 }
 
+.kb-admin .card-title {
+  color: #f8fafc !important;
+  font-weight: 700;
+}
+
 .kb-admin .table thead th {
   border-bottom: 1px solid var(--kb-admin-border);
   border-top: 0;
@@ -177,6 +183,10 @@ body.kb-admin {
 .kb-admin .table td,
 .kb-admin .table th {
   border-color: rgba(148, 163, 184, 0.2);
+}
+
+.kb-admin .table tbody td {
+  color: #f1f5f9;
 }
 
 .kb-admin .table-striped tbody tr:nth-of-type(odd) {

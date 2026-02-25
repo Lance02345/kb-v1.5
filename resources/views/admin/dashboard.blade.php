@@ -43,31 +43,31 @@
     <div class="col-lg-8 mb-3">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title mb-3">Listing Status Breakdown</h4>
+                <h4 class="card-title mb-3 text-white">Listing Status Breakdown</h4>
                 <div class="table-responsive">
                     <table class="table table-striped mb-0">
                         <thead>
                         <tr>
-                            <th>Status</th>
-                            <th class="text-right">Count</th>
+                            <th class="text-white">Status</th>
+                            <th class="text-right text-white">Count</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>Approved</td>
-                            <td class="text-right">{{ number_format($approved) }}</td>
+                            <td class="text-light">Approved</td>
+                            <td class="text-right text-light">{{ number_format($approved) }}</td>
                         </tr>
                         <tr>
-                            <td>Pending</td>
-                            <td class="text-right">{{ number_format($pending) }}</td>
+                            <td class="text-light">Pending</td>
+                            <td class="text-right text-light">{{ number_format($pending) }}</td>
                         </tr>
                         <tr>
-                            <td>Sold</td>
-                            <td class="text-right">{{ number_format($sold) }}</td>
+                            <td class="text-light">Sold</td>
+                            <td class="text-right text-light">{{ number_format($sold) }}</td>
                         </tr>
                         <tr>
-                            <td>Expired</td>
-                            <td class="text-right">{{ number_format($expired) }}</td>
+                            <td class="text-light">Expired</td>
+                            <td class="text-right text-light">{{ number_format($expired) }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -79,7 +79,7 @@
     <div class="col-lg-4 mb-3">
         <div class="card h-100">
             <div class="card-body">
-                <h4 class="card-title mb-3">Quick Actions</h4>
+                <h4 class="card-title mb-3 text-white">Quick Actions</h4>
                 <div class="d-flex flex-column" style="gap: 10px;">
                     <a class="btn btn-primary" href="{{ route('admin.listing.index') }}">Review Listings</a>
                     <a class="btn btn-primary" href="{{ route('admin.user.index') }}">Manage Users</a>
