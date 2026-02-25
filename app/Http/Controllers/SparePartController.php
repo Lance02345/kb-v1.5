@@ -11,6 +11,7 @@ use App\Models\Listing;
 use App\Models\Package;
 use App\Models\SparePart;
 use App\Models\User;
+use App\Support\JourneyMailer;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -97,6 +98,9 @@ class SparePartController extends Controller
         }
 
         $sparePart->save();
+
+        $sparePart->load('user');
+        JourneyMailer::sendSparePartSubmitted($sparePart);
 
         return redirect()->route('user.myspareparts')->with('success', 'Spare part added successfully.');
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Invoice;
+use App\Support\JourneyMailer;
 use Illuminate\Http\Request;
 
 class AdminInvoiceController extends Controller
@@ -22,8 +23,15 @@ class AdminInvoiceController extends Controller
     }
     public function invoice_update(Request $request, Invoice $invoice)
     {
+        $oldStatus = $invoice->status;
         $invoice->status = $request->invoice_status;
         $invoice->update();
+
+        if (strtoupper((string) $oldStatus) !== strtoupper((string) $invoice->status)) {
+            $invoice->load('user');
+            JourneyMailer::sendInvoiceStatusUpdated($invoice, $oldStatus);
+        }
+
         return redirect() -> route('admin.invoice.invoice_edit',$invoice->id)->with('success','Succesfully Update');
 
     }

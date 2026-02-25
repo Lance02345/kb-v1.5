@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Support\JourneyMailer;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class ForgotPasswordController extends Controller
@@ -90,6 +91,11 @@ class ForgotPasswordController extends Controller
 
     DB::table('users')->where('email', $request->email)
     ->update(['password' => Hash::make($request->password)]);
+
+    $user = User::where('email', $request->email)->first();
+    if ($user) {
+        JourneyMailer::sendPasswordChanged($user);
+    }
 
     DB::table('password_resets')->where(['email'=> $request->email])->delete();
 

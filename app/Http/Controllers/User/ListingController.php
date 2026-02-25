@@ -27,6 +27,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rule;
 use PhpParser\Node\Expr\List_;
 use App\Models\User;
+use App\Support\JourneyMailer;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Log;
 
@@ -456,6 +457,8 @@ class ListingController extends Controller
 
             DB::commit();
             Log::info('Vehicle saved successfully.', ['vehicle_id' => $vehicle->id]);
+            $listing->load('user');
+            JourneyMailer::sendVehicleListingSubmitted($listing, $vehicle);
 
             return redirect()->route('user.packages', $currentId)->with('success', 'Added');
         } catch (\Throwable $e) {
@@ -759,6 +762,8 @@ class ListingController extends Controller
             $vehicle->listing_id = $currentId;
             $vehicle->save();
             DB::commit();
+            $listing->load('user');
+            JourneyMailer::sendCarHireSubmitted($listing, $vehicle);
 
             return redirect()->route('user.invoice', [$listing->id, $vehicle->id])->with('success', 'Added');
         } catch (\Throwable $e) {
@@ -1030,6 +1035,9 @@ class ListingController extends Controller
 
 
         $invoice->save();
+
+        $invoice->load('user', 'package');
+        JourneyMailer::sendInvoiceGenerated($invoice);
 
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Support\JourneyMailer;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -73,6 +74,7 @@ class LoginController extends Controller
     protected function _registerOrLoginUser($data)
     {
         $user = User::where('email', '=', $data->email)->first();
+        $created = false;
         if(!$user){
             $user = new User();
             $user->name = $data->name;
@@ -80,6 +82,11 @@ class LoginController extends Controller
             $user->provider_id = $data->id;
             $user->avatar = $data->avatar;
             $user->save();
+            $created = true;
+        }
+
+        if ($created) {
+            JourneyMailer::sendWelcome($user);
         }
         
         Auth::login($user);

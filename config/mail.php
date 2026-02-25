@@ -36,11 +36,11 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.gmail.com'), // Updated SMTP host from .env
-            'port' => env('MAIL_PORT', 465),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'), // Updated encryption from .env
-            'username' => env('MAIL_USERNAME', 'kingsbridgemotors.com'), // Updated username from .env
-            'password' => env('MAIL_PASSWORD', 'Lance@023!'), // Updated password from .env
+            'host' => env('MAIL_HOST', '127.0.0.1'),
+            'port' => env('MAIL_PORT', 2525),
+            'encryption' => env('MAIL_ENCRYPTION', null),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'auth_mode' => null,
         ],
@@ -71,19 +71,6 @@ return [
         'array' => [
             'transport' => 'array',
         ],
-    ], 
-
-    [
-        'driver' => env('MAIL_DRIVER', 'smtp'),
-        'host' => env('MAIL_HOST', 'smtp.gmail.com'),
-        'port' => env('MAIL_PORT', 587),
-        'from' => ['address' => 'kingsbridgemotors@gmail.com', 'name' => 'KingsBridgeMotors'],
-        'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-        'username' => env('MAIL_USERNAME'),
-        'password' => env('MAIL_PASSWORD'),
-        'sendmail' => '/usr/sbin/sendmail -bs',
-        'pretend' => false,
-    
     ],
 
     /*
@@ -98,8 +85,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'labratcrow@gmail.com'), // Ensure this matches your MAIL_FROM_ADDRESS value
-        'name' => env('MAIL_FROM_NAME', 'KingsBridgeMotors'), // Ensure this matches your MAIL_FROM_NAME value
+        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
     /*

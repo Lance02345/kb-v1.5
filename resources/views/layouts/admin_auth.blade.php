@@ -12,8 +12,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
-    <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('watermark/KINGSBRIDGE.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('watermark/KINGSBRIDGE.png') }}">
     <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous"> -->
     <link href="{{ asset('admin/css/style.css')}}" rel="stylesheet">
     <link href="{{ asset('css/kingsbridge-modern.css') }}?v={{ @filemtime(public_path('css/kingsbridge-modern.css')) }}" rel="stylesheet">
@@ -59,6 +59,5 @@
     @stack('scripts')
 </body>
 </html>
-
 
 

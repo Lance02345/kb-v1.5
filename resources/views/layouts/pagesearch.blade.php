@@ -9,8 +9,8 @@
     <title>KingsBridge</title>
     
     <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
-    <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('watermark/KINGSBRIDGE.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('watermark/KINGSBRIDGE.png') }}">
     <!-- PLUGINS CSS STYLE -->
     <!-- <link href="plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"> -->
     <!-- Bootstrap -->
