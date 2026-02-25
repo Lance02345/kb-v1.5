@@ -44,16 +44,6 @@
                                 </span>
                             @enderror
                     </div>
-                    <div class="form-group">
-                        <label>Car Model Year</label>
-                        <input type="number" name="model_year" class="form-control input-default  @error('model_year') is-invalid @enderror" 
-                        value="{{ old('model_year', $carmodel->model_year) }}" >
-                            @error('model_year')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                            </div>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>

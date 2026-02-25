@@ -4,7 +4,7 @@
     <div class="d-flex flex-wrap align-items-center justify-content-between mb-3" style="gap: 12px;">
         <div>
             <h4 class="mb-1">Create Car Model</h4>
-            <small class="text-muted">Attach each model to a make and model year.</small>
+            <small class="text-muted">Attach each model to a make.</small>
         </div>
         <a href="{{ route('admin.carmodel.index')}}" class="btn btn-primary">Back to Car Models</a>
     </div>
@@ -39,17 +39,6 @@
                                 </span>
                             @enderror
                     </div>
-                    <div class="form-group">
-                        <label>Car Model Year</label>
-                        <input type="number" name="model_year" value="{{ old('model_year') }}" class="form-control input-default  @error('model_year') is-invalid @enderror" placeholder="Car model year">
-                            @error('model_year')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                    </div>
-              
-                
                     <button type="submit" class="btn btn-primary">Add</button>
                     
                 </form>

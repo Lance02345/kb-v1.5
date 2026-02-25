@@ -42,7 +42,7 @@ class CarmodelController extends Controller
     {
         $validatedData = $this->validate($request, [
             'model' => 'required|string|max:80',
-            'model_year' => 'required|integer|min:1900|max:2100',
+            'model_year' => 'nullable|integer|min:1900|max:2100',
             'make_id' => 'required|exists:carmakes,id',
         ]);
        Carmodel::create($validatedData);
@@ -84,7 +84,7 @@ class CarmodelController extends Controller
     {
         $validatedData = $this->validate($request, [
             'model' => 'required|string|max:80',
-            'model_year' => 'required|integer|min:1900|max:2100',
+            'model_year' => 'nullable|integer|min:1900|max:2100',
             'make_id' => 'required|exists:carmakes,id',
         ]);
        $carmodel->update($validatedData);

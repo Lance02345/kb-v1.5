@@ -10,7 +10,7 @@
     <div class="d-flex flex-wrap align-items-center justify-content-between mb-3" style="gap: 12px;">
         <div>
             <h4 class="mb-1">Car Models</h4>
-            <small class="text-muted">Manage model names, years, and make relationships.</small>
+            <small class="text-muted">Manage model names and make relationships.</small>
         </div>
         <a href="{{route('admin.carmodel.create')}}" class="btn btn-primary">Add Car Model</a>
     </div>
