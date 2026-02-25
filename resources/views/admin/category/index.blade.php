@@ -7,10 +7,12 @@
 </div>
 @endif
 <div class="container-fluid">
-  
-        <div class="rounded-button">
-           <a href="{{route('admin.category.create')}}" class="btn btn-primary">Create</a>
-        
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-3" style="gap: 12px;">
+            <div>
+                <h4 class="mb-1 text-white">Categories</h4>
+                <small class="text-muted">Organize listings by vehicle and service category.</small>
+            </div>
+            <a href="{{route('admin.category.create')}}" class="btn btn-primary">Create Category</a>
         </div>
 
     
@@ -19,25 +21,26 @@
             <div class="card">
                 <div class="card-body">
                     @if( count ($categories) > 0)
-                    <h4 class="card-title">Categories</h4>
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
+                        <table class="table table-striped table-bordered align-middle">
                             <thead>
                                 <tr>
-                                    <th>ID</th> 
+                                    <th class="text-nowrap">ID</th> 
                                     <th>Category</th>          
-                                    <th>Actions</th>
+                                    <th class="text-nowrap">Actions</th>
                                     
                                 </tr>
                             </thead>
                             <tbody>
                               @foreach ($categories as $category)
                                 <tr>
-                                    <td>{{$category->id}}</td>
+                                    <td class="text-nowrap">{{$category->id}}</td>
                                     <td>{{$category->category_name}}</td>
-                                    <td>
-                                        <a href="{{ route('admin.category.edit',$category->id)}}" ><i class="fa fa-pencil color-muted m-r-5"></i> </a>
-                                        <a href="javascript:void(0)" onclick="$(this).parent().find('form').submit()" class="btn btn-link p-0"><i class="fa fa-close color-danger"></i></a>
+                                    <td class="text-nowrap">
+                                        <div class="d-inline-flex align-items-center" style="gap: 10px;">
+                                            <a href="{{ route('admin.category.edit',$category->id)}}" title="Edit Category"><i class="fa fa-pencil color-muted"></i></a>
+                                            <a href="javascript:void(0)" onclick="$(this).parent().find('form').submit()" class="btn btn-link p-0" title="Delete Category"><i class="fa fa-close color-danger"></i></a>
+                                        </div>
                                         <form action="{{ route('admin.category.destroy',$category->id)}}" method="post" onsubmit="return confirm('Are you sure want to delete?');">
                                             @method('DELETE')
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -51,7 +54,7 @@
                         </table>
                     </div>
                     @else
-                    <p> please add categories </p>
+                    <p class="mb-0 text-muted">No categories found.</p>
                     @endif
                 </div>
             </div>

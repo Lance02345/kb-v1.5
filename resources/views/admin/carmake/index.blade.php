@@ -9,7 +9,7 @@
 <div class="container-fluid">
     <div class="d-flex flex-wrap align-items-center justify-content-between mb-3" style="gap: 12px;">
         <div>
-            <h4 class="mb-1">Car Makes</h4>
+            <h4 class="mb-1 text-white">Car Makes</h4>
             <small class="text-muted">Manage manufacturers used when creating vehicle models.</small>
         </div>
         <a href="{{route('admin.carmake.create')}}" class="btn btn-primary">Add Car Make</a>
@@ -21,20 +21,22 @@
                 <div class="card-body">
                     @if( count ($carmakes) > 0)
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
+                        <table class="table table-striped table-bordered align-middle">
                             <thead>
                                 <tr>
                                     <th>Car Make</th>
-                                    <th>Actions</th>
+                                    <th class="text-nowrap">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                               @foreach ($carmakes as $carmake)
                                 <tr>
                                     <td>{{$carmake->make}}</td>
-                                    <td>
-                                        <a href="{{ route('admin.carmake.edit',$carmake->id)}}" ><i class="fa fa-pencil color-muted m-r-5"></i> </a>
-                                        <a href="javascript:void(0)" onclick="$(this).parent().find('form').submit()" class="btn btn-link p-0"><i class="fa fa-close color-danger"></i></a>
+                                    <td class="text-nowrap">
+                                        <div class="d-inline-flex align-items-center" style="gap: 10px;">
+                                            <a href="{{ route('admin.carmake.edit',$carmake->id)}}" title="Edit Car Make"><i class="fa fa-pencil color-muted"></i></a>
+                                            <a href="javascript:void(0)" onclick="$(this).parent().find('form').submit()" class="btn btn-link p-0" title="Delete Car Make"><i class="fa fa-close color-danger"></i></a>
+                                        </div>
                                         <form action="{{ route('admin.carmake.destroy',$carmake->id)}}" method="post" onsubmit="return confirm('Are you sure you want to delete this car make?');">
                                             @method('DELETE')
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">

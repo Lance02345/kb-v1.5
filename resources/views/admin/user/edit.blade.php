@@ -1,14 +1,17 @@
 @extends('layouts.admin')
 @section('content')
 <div class="container-fluid">
-    <div class="rounded-button">
-    <a href="{{ route('admin.user.index')}}" class="btn btn-primary">Back</a>
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3" style="gap: 12px;">
+        <div>
+            <h4 class="mb-1 text-white">Edit User</h4>
+            <small class="text-muted">Update user details and access roles.</small>
+        </div>
+        <a href="{{ route('admin.user.index')}}" class="btn btn-primary">Back to Users</a>
     </div>
 <div class="row">
 <div class="col-lg-12">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">user Create</h4>
             <div class="basic-form">
                 <form method="POST" action="{{ route('admin.user.update',$user->id) }}">
                     @csrf

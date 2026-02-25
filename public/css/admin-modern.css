@@ -113,6 +113,10 @@ body.kb-admin {
   padding: 20px;
 }
 
+.kb-admin .content-body {
+  margin-left: 0 !important;
+}
+
 .kb-admin-footer {
   border-top: 1px solid var(--kb-admin-border);
   color: var(--kb-admin-muted);
@@ -135,6 +139,10 @@ body.kb-admin {
 .kb-admin .container-fluid {
   padding-left: 0;
   padding-right: 0;
+}
+
+.kb-admin .content-body .container-fluid {
+  padding: 0 !important;
 }
 
 .kb-admin .rounded-button {
@@ -161,9 +169,12 @@ body.kb-admin {
 .kb-admin h6,
 .kb-admin p,
 .kb-admin label,
-.kb-admin small,
-.kb-admin .text-muted {
+.kb-admin small {
   color: inherit !important;
+}
+
+.kb-admin .text-muted {
+  color: var(--kb-admin-muted) !important;
 }
 
 .kb-admin .table {
@@ -235,6 +246,24 @@ body.kb-admin {
   color: #dbeafe;
 }
 
+.kb-admin-sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.kb-admin-sidebar::-webkit-scrollbar-track {
+  background: #0b1225;
+}
+
+.kb-admin-sidebar::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 999px;
+}
+
+.kb-admin-sidebar {
+  scrollbar-color: #334155 #0b1225;
+  scrollbar-width: thin;
+}
+
 .kb-admin .alert-success {
   border: 1px solid rgba(16, 185, 129, .35);
   background: rgba(16, 185, 129, .12);
@@ -248,6 +277,19 @@ body.kb-admin {
   border: 1px solid #334155;
   border-radius: 10px;
   color: #e2e8f0;
+}
+
+.kb-admin .form-control::placeholder,
+.kb-admin textarea::placeholder {
+  color: #64748b;
+}
+
+.kb-admin .basic-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.kb-admin .basic-form .btn-primary {
+  min-width: 120px;
 }
 
 .kb-admin .basic-form label {
@@ -270,10 +312,26 @@ body.kb-admin {
   font-weight: 700;
 }
 
+.kb-admin .table td .fa {
+  font-size: 15px;
+  line-height: 1;
+}
+
 .kb-admin .btn-primary:hover,
 .kb-admin .btn.btn-primary:hover {
   background: #fcd34d;
   border-color: #fbbf24;
+}
+
+.kb-admin .btn-info {
+  background: rgba(59, 130, 246, 0.22);
+  border-color: rgba(59, 130, 246, 0.45);
+  color: #dbeafe !important;
+}
+
+.kb-admin .btn-info:hover {
+  background: rgba(59, 130, 246, 0.32);
+  border-color: rgba(59, 130, 246, 0.6);
 }
 
 .kb-admin .kb-stat {

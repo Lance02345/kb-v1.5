@@ -1,14 +1,17 @@
 @extends('layouts.admin')
 @section('content')
 <div class="container-fluid">
-    <div class="rounded-button">
-    <a href="{{ route('admin.user.index')}}" class="btn btn-primary">Back</a>
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3" style="gap: 12px;">
+        <div>
+            <h4 class="mb-1 text-white">Create User</h4>
+            <small class="text-muted">Add a new account and assign role access.</small>
+        </div>
+        <a href="{{ route('admin.user.index')}}" class="btn btn-primary">Back to Users</a>
     </div>
 <div class="row">
 <div class="col-lg-12">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">user Create</h4>
             <div class="basic-form">
                 <form method="POST" action="{{ route('admin.user.store') }}">
                     @csrf
@@ -40,7 +43,6 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        </div>
                     </div>
 
                     <div class="form-group ">

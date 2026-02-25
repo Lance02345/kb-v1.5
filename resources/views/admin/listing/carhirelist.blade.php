@@ -6,29 +6,34 @@
 @endif
 
 <div class="container-fluid">
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3" style="gap: 12px;">
+        <div>
+            <h4 class="mb-1 text-white">Car Hire Listings</h4>
+            <small class="text-muted">Review all hire listings with daily pricing and availability dates.</small>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-3">Car Hire Listings</h4>
                     @if(count($listings) > 0)
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered">
+                            <table class="table table-striped table-bordered align-middle">
                                 <thead>
                                 <tr>
-                                    <th>Listing ID</th>
+                                    <th class="text-nowrap">Listing ID</th>
                                     <th>Vehicle</th>
                                     <th>Owner</th>
-                                    <th>Hire Price/Day</th>
+                                    <th class="text-nowrap">Hire Price/Day</th>
                                     <th>Dates</th>
-                                    <th>Image</th>
+                                    <th class="text-nowrap">Image</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($listings as $listing)
                                     @php($vehicle = collect($vehicles)->firstWhere('listing_id', $listing->id))
                                     <tr>
-                                        <td>{{ $listing->id }}</td>
+                                        <td class="text-nowrap">{{ $listing->id }}</td>
                                         <td>
                                             @if($vehicle)
                                                 {{ $vehicle->title ?: ($vehicle->year_of_build . ' ' . ($vehicle->vehicle_type ?: 'Vehicle')) }}
@@ -37,7 +42,7 @@
                                             @endif
                                         </td>
                                         <td>{{ optional($listing->user)->name ?: 'N/A' }}</td>
-                                        <td>{{ $vehicle && $vehicle->price_per_day ? 'Ksh ' . number_format((float)$vehicle->price_per_day) : 'N/A' }}</td>
+                                        <td class="text-nowrap">{{ $vehicle && $vehicle->price_per_day ? 'Ksh ' . number_format((float)$vehicle->price_per_day) : 'N/A' }}</td>
                                         <td>
                                             @if($vehicle)
                                                 {{ $vehicle->pickup_date ?: '-' }} to {{ $vehicle->return_date ?: '-' }}
@@ -58,7 +63,7 @@
                             </table>
                         </div>
                     @else
-                        <p class="mb-0">No car hire listings found.</p>
+                        <p class="mb-0 text-muted">No car hire listings found.</p>
                     @endif
                 </div>
             </div>

@@ -6,42 +6,47 @@
 @endif
 
 <div class="container-fluid">
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-3" style="gap: 12px;">
+        <div>
+            <h4 class="mb-1 text-white">Listings</h4>
+            <small class="text-muted">Moderate ad status, package, and ownership.</small>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-3">Listings</h4>
                     @if(count($listings) > 0)
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered">
+                            <table class="table table-striped table-bordered align-middle">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th class="text-nowrap">ID</th>
                                     <th>Category / City</th>
-                                    <th>Status</th>
-                                    <th>Featured</th>
-                                    <th>Duration</th>
+                                    <th class="text-nowrap">Status</th>
+                                    <th class="text-nowrap">Featured</th>
+                                    <th class="text-nowrap">Duration</th>
                                     <th>Package</th>
                                     <th>Owner</th>
-                                    <th>Created</th>
-                                    <th>Updated</th>
-                                    <th>Action</th>
+                                    <th class="text-nowrap">Created</th>
+                                    <th class="text-nowrap">Updated</th>
+                                    <th class="text-nowrap">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($listings as $listing)
                                     <tr>
-                                        <td>{{ $listing->id }}</td>
+                                        <td class="text-nowrap">{{ $listing->id }}</td>
                                         <td>{{ optional($listing->category)->category_name }} - {{ optional($listing->city)->city }}</td>
-                                        <td>{{ $listing->ads_status }}</td>
-                                        <td>{{ $listing->ads_featured }}</td>
-                                        <td>{{ $listing->ads_duration }}</td>
+                                        <td class="text-nowrap">{{ $listing->ads_status }}</td>
+                                        <td class="text-nowrap">{{ $listing->ads_featured }}</td>
+                                        <td class="text-nowrap">{{ $listing->ads_duration }}</td>
                                         <td>{{ optional($listing->package)->package_name }}</td>
                                         <td>{{ optional($listing->user)->name }}</td>
-                                        <td>{{ optional($listing->created_at)->diffForHumans() }}</td>
-                                        <td>{{ optional($listing->updated_at)->diffForHumans() }}</td>
-                                        <td>
-                                            <a href="{{ route('admin.listing.edit', $listing->id) }}"><i class="fa fa-pencil"></i></a>
+                                        <td class="text-nowrap">{{ optional($listing->created_at)->diffForHumans() ?: '-' }}</td>
+                                        <td class="text-nowrap">{{ optional($listing->updated_at)->diffForHumans() ?: '-' }}</td>
+                                        <td class="text-nowrap">
+                                            <a href="{{ route('admin.listing.edit', $listing->id) }}" title="Edit Listing"><i class="fa fa-pencil color-muted"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -49,7 +54,7 @@
                             </table>
                         </div>
                     @else
-                        <p class="mb-0">No listings found.</p>
+                        <p class="mb-0 text-muted">No listings found.</p>
                     @endif
                 </div>
             </div>
