@@ -246,22 +246,13 @@ body.kb-admin {
   color: #dbeafe;
 }
 
-.kb-admin-sidebar::-webkit-scrollbar {
-  width: 8px;
-}
-
-.kb-admin-sidebar::-webkit-scrollbar-track {
-  background: #0b1225;
-}
-
-.kb-admin-sidebar::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 999px;
-}
-
 .kb-admin-sidebar {
-  scrollbar-color: #334155 #0b1225;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+}
+
+.kb-admin-sidebar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 .kb-admin .alert-success {
