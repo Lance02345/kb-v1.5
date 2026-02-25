@@ -8,21 +8,26 @@ class MoveTimestampsToLastInSparePartsTable extends Migration
 {
     public function up()
     {
-        Schema::table('spare_parts', function (Blueprint $table) {
+        $hasCreatedAt = Schema::hasColumn('spare_parts', 'created_at');
+        $hasUpdatedAt = Schema::hasColumn('spare_parts', 'updated_at');
 
-            // Define the columns you want before the timestamps
+        if ($hasCreatedAt && $hasUpdatedAt) {
+            return;
+        }
 
-            $table->timestamps(); // Recreate the timestamps at the end
+        Schema::table('spare_parts', function (Blueprint $table) use ($hasCreatedAt, $hasUpdatedAt) {
+            if (!$hasCreatedAt) {
+                $table->timestamp('created_at')->nullable();
+            }
+
+            if (!$hasUpdatedAt) {
+                $table->timestamp('updated_at')->nullable();
+            }
         });
     }
 
     public function down()
     {
-        Schema::table('spare_parts', function (Blueprint $table) {
-
-            // Define the columns in the original order here
-
-            $table->timestamps(); // Recreate the timestamps
-        });
+        // No-op: this migration is only a compatibility shim for timestamp columns.
     }
 }

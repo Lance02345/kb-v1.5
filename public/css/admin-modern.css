@@ -128,6 +128,10 @@ body.kb-admin {
   color: #e2e8f0;
 }
 
+.kb-admin .card-body {
+  color: #e2e8f0;
+}
+
 .kb-admin .container-fluid {
   padding-left: 0;
   padding-right: 0;
@@ -164,11 +168,22 @@ body.kb-admin {
 
 .kb-admin .table {
   color: #e2e8f0;
+  margin-bottom: 0;
 }
 
 .kb-admin .card-title {
   color: #f8fafc !important;
   font-weight: 700;
+}
+
+.kb-admin .table-responsive {
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  background: rgba(2, 6, 23, 0.25);
+}
+
+.kb-admin .table-responsive .table {
+  min-width: 980px;
 }
 
 .kb-admin .table thead th {
@@ -183,10 +198,16 @@ body.kb-admin {
 .kb-admin .table td,
 .kb-admin .table th {
   border-color: rgba(148, 163, 184, 0.2);
+  vertical-align: middle;
 }
 
 .kb-admin .table tbody td {
   color: #f1f5f9;
+}
+
+.kb-admin .table td.text-nowrap,
+.kb-admin .table th.text-nowrap {
+  white-space: nowrap;
 }
 
 .kb-admin .table-striped tbody tr:nth-of-type(odd) {
@@ -199,6 +220,19 @@ body.kb-admin {
 
 .kb-admin .table td a:hover {
   color: #fde68a;
+}
+
+.kb-admin .badge,
+.kb-admin .badge-info {
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 10px;
+}
+
+.kb-admin .badge-info {
+  background: rgba(59, 130, 246, 0.28);
+  color: #dbeafe;
 }
 
 .kb-admin .alert-success {

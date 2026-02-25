@@ -8,15 +8,26 @@ class AddTimestampsToSpareParts extends Migration
 {
     public function up()
     {
-        Schema::table('spare_parts', function (Blueprint $table) {
-            $table->timestamps();
+        $hasCreatedAt = Schema::hasColumn('spare_parts', 'created_at');
+        $hasUpdatedAt = Schema::hasColumn('spare_parts', 'updated_at');
+
+        if ($hasCreatedAt && $hasUpdatedAt) {
+            return;
+        }
+
+        Schema::table('spare_parts', function (Blueprint $table) use ($hasCreatedAt, $hasUpdatedAt) {
+            if (!$hasCreatedAt) {
+                $table->timestamp('created_at')->nullable();
+            }
+
+            if (!$hasUpdatedAt) {
+                $table->timestamp('updated_at')->nullable();
+            }
         });
     }
 
     public function down()
     {
-        Schema::table('spare_parts', function (Blueprint $table) {
-            $table->dropTimestamps();
-        });
+        // No-op: keep timestamps if present to avoid destructive rollback side effects.
     }
 }
