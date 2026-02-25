@@ -414,7 +414,7 @@ class ListingController extends Controller
                     try {
                         // Respect phone EXIF orientation before watermark/save to avoid sideways photos.
                         $img = Image::make($image)->orientate();
-                        $watermark = Image::make(public_path('watermark/king.png'));
+                        $watermark = Image::make(public_path('watermark/KINGSBRIDGE.png'));
                         $img->insert($watermark, 'bottom-right', 10, 10);
                         $img->save(public_path('storage/photos/' . $imageStore));
                         $vehicle->$fieldName = $imageStore;
@@ -937,7 +937,7 @@ class ListingController extends Controller
         try {
             // Respect phone EXIF orientation before watermark/save to avoid sideways photos.
             $img = Image::make($image)->orientate();
-            $watermark = Image::make(public_path('watermark/king.png'));
+            $watermark = Image::make(public_path('watermark/KINGSBRIDGE.png'));
             $img->insert($watermark, 'bottom-right', 10, 10);
             $img->save(public_path('storage/photos/' . $imageName));
         } catch (\Throwable $e) {

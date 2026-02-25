@@ -27,9 +27,9 @@
                     <!-- Product Images -->
                     <section>
     <div class="main single-item">
-        @if ($sparePart->front_img) <div class="main"><img src="/storage/photos/{{ $sparePart->front_img }}" class="sparePart-img"></div> @endif
-        @if ($sparePart->back_img) <div class="main"><img src="/storage/photos/{{ $sparePart->back_img }}" class="sparePart-img"></div> @endif
-        @if ($sparePart->right_img) <div class="main"><img src="/storage/photos/{{ $sparePart->right_img }}" class="sparePart-img"></div> @endif
+        @if ($sparePart->front_img) <div class="main"><img src="/storage/photos/{{ $sparePart->front_img }}" class="sparePart-img spare-fs-trigger" data-src="/storage/photos/{{ $sparePart->front_img }}"></div> @endif
+        @if ($sparePart->back_img) <div class="main"><img src="/storage/photos/{{ $sparePart->back_img }}" class="sparePart-img spare-fs-trigger" data-src="/storage/photos/{{ $sparePart->back_img }}"></div> @endif
+        @if ($sparePart->right_img) <div class="main"><img src="/storage/photos/{{ $sparePart->right_img }}" class="sparePart-img spare-fs-trigger" data-src="/storage/photos/{{ $sparePart->right_img }}"></div> @endif
       
     </div>
 
@@ -40,6 +40,13 @@
         
     </ul>
 </section>
+
+<div id="legacy-spare-lightbox" style="position:fixed; inset:0; z-index:9999; display:none; background:rgba(2,6,23,.95); padding:16px;">
+    <button type="button" id="legacy-spare-close" style="position:absolute; right:16px; top:16px; border:1px solid #64748b; background:#0f172a; color:#f8fafc; border-radius:8px; padding:8px 12px;">Close</button>
+    <button type="button" id="legacy-spare-prev" style="position:absolute; left:16px; top:50%; transform:translateY(-50%); border:1px solid #64748b; background:#0f172a; color:#f8fafc; border-radius:8px; padding:8px 10px;">&larr;</button>
+    <img id="legacy-spare-image" src="" alt="Spare part fullscreen" style="max-width:100%; max-height:100%; display:block; margin:0 auto; object-fit:contain;">
+    <button type="button" id="legacy-spare-next" style="position:absolute; right:16px; top:50%; transform:translateY(-50%); border:1px solid #64748b; background:#0f172a; color:#f8fafc; border-radius:8px; padding:8px 10px;">&rarr;</button>
+</div>
 <style>
     /* CSS to set a fixed height and width for the images */
     .sparePart-img {
@@ -266,5 +273,51 @@ $(document).ready(function(){
     }
   });
 });
+
+(function () {
+  var triggers = Array.prototype.slice.call(document.querySelectorAll('.spare-fs-trigger'));
+  if (!triggers.length) return;
+
+  var lightbox = document.getElementById('legacy-spare-lightbox');
+  var image = document.getElementById('legacy-spare-image');
+  var closeBtn = document.getElementById('legacy-spare-close');
+  var prevBtn = document.getElementById('legacy-spare-prev');
+  var nextBtn = document.getElementById('legacy-spare-next');
+  var images = triggers.map(function (trigger) { return trigger.getAttribute('data-src'); });
+  var currentIndex = 0;
+
+  function show(index) {
+    currentIndex = (index + images.length) % images.length;
+    image.src = images[currentIndex];
+  }
+
+  function open(index) {
+    show(index);
+    lightbox.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    lightbox.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  triggers.forEach(function (trigger, index) {
+    trigger.addEventListener('click', function () {
+      open(index);
+    });
+  });
+
+  closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', function () { show(currentIndex - 1); });
+  nextBtn.addEventListener('click', function () { show(currentIndex + 1); });
+
+  document.addEventListener('keydown', function (event) {
+    if (lightbox.style.display !== 'block') return;
+    if (event.key === 'Escape') close();
+    if (event.key === 'ArrowLeft') show(currentIndex - 1);
+    if (event.key === 'ArrowRight') show(currentIndex + 1);
+  });
+})();
   </script>
 @endsection
