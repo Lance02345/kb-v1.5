@@ -408,27 +408,7 @@ class ListingController extends Controller
 
             foreach ($imageFields as $fieldName) {
                 if ($request->hasFile($fieldName)) {
-                    $image = $request->file($fieldName);
-                    $extension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
-                    $imageStore = $fieldName . '_' . time() . '_' . uniqid() . '.' . $extension;
-
-                    try {
-                        // Respect phone EXIF orientation before watermark/save to avoid sideways photos.
-                        $img = Image::make($image)->orientate();
-                        $watermark = Image::make(public_path('watermark/KINGSBRIDGE.png'));
-                        $img->insert($watermark, 'bottom-right', 10, 10);
-                        $img->save(public_path('storage/photos/' . $imageStore));
-                        $vehicle->$fieldName = $imageStore;
-                    } catch (\Throwable $e) {
-                        $image->storeAs('public/photos', $imageStore);
-                        $vehicle->$fieldName = $imageStore;
-
-                        Log::warning('Image watermarking failed, stored original image instead.', [
-                            'field' => $fieldName,
-                            'message' => $e->getMessage(),
-                            'filename' => $imageStore,
-                        ]);
-                    }
+                    $vehicle->$fieldName = $this->storeProcessedVehicleImage($request->file($fieldName), $fieldName);
                 }
             }
 
@@ -618,6 +598,8 @@ class ListingController extends Controller
         }
 
         $vehicle->update();
+        $listing->load('user');
+        JourneyMailer::sendListingEdited($listing, $vehicle, 'vehicle');
 
         /* if ($request->hasFile('images')) 
          {
@@ -731,11 +713,7 @@ class ListingController extends Controller
 
             foreach ($imageFields as $field) {
                 if ($request->hasFile($field)) {
-                    $image = $request->file($field);
-                    $extension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
-                    $imageName = $field . '_' . time() . '_' . uniqid() . '.' . $extension;
-                    $image->storeAs('public/photos', $imageName);
-                    $vehicle->{$field} = $imageName;
+                    $vehicle->{$field} = $this->storeProcessedVehicleImage($request->file($field), $field);
                 }
             }
 
@@ -904,6 +882,8 @@ class ListingController extends Controller
         }
 
         $vehicle->update();
+        $listing->load('user');
+        JourneyMailer::sendListingEdited($listing, $vehicle, 'car hire');
 
         return redirect()->route('user.edit_carhire', [$listing->id, $vehicle->id])->with('success', 'Updated');
     }
@@ -953,7 +933,15 @@ class ListingController extends Controller
             // Respect phone EXIF orientation before watermark/save to avoid sideways photos.
             $img = Image::make($image)->orientate();
             $watermark = Image::make(public_path('watermark/KINGSBRIDGE.png'));
-            $img->insert($watermark, 'bottom-right', 10, 10);
+
+            $maxWatermarkWidth = max(80, (int) round($img->width() * 0.2));
+            $maxWatermarkHeight = max(40, (int) round($img->height() * 0.2));
+            $watermark->resize($maxWatermarkWidth, $maxWatermarkHeight, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            $img->insert($watermark, 'bottom-right', 16, 16);
             $img->save(public_path('storage/photos/' . $imageName));
         } catch (\Throwable $e) {
             $image->storeAs('public/photos', $imageName);

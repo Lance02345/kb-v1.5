@@ -15,6 +15,7 @@ use App\Support\JourneyMailer;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
 
 
@@ -75,25 +76,7 @@ class SparePartController extends Controller
 
         foreach ($imageFields as $fieldName) {
             if ($request->hasFile($fieldName)) {
-                $image = $request->file($fieldName);
-                $imageName = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                $extension = $image->getClientOriginalExtension();
-                $imageStore = $imageName . '_' . time() . '.' . $extension;
-
-                // Respect phone EXIF orientation before watermark/save to avoid sideways photos.
-                $img = Image::make($image)->orientate();
-
-                // Load the watermark image
-                $watermark = Image::make(public_path('watermark/KINGSBRIDGE.png'));
-
-                // Add the watermark to the image
-                $img->insert($watermark, 'bottom-right', 10, 10); // You can adjust the position and size of the watermark
-
-                // Save the watermarked image with the user's name
-                $img->save(public_path('storage/photos/' . $imageStore));
-
-                // Assign the image store path to the corresponding model field
-                $sparePart->$fieldName = $imageStore;
+                $sparePart->$fieldName = $this->storeProcessedSparePartImage($request->file($fieldName), $fieldName);
             }
         }
 
@@ -182,6 +165,31 @@ class SparePartController extends Controller
         $spareParts = $query->latest('id')->paginate(12)->withQueryString();
 
         return view('modern.spareparts', ['spareParts' => $spareParts]);
+    }
+
+    private function storeProcessedSparePartImage(UploadedFile $image, string $fieldPrefix): string
+    {
+        $extension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
+        $imageName = $fieldPrefix . '_' . time() . '_' . uniqid() . '.' . $extension;
+
+        try {
+            $img = Image::make($image)->orientate();
+            $watermark = Image::make(public_path('watermark/KINGSBRIDGE.png'));
+
+            $maxWatermarkWidth = max(80, (int) round($img->width() * 0.2));
+            $maxWatermarkHeight = max(40, (int) round($img->height() * 0.2));
+            $watermark->resize($maxWatermarkWidth, $maxWatermarkHeight, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            $img->insert($watermark, 'bottom-right', 16, 16);
+            $img->save(public_path('storage/photos/' . $imageName));
+        } catch (\Throwable $e) {
+            $image->storeAs('public/photos', $imageName);
+        }
+
+        return $imageName;
     }
 
 }

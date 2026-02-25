@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Carevent;
+use App\Support\JourneyMailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -72,6 +73,8 @@ class CareventController extends Controller
         if($request->hasFile('event_image')) { $carevent->event_image = $event_imageStore; }
 
         $carevent->save();
+        $carevent->load('user');
+        JourneyMailer::sendCareventSubmitted($carevent);
         return redirect() -> route('user.carevent')->with('success','Added Successfully');
     }
 

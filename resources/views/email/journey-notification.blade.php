@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $subjectLine ?? 'Kingsbridge Motors' }}</title>
 </head>
+@php
+    $logoBaseUrl = rtrim(config('app.url') ?: url('/'), '/');
+    $logoUrl = $logoBaseUrl . '/watermark/king.png';
+@endphp
 <body style="margin:0;padding:0;background:#020617;font-family:'Plus Jakarta Sans',Arial,sans-serif;color:#e2e8f0;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="padding:24px 12px;">
         <tr>
@@ -12,7 +16,7 @@
                 <table role="presentation" width="620" cellspacing="0" cellpadding="0" style="width:100%;max-width:620px;background:#0f172a;border-radius:12px;overflow:hidden;border:1px solid #334155;box-shadow:0 16px 34px rgba(2,6,23,.45);">
                     <tr>
                         <td style="background:linear-gradient(90deg,#020617,#0f172a);padding:18px 20px;border-bottom:1px solid #334155;">
-                            <img src="{{ asset('watermark/KINGSBRIDGE.png') }}" alt="Kingsbridge Motors" style="height:42px;width:auto;display:block;">
+                            <img src="{{ $logoUrl }}" alt="Kingsbridge Motors" style="height:42px;width:auto;display:block;">
                         </td>
                     </tr>
                     <tr>

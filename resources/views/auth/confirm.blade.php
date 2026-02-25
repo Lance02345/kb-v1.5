@@ -11,7 +11,13 @@
         <h1 class="font-display text-3xl font-bold text-white">Choose a new password</h1>
         <p class="mt-2 text-sm text-slate-300">Enter your account email and a strong password.</p>
 
-        <form method="POST" action="{{ route('password.update') }}" class="mt-5 space-y-4">
+        @if ($errors->any())
+            <div class="mt-4 rounded-lg border border-rose-300/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-200">
+                {{ $errors->first() }}
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('reset.password.post') }}" class="mt-5 space-y-4">
             @csrf
             <input type="hidden" name="token" value="{{ $token }}">
 

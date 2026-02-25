@@ -15,6 +15,9 @@
         </article>
 
         <article class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
+            @if (session('status'))
+                <div class="mb-4 rounded-lg border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">{{ session('status') }}</div>
+            @endif
             <form method="POST" action="{{ route('login') }}" class="space-y-4">
                 @csrf
                 <div>

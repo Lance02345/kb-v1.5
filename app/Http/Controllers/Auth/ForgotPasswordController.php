@@ -4,15 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Carbon\Carbon; 
-use Mail; 
+use Mail;
 use Illuminate\Support\Facades\DB; 
-use Illuminate\Support\Facades\Log;
 use App\Models\User; 
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Support\JourneyMailer;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 class ForgotPasswordController extends Controller
 {
@@ -42,27 +40,31 @@ class ForgotPasswordController extends Controller
             'email' => 'required|email|exists:users',
         ]);
 
+        $user = User::where('email', $request->email)->firstOrFail();
         $token = Str::random(64);
 
+        DB::table('password_resets')->where('email', $request->email)->delete();
         DB::table('password_resets')->insert([
             'email' => $request->email, 
             'token' => $token, 
             'created_at' => Carbon::now()
-          ]);
+        ]);
 
-        Mail::send('email.forgetPassword', ['token' => $token], function($message) use($request){
+        Mail::send('email.forgetPassword', ['token' => $token, 'email' => $request->email], function($message) use($request){
             $message->to($request->email);
             $message->subject('Reset Password');
         });
 
-        return back()->with('message', 'We have e-mailed your password reset link!');
+        JourneyMailer::sendPasswordResetRequested($user);
+
+        return back()->with('status', 'Reset link sent. Please check your email.');
     }
     /**
      * Write code on Method
      *
      */
-    public function showResetPasswordForm($token) { 
-       return view('auth.confirm', ['token' => $token]);
+    public function showResetPasswordForm(Request $request, $token) { 
+       return view('auth.confirm', ['token' => $token, 'email' => $request->query('email')]);
     }
 
     /**
@@ -84,21 +86,21 @@ class ForgotPasswordController extends Controller
                         ])
                         ->first();
 
-    if(!$updatePassword){{
-        return redirect()->to(route('auth.email'));
-    }    
+    if(!$updatePassword){
+        return back()->withInput()->withErrors(['email' => 'This reset link is invalid or already used.']);
     }
 
-    DB::table('users')->where('email', $request->email)
-    ->update(['password' => Hash::make($request->password)]);
+    $user = User::where('email', $request->email)->firstOrFail();
+    $user->password = Hash::make($request->password);
+    $user->setRememberToken(Str::random(60));
+    $user->save();
 
-    $user = User::where('email', $request->email)->first();
     if ($user) {
         JourneyMailer::sendPasswordChanged($user);
     }
 
     DB::table('password_resets')->where(['email'=> $request->email])->delete();
 
-    return redirect('/')->with('message', 'Your password has been changed!');
+    return redirect()->route('user.login')->with('status', 'Your password has been changed. You can now log in.');
 }
 }

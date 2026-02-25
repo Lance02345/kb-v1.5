@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Support\JourneyMailer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,12 +39,24 @@ class UserController extends Controller
         $avatar_imgStore = $imagename.'_'.time().'.'.$extension;
         $path = $request->file('avatar')->storeAs('public/photos', $avatar_imgStore);
     }
+        $changes = [];
+        if ((string) $user->name !== (string) $request->name) {
+            $changes['Name'] = $request->name;
+        }
+        if ((string) $user->phone_number !== (string) $request->phone_number) {
+            $changes['Phone'] = $request->phone_number;
+        }
+        if($request->hasFile('avatar')) {
+            $changes['Avatar'] = 'Updated';
+        }
+
         $user->name = $request->name;
         $user->phone_number = $request->phone_number; 
      if($request->hasFile('avatar')) { $user->avatar = $avatar_imgStore;   } 
         
 
         $user->update();
+        JourneyMailer::sendProfileUpdated($user, $changes);
         return redirect() -> route('user.user_profile',$user->id)->with('success','Updated Successfully');
    
       

@@ -61,6 +61,15 @@
                                 </span>
                             @enderror
                     </div>
+                    <div class="form-group">
+                        <label>Status Note (optional, emailed to seller)</label>
+                        <textarea name="status_reason" rows="3" class="form-control @error('status_reason') is-invalid @enderror" placeholder="Optional note to seller, e.g. why listing was rejected or what to fix.">{{ old('status_reason') }}</textarea>
+                        @error('status_reason')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
                
                
                     <button type="submit" class="btn btn-primary">Update</button>
