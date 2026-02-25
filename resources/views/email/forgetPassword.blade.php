@@ -6,8 +6,9 @@
     <title>Password Reset Request</title>
 </head>
 @php
-    $logoBaseUrl = rtrim(config('app.url') ?: url('/'), '/');
-    $logoUrl = $logoBaseUrl . '/watermark/king.png';
+    $logoUrl = isset($message)
+        ? $message->embed(public_path('watermark/KINGSBRIDGE.png'))
+        : asset('watermark/KINGSBRIDGE.png');
 @endphp
 <body style="margin:0;padding:0;background:#020617;font-family:'Plus Jakarta Sans',Arial,sans-serif;color:#e2e8f0;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="padding:24px 12px;">

@@ -8,7 +8,6 @@ use Mail;
 use Illuminate\Support\Facades\DB; 
 use App\Models\User; 
 use Illuminate\Http\Request; 
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Support\JourneyMailer;
 
@@ -91,7 +90,7 @@ class ForgotPasswordController extends Controller
     }
 
     $user = User::where('email', $request->email)->firstOrFail();
-    $user->password = Hash::make($request->password);
+    $user->password = $request->password;
     $user->setRememberToken(Str::random(60));
     $user->save();
 
