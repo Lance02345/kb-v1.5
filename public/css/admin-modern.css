@@ -247,10 +247,12 @@ body.kb-admin {
 }
 
 .kb-admin-sidebar {
+  -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
 .kb-admin-sidebar::-webkit-scrollbar {
+  display: none;
   width: 0;
   height: 0;
 }
