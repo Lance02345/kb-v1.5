@@ -36,8 +36,8 @@ private function marketplacePayload()
 {
     $arr['cities'] = City::orderBy('city')->get();
     $arr['makes'] = Carmake::orderBy('make')->get();
-    $arr['models'] = Carmodel::all();
-    $arr['carevents'] = Carevent::query()->latest('id')->take(6)->get();
+    $arr['models'] = Carmodel::orderBy('model')->get();
+    $arr['carevents'] = Carevent::query()->with('user')->latest('id')->take(6)->get();
     $arr['latestSpareParts'] = SparePart::query()->latest('id')->take(6)->get();
 
     $baseVehicleQuery = Vehicle::query()
@@ -63,7 +63,7 @@ private function marketplacePayload()
     return $arr;
 }
 public function carmodel(Request $request) {
-    $data = Carmodel::select('model','id')->where('make_id',$request->id)->get();
+    $data = Carmodel::select('model','id')->where('make_id',$request->id)->orderBy('model')->get();
     return response()->json($data);//then sent this data to aax success
 }
 
@@ -120,7 +120,7 @@ public function vehicle_search(Request $request)
 {
     $cities = City::orderBy('city')->get();
     $makes = Carmake::orderBy('make')->get();
-    $models = Carmodel::all();
+    $models = Carmodel::orderBy('model')->get();
     $vehicles = collect();
 
     $listingsQuery = Listing::with(['category', 'city', 'vehicles.carmodel.carmake'])
@@ -163,23 +163,23 @@ if ($request->filled('max_price')) {
 public function listing_filter(Request $request){
     $arr['vehicles'] = Vehicle::all();
     $arr['listings'] = Listing::where('category_id',2)->Where('city_id',$request->id)->take(18)->get(); 
-    $arr['cities'] = City::all();
-    $arr['makes'] = Carmake::all();
-    $arr['models'] = Carmodel::all();
+    $arr['cities'] = City::orderBy('city')->get();
+    $arr['makes'] = Carmake::orderBy('make')->get();
+    $arr['models'] = Carmodel::orderBy('model')->get();
     return view ('pages.vehicleslist')->with($arr);
 }
 public function vehicle_filter(Request $request){
-    $arr['makes'] = Carmake::all();
-    $arr['models'] = Carmodel::all();
+    $arr['makes'] = Carmake::orderBy('make')->get();
+    $arr['models'] = Carmodel::orderBy('model')->get();
     $arr['listings'] = Listing::where('category_id',2)->take(18)->get(); 
     $arr['vehicles'] = Vehicle::where('model_id', $request->id)->take(20)->get();
-    $arr['cities'] = City::all();
+    $arr['cities'] = City::orderBy('city')->get();
     return view ('pages.vehicleslist')->with($arr);
 }
 
 Public function vehicleslist(){
     $arr['makes'] = Carmake::orderBy('make')->get();
-    $arr['models'] = Carmodel::all();
+    $arr['models'] = Carmodel::orderBy('model')->get();
     $arr['cities'] = City::orderBy('city')->get();
     $arr['listings'] = Listing::with(['category', 'city', 'vehicles.carmodel.carmake'])
         ->where('category_id', 2)
@@ -195,7 +195,7 @@ Public function vehicleslist(){
     
 }
 Public function vehicles_list(){
-    $arr['cities'] = City::all();
+    $arr['cities'] = City::orderBy('city')->get();
     $arr['vehicles'] = Vehicle::all();
     $arr['listings'] = Listing::where('category_id',2)->take(20)->get(); //the 2 is the id of car category
   
@@ -213,26 +213,26 @@ public function vehicle(Listing $listing, Vehicle $vehicle){
     return view ('pages.vehicle')->with($arr);
 }
 Public function carhire(){
-    $arr['cities'] = City::all();
+    $arr['cities'] = City::orderBy('city')->get();
     $arr['vehicles'] = Vehicle::all();
-    $arr['makes'] = Carmake::all();
-    $arr['models'] = Carmodel::all();
+    $arr['makes'] = Carmake::orderBy('make')->get();
+    $arr['models'] = Carmodel::orderBy('model')->get();
     $arr['listings'] = Listing::where('category_id',4)->take(20)->get(); 
     return view ('pages.carhire')->with($arr);
 }
 Public function carhirelist() {
-    $arr['cities'] = City::all();
+    $arr['cities'] = City::orderBy('city')->get();
     $arr['vehicles'] = Vehicle::all();
-    $arr['makes'] = Carmake::all();
-    $arr['models'] = Carmodel::all();
+    $arr['makes'] = Carmake::orderBy('make')->get();
+    $arr['models'] = Carmodel::orderBy('model')->get();
     $arr['listings'] = Listing::where('category_id',4)->take(20)->get(); 
     return view ('pages.carhirelist')->with($arr);
 }
 Public function showcarhire(Listing $listing, Vehicle $vehicle) {
     $arr['categories'] = Category::all();
-    $arr['cities'] = City::all();
-    $arr['makes'] = Carmake::all();
-    $arr['models'] = Carmodel::all();
+    $arr['cities'] = City::orderBy('city')->get();
+    $arr['makes'] = Carmake::orderBy('make')->get();
+    $arr['models'] = Carmodel::orderBy('model')->get();
     $arr['listing'] = $listing;
     $arr['vehicle'] = $vehicle;
 
@@ -356,7 +356,7 @@ public function events(){
 
 public function show($id)
 {
-    $carevent = Carevent::findOrFail($id);
+    $carevent = Carevent::with('user')->findOrFail($id);
     return view('modern.single_event', compact('carevent'));
 }
 

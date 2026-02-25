@@ -114,6 +114,7 @@
                         <div class="space-y-2 p-4">
                             <h3 class="font-display text-lg font-semibold text-white"><a href="{{ route('events.show', ['id' => $event->id]) }}" class="hover:text-amber-200">{{ $event->event_title }}</a></h3>
                             <p class="text-xs text-slate-400">{{ $event->event_location }} · {{ $event->event_date }} · {{ $event->event_time }}</p>
+                            <p class="text-xs text-slate-500">Contact: {{ $event->user?->phone_number ?: 'Not provided' }}</p>
                             <span class="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200">Ticket Ksh {{ number_format((float) $event->ticket_price) }}</span>
                         </div>
                     </article>

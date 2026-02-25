@@ -24,6 +24,7 @@
                 <p>Date: <span class="font-semibold text-white">{{ $carevent->event_date }}</span></p>
                 <p>Time: <span class="font-semibold text-white">{{ $carevent->event_time }}</span></p>
                 <p>Organizer: <span class="font-semibold text-white">{{ $carevent->organizer }}</span></p>
+                <p>Contact: <span class="font-semibold text-white">{{ $carevent->user?->phone_number ?: 'Not provided' }}</span></p>
             </div>
 
             <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
@@ -36,6 +37,10 @@
             <h2 class="font-display text-lg font-semibold text-white">Ticket</h2>
             <p class="text-sm text-slate-300">Price</p>
             <p class="text-2xl font-bold text-white">Ksh {{ number_format((float) $carevent->ticket_price) }}</p>
+
+            @if($carevent->user?->phone_number)
+                <a href="tel:{{ $carevent->user->phone_number }}" class="inline-flex w-full justify-center rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Call Organizer</a>
+            @endif
 
             <div class="rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-xs text-slate-400">
                 Arrive early, verify location details with organizer, and keep your valuables secure.

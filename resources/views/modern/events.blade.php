@@ -31,6 +31,7 @@
                             <p><span class="text-slate-500">Date:</span> {{ $carevent->event_date }}</p>
                             <p><span class="text-slate-500">Time:</span> {{ $carevent->event_time }}</p>
                             <p><span class="text-slate-500">Organizer:</span> {{ $carevent->organizer }}</p>
+                            <p><span class="text-slate-500">Contact:</span> {{ $carevent->user?->phone_number ?: 'Not provided' }}</p>
                         </div>
                         <div class="pt-2">
                             <span class="rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-semibold text-amber-200">Ticket: Ksh {{ number_format((float) $carevent->ticket_price) }}</span>

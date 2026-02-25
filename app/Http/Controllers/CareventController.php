@@ -16,7 +16,7 @@ class CareventController extends Controller
      */
     public function index()
     {
-        $carevents = Carevent::query()->latest('id')->get();
+        $carevents = Carevent::query()->with('user')->latest('id')->get();
         return view('modern.events', ['carevents' => $carevents]);
     }
 
