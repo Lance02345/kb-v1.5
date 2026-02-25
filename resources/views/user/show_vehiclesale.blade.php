@@ -43,7 +43,10 @@
 
             @if(count($images))
                 <div class="space-y-3">
-                    <img id="main-photo" src="{{ asset('storage/photos/' . $images[0]) }}" alt="{{ $title }}" class="h-72 w-full rounded-xl object-cover sm:h-[28rem]">
+                    <button type="button" id="main-photo-trigger" class="block w-full rounded-xl border-0 bg-transparent p-0 text-left" aria-label="Open photo fullscreen">
+                        <img id="main-photo" src="{{ asset('storage/photos/' . $images[0]) }}" alt="{{ $title }}" class="h-72 w-full rounded-xl object-cover sm:h-[28rem]">
+                    </button>
+                    <p class="text-xs text-slate-400">Click image to view fullscreen.</p>
                     <div class="grid grid-cols-3 gap-2 sm:grid-cols-5">
                         @foreach($images as $image)
                             <button type="button" class="photo-thumb overflow-hidden rounded-lg border border-slate-700 transition hover:border-amber-300" data-src="{{ asset('storage/photos/' . $image) }}">
@@ -128,18 +131,97 @@
     </section>
 </main>
 
+<div id="photo-lightbox" class="fixed inset-0 z-[90] hidden bg-slate-950/95 p-3 sm:p-6" aria-hidden="true">
+    <div class="relative mx-auto flex h-full w-full max-w-7xl items-center justify-center">
+        <button type="button" id="lightbox-close" class="absolute right-0 top-0 rounded-lg border border-slate-600 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-100 hover:border-slate-300">Close</button>
+        <button type="button" id="lightbox-prev" class="absolute left-1 top-1/2 -translate-y-1/2 rounded-lg border border-slate-600 bg-slate-900/70 px-3 py-2 text-slate-100 hover:border-slate-300" aria-label="Previous photo">&larr;</button>
+        <img id="lightbox-image" src="" alt="Vehicle image fullscreen" class="max-h-full max-w-full rounded-lg object-contain">
+        <button type="button" id="lightbox-next" class="absolute right-1 top-1/2 -translate-y-1/2 rounded-lg border border-slate-600 bg-slate-900/70 px-3 py-2 text-slate-100 hover:border-slate-300" aria-label="Next photo">&rarr;</button>
+    </div>
+</div>
+
 <script>
-    document.querySelectorAll('.photo-thumb').forEach(function(button) {
-        button.addEventListener('click', function() {
-            var main = document.getElementById('main-photo');
-            if (main) {
-                main.src = this.dataset.src;
-            }
-            document.querySelectorAll('.photo-thumb').forEach(function(item) {
-                item.classList.remove('border-amber-300');
+    (function () {
+        var main = document.getElementById('main-photo');
+        var mainTrigger = document.getElementById('main-photo-trigger');
+        var thumbs = Array.prototype.slice.call(document.querySelectorAll('.photo-thumb'));
+        if (!main || thumbs.length === 0) {
+            return;
+        }
+
+        var lightbox = document.getElementById('photo-lightbox');
+        var lightboxImage = document.getElementById('lightbox-image');
+        var closeBtn = document.getElementById('lightbox-close');
+        var prevBtn = document.getElementById('lightbox-prev');
+        var nextBtn = document.getElementById('lightbox-next');
+        var images = thumbs.map(function (thumb) { return thumb.dataset.src; });
+        var currentIndex = 0;
+
+        function setActiveThumb(index) {
+            thumbs.forEach(function (item, itemIndex) {
+                item.classList.toggle('border-amber-300', itemIndex === index);
             });
-            this.classList.add('border-amber-300');
+        }
+
+        function showImage(index) {
+            currentIndex = (index + images.length) % images.length;
+            var src = images[currentIndex];
+            main.src = src;
+            if (lightboxImage) {
+                lightboxImage.src = src;
+            }
+            setActiveThumb(currentIndex);
+        }
+
+        function openLightbox() {
+            if (!lightbox || !lightboxImage) return;
+            lightbox.classList.remove('hidden');
+            lightbox.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            lightboxImage.src = images[currentIndex];
+        }
+
+        function closeLightbox() {
+            if (!lightbox) return;
+            lightbox.classList.add('hidden');
+            lightbox.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        thumbs.forEach(function (button, index) {
+            button.addEventListener('click', function () {
+                showImage(index);
+            });
         });
-    });
+
+        if (mainTrigger) {
+            mainTrigger.addEventListener('click', openLightbox);
+        }
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeLightbox);
+        }
+        if (prevBtn) {
+            prevBtn.addEventListener('click', function () { showImage(currentIndex - 1); });
+        }
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function () { showImage(currentIndex + 1); });
+        }
+        if (lightbox) {
+            lightbox.addEventListener('click', function (event) {
+                if (event.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (!lightbox || lightbox.classList.contains('hidden')) return;
+            if (event.key === 'Escape') closeLightbox();
+            if (event.key === 'ArrowLeft') showImage(currentIndex - 1);
+            if (event.key === 'ArrowRight') showImage(currentIndex + 1);
+        });
+
+        showImage(0);
+    })();
 </script>
 @endsection

@@ -1,11 +1,17 @@
 @extends('layouts.admin')
 @section('content')
 <div class="container-fluid">
+<div class="d-flex flex-wrap align-items-center justify-content-between mb-3" style="gap: 12px;">
+    <div>
+        <h4 class="mb-1">Edit Car Make</h4>
+        <small class="text-muted">Update manufacturer details used by your model catalog.</small>
+    </div>
+    <a href="{{ route('admin.carmake.index')}}" class="btn btn-primary">Back to Car Makes</a>
+</div>
 <div class="row">
 <div class="col-lg-12">
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">Car Make Update</h4>
             <div class="basic-form">
                 <form method="POST" action="{{ route('admin.carmake.update',$carmake->id) }}">
                     @csrf

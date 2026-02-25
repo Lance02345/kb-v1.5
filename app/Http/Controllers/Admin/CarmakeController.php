@@ -15,8 +15,7 @@ class CarmakeController extends Controller
      */
     public function index()
     {
-        
-        $arr['carmakes'] = Carmake::all();
+        $arr['carmakes'] = Carmake::query()->latest()->get();
         return view ('admin.carmake.index') ->with($arr);
     }
 
@@ -39,7 +38,7 @@ class CarmakeController extends Controller
     public function store(Request $request)
     {
         $validatedData = $this->validate($request, [
-            'make' => 'required',
+            'make' => 'required|string|max:80|unique:carmakes,make',
         ]);
     
       Carmake::create($validatedData);
@@ -79,7 +78,7 @@ class CarmakeController extends Controller
     public function update(Request $request, Carmake $carmake)
     {
         $validatedData = $this->validate($request, [
-            'make' => 'required',
+            'make' => 'required|string|max:80|unique:carmakes,make,' . $carmake->id,
         ]);
     
         $carmake->update($validatedData);
@@ -95,6 +94,6 @@ class CarmakeController extends Controller
     public function destroy($id)
     {
         Carmake::destroy($id);
-        return redirect() -> route('admin.carmake.index');
+        return redirect() -> route('admin.carmake.index')->with('success','Car make deleted successfully');
     }
 }
