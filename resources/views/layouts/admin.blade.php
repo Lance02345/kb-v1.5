@@ -18,6 +18,39 @@
     @if(file_exists($adminModernPath))
         <link href="{{ asset('css/admin-modern.css') }}?v={{ filemtime($adminModernPath) }}" rel="stylesheet">
     @endif
+    <style>
+        /* Fallback styles for kb-admin2 if admin-modern.css is unavailable/cached */
+        body.kb-admin2 { background: #0b1020; color: #e5e7eb; margin: 0; }
+        .kb2-shell { display: grid; grid-template-columns: 270px minmax(0,1fr); min-height: 100vh; }
+        .kb2-sidebar { background: #0b1225; border-right: 1px solid #263248; }
+        .kb2-brand { height: 72px; padding: 18px 20px; border-bottom: 1px solid rgba(148,163,184,.15); color: #fff; font-weight: 700; }
+        .kb2-brand span { color: #fbbf24; }
+        .kb2-nav { padding: 12px; }
+        .kb2-group { color: #94a3b8; font-size: 11px; font-weight: 700; letter-spacing: .08em; margin: 14px 8px 8px; text-transform: uppercase; }
+        .kb2-link { display: flex; align-items: center; gap: 10px; border: 1px solid transparent; border-radius: 10px; color: #cbd5e1; font-size: 13px; font-weight: 600; margin: 4px 0; padding: 9px 10px; text-decoration: none; }
+        .kb2-link:hover { background: rgba(148,163,184,.1); color: #fff; text-decoration: none; }
+        .kb2-link.active { background: rgba(251,191,36,.14); border-color: rgba(251,191,36,.45); color: #fde68a; }
+        .kb2-main { min-width: 0; }
+        .kb2-topbar { position: sticky; top: 0; z-index: 30; background: rgba(8,13,26,.92); border-bottom: 1px solid #263248; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; }
+        .kb2-title { margin: 0; font-size: 18px; color: #fff; }
+        .kb2-subtitle { color: #94a3b8; font-size: 12px; }
+        .kb2-content { padding: 20px; }
+        .kb2-footer { border-top: 1px solid #263248; color: #94a3b8; font-size: 12px; padding: 14px 20px; }
+        .kb2-toggle { display: none; width: 36px; height: 36px; border: 1px solid #263248; border-radius: 10px; background: #0b1327; color: #e2e8f0; align-items: center; justify-content: center; }
+        .kb-admin2 .content-body { margin-left: 0 !important; }
+        .kb-admin2 .content-body .container-fluid { padding: 0 !important; }
+        .kb-admin2 .card { border: 1px solid #263248; border-radius: 14px; background: #111827; color: #e5e7eb; }
+        .kb-admin2 .table { color: #e5e7eb; }
+        .kb-admin2 .table td, .kb-admin2 .table th { border-color: rgba(148,163,184,.2); }
+        .kb-admin2 .btn-primary { background: #fbbf24; border-color: #f59e0b; color: #111827 !important; font-weight: 700; }
+        .kb-admin2 .alert-success { border: 1px solid rgba(16,185,129,.35); background: rgba(16,185,129,.12); color: #d1fae5; }
+        @media (max-width: 992px) {
+            .kb2-shell { grid-template-columns: 1fr; }
+            .kb2-sidebar { position: fixed; inset: 0 auto 0 0; width: 270px; z-index: 50; transform: translateX(-100%); transition: transform .2s ease; }
+            .kb-admin2.kb2-nav-open .kb2-sidebar { transform: translateX(0); }
+            .kb2-toggle { display: inline-flex; }
+        }
+    </style>
 
     @livewireStyles
     @stack('styles')
