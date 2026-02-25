@@ -23,6 +23,8 @@
         body.kb-admin { background: #0b1020; color: #e5e7eb; }
         .kb-admin-shell { display: flex; min-height: 100vh; }
         .kb-admin-sidebar { width: 270px; background: #0b1225; border-right: 1px solid #263248; position: fixed; inset: 0 auto 0 0; overflow-y: auto; z-index: 40; }
+        .kb-admin-sidebar { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+        .kb-admin-sidebar::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
         .kb-admin-brand { padding: 18px 20px; border-bottom: 1px solid rgba(148,163,184,.15); color: #fff; font-weight: 700; }
         .kb-admin-brand span { color: #fbbf24; }
         .kb-admin-nav { padding: 12px; }
