@@ -7,7 +7,8 @@
   <meta name="theme-color" content="#0f172a">
   <title>@yield('title', 'Kingsbridge Motors')</title>
 
-  <link href="{{ asset('images/king2.png') }}" rel="shortcut icon" type="image/png">
+  <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
+  <link rel="shortcut icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 
   <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
   <link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap-slider.css') }}">

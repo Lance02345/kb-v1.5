@@ -489,10 +489,15 @@ class ListingController extends Controller
 
     public function edit_vehiclesale(Listing $listing, Vehicle $vehicle)
     {
+        $selectedMakeId = optional($vehicle->carmodel)->make_id;
+
         $arr['categories'] = Category::all();
         $arr['cities'] = City::orderBy('city')->get();
         $arr['makes'] = Carmake::orderBy('make')->get();
-        $arr['models'] = Carmodel::orderBy('model')->get();
+        $arr['models'] = Carmodel::query()
+            ->when($selectedMakeId, fn ($query) => $query->where('make_id', $selectedMakeId))
+            ->orderBy('model')
+            ->get();
         $arr['listing'] = $listing;
         $arr['packages'] = Package::all();
         $arr['vehicle'] = $vehicle;
@@ -776,10 +781,15 @@ class ListingController extends Controller
 
     public function edit_carhire(Listing $listing, Vehicle $vehicle)
     {
+        $selectedMakeId = optional($vehicle->carmodel)->make_id;
+
         $arr['categories'] = Category::all();
         $arr['cities'] = City::orderBy('city')->get();
         $arr['makes'] = Carmake::orderBy('make')->get();
-        $arr['models'] = Carmodel::orderBy('model')->get();
+        $arr['models'] = Carmodel::query()
+            ->when($selectedMakeId, fn ($query) => $query->where('make_id', $selectedMakeId))
+            ->orderBy('model')
+            ->get();
         $arr['listing'] = $listing;
         $arr['packages'] = Package::all();
         $arr['vehicle'] = $vehicle;

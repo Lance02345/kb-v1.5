@@ -603,29 +603,22 @@ $(document).ready(function() {
       $(document).ready(function(){
     
     $(document).on('change','.make',function(){
-      // console.log("hmm its change");
-    
-      var make_id=$(this).val();
-      // console.log(cat_id);
-      var div=$(this).parent();
-    
-      var option=" ";
-    
+      var make_id = $(this).val();
+      var modelSelect = $(this).closest('form').find('select.model').first();
+      var options = '<option value="" selected>Choose a model</option>';
+
       $.ajax({
-        type:'get',
-        url:'{!!URL::to('user/model')!!}',
-        data:{'id':make_id},
-        success:function(data){
-          
-          for(var i=0;i<data.length;i++){
-            option+='<option value="'+data[i].id+'">'+data[i].model+'</option>';
-           }
-    
-           div.find('.model').html(" ");
-           div.find('.model').append(option);
+        type: 'get',
+        url: '{!!URL::to('user/model')!!}',
+        data: {'id': make_id},
+        success: function(data){
+          for (var i = 0; i < data.length; i++) {
+            options += '<option value="' + data[i].id + '">' + data[i].model + '</option>';
+          }
+
+          modelSelect.html(options);
         },
-        
-        error:function(){    }
+        error: function(){}
       });
     });
     

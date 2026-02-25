@@ -17,7 +17,7 @@ class CarmodelController extends Controller
     public function index()
     {
         $arr['carmakes'] = Carmake::query()->orderBy('make')->get();
-        $arr['carmodels'] = Carmodel::query()->with('carmake')->latest()->get();
+        $arr['carmodels'] = Carmodel::query()->with('carmake')->orderBy('model')->get();
         return view ('admin.carmodel.index') ->with($arr);
     }
 

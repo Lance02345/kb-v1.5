@@ -16,7 +16,7 @@ class CityController extends Controller
      */
     public function index()
     {
-        $arr['cities'] = City::all();
+        $arr['cities'] = City::with('county')->orderBy('city')->get();
         return view ('admin.city.index') ->with($arr);
     }
 
@@ -27,7 +27,7 @@ class CityController extends Controller
      */
     public function create()
     {
-        $arr['counties'] = County::all();
+        $arr['counties'] = County::orderBy('county')->get();
         return view('admin.city.create')->with($arr);
     }
 
@@ -68,7 +68,7 @@ class CityController extends Controller
     public function edit(City $city)
     {
         $arr['city'] = $city;
-        $arr['counties'] = County::all();
+        $arr['counties'] = County::orderBy('county')->get();
         return view('admin.city.edit')->with($arr);
     }
 
@@ -101,4 +101,3 @@ class CityController extends Controller
         return redirect() -> route('admin.city.index');
     }
 }
-

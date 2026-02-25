@@ -15,7 +15,7 @@ class CountyController extends Controller
      */
     public function index()
     {
-        $arr['counties'] = County::all();
+        $arr['counties'] = County::orderBy('county')->get();
         return view ('admin.county.index') ->with($arr);
    
     }
@@ -100,4 +100,3 @@ class CountyController extends Controller
         return redirect() -> route('admin.county.index');
     }
 }
-
