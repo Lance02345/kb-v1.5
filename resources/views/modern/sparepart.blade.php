@@ -11,6 +11,12 @@
         $sparePart->front_img ?? null,
         $sparePart->back_img ?? null,
         $sparePart->right_img ?? null,
+        $sparePart->left_img ?? null,
+        $sparePart->interiorf_img ?? null,
+        $sparePart->interiorb_img ?? null,
+        $sparePart->opt_img1 ?? null,
+        $sparePart->opt_img2 ?? null,
+        $sparePart->opt_img3 ?? null,
     ]));
 @endphp
 

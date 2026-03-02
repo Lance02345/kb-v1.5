@@ -35,6 +35,12 @@ class SparePart extends Model
             'front_img',
             'back_img',
             'right_img',
+            'left_img',
+            'interiorf_img',
+            'interiorb_img',
+            'opt_img1',
+            'opt_img2',
+            'opt_img3',
         ];
 
         public function user () {

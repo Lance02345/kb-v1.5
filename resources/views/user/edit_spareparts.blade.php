@@ -81,7 +81,17 @@
             <p class="mt-1 text-sm text-slate-400">Upload new images only for the slots you want to replace.</p>
 
             <div class="mt-5 grid gap-4 md:grid-cols-3">
-                @foreach (['front_img' => 'First Image', 'back_img' => 'Second Image', 'right_img' => 'Third Image'] as $field => $label)
+                @foreach ([
+                    'front_img' => 'First Image',
+                    'back_img' => 'Second Image',
+                    'right_img' => 'Third Image',
+                    'left_img' => 'Optional 1',
+                    'interiorf_img' => 'Optional 2',
+                    'interiorb_img' => 'Optional 3',
+                    'opt_img1' => 'Optional 4',
+                    'opt_img2' => 'Optional 5',
+                    'opt_img3' => 'Optional 6',
+                ] as $field => $label)
                     <label class="rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
                         <span class="mb-2 block font-semibold text-white">{{ $label }}</span>
                         <input type="file" name="{{ $field }}" class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">

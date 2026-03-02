@@ -79,26 +79,26 @@
 
         <section data-step-panel class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
             <h2 class="font-display text-xl font-semibold text-white">Upload Photos</h2>
-            <p class="mt-1 text-sm text-slate-400">First image is required. Add up to 3 photos.</p>
+            <p class="mt-1 text-sm text-slate-400">First image is required. Add up to 9 photos.</p>
 
             <div class="mt-5 grid gap-4 md:grid-cols-3">
-                <label class="rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
-                    <span class="mb-2 block font-semibold text-white">First Image</span>
-                    <input type="file" name="front_img" required class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
-                    @error('front_img')<span class="mt-2 block text-xs font-medium text-rose-300">{{ $message }}</span>@enderror
-                </label>
-
-                <label class="rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
-                    <span class="mb-2 block font-semibold text-white">Second Image</span>
-                    <input type="file" name="back_img" class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
-                    @error('back_img')<span class="mt-2 block text-xs font-medium text-rose-300">{{ $message }}</span>@enderror
-                </label>
-
-                <label class="rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
-                    <span class="mb-2 block font-semibold text-white">Third Image</span>
-                    <input type="file" name="right_img" class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
-                    @error('right_img')<span class="mt-2 block text-xs font-medium text-rose-300">{{ $message }}</span>@enderror
-                </label>
+                @foreach ([
+                    'front_img' => 'First Image (Required)',
+                    'back_img' => 'Second Image',
+                    'right_img' => 'Third Image',
+                    'left_img' => 'Optional 1',
+                    'interiorf_img' => 'Optional 2',
+                    'interiorb_img' => 'Optional 3',
+                    'opt_img1' => 'Optional 4',
+                    'opt_img2' => 'Optional 5',
+                    'opt_img3' => 'Optional 6',
+                ] as $field => $label)
+                    <label class="rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
+                        <span class="mb-2 block font-semibold text-white">{{ $label }}</span>
+                        <input type="file" name="{{ $field }}" {{ $field === 'front_img' ? 'required' : '' }} class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
+                        @error($field)<span class="mt-2 block text-xs font-medium text-rose-300">{{ $message }}</span>@enderror
+                    </label>
+                @endforeach
             </div>
         </section>
 

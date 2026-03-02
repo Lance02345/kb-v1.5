@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
+use App\Support\JourneyMailer;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
@@ -51,6 +55,11 @@ class LoginController extends Controller
        * } return route('index');
         */
 
+        $user = auth()->user();
+        if ($user && !$user->roles()->exists()) {
+            $this->assignDefaultUserRole($user);
+        }
+
         if (auth()->user()->is_superadmin) {
             return route('admin.dashboard');
         }
@@ -67,7 +76,7 @@ class LoginController extends Controller
             return route('user.my_list');
         }
 
-        return abort(404);
+        return route('user.my_list');
     }
 
     //Google login
@@ -82,23 +91,45 @@ class LoginController extends Controller
     try {
         $user = Socialite::driver('google')->user();
 
-        // Check if a user with this email exists in your database
         $existingUser = User::where('email', $user->email)->first();
 
         if ($existingUser) {
-            // If the user already exists, log them in
+            $this->assignDefaultUserRole($existingUser);
             Auth::login($existingUser);
 
-            // Redirect to the home page or dashboard
- return redirect()->route('user.my_list');
+            return redirect()->route('user.my_list');
         } else {
-            return redirect()->route('login')
-                ->with('google_signup_required', 'No account exists for this Google email yet.')
-                ->with('google_email', $user->email)
-                ->withInput(['email' => $user->email]);
+            $newUser = User::create([
+                'name' => $user->name ?: 'Google User',
+                'email' => $user->email,
+                'password' => Hash::make(Str::random(32)),
+            ]);
+
+            $newUser->provider_id = $user->id;
+            $newUser->save();
+            $this->assignDefaultUserRole($newUser);
+            JourneyMailer::sendWelcome($newUser);
+
+            Auth::login($newUser);
+
+            return redirect()
+                ->route('user.user_profile', $newUser->id)
+                ->with('info', 'Your Google account has been created. Please add your phone number and profile details.');
         }
     } catch (\Exception $e) {
         return redirect()->route('login')->with('google_error', 'Google sign-in failed. Please try again.');
     }
 }
+
+    private function assignDefaultUserRole(User $user): void
+    {
+        $role = Role::query()
+            ->where('title', 'user')
+            ->orWhere('id', 3)
+            ->first();
+
+        if ($role) {
+            $user->roles()->syncWithoutDetaching([$role->id]);
+        }
+    }
 }

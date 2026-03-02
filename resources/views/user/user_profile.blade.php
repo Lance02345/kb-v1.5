@@ -10,6 +10,9 @@
     @if(session('success'))
         <div class="rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">{{ session('success') }}</div>
     @endif
+    @if(session('info'))
+        <div class="rounded-xl border border-amber-300/20 bg-amber-300/10 px-4 py-3 text-sm text-amber-100">{{ session('info') }}</div>
+    @endif
 
     <section class="grid gap-6 lg:grid-cols-3">
         <aside class="rounded-2xl border border-slate-800 bg-slate-900 p-5">

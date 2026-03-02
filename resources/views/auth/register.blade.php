@@ -12,6 +12,13 @@
         <h1 class="mt-2 font-display text-3xl font-bold text-white">Create your account</h1>
         <p class="mt-2 text-sm text-slate-300">Start selling vehicles, posting events, and managing your marketplace profile.</p>
 
+        <div class="mt-5">
+            <a href="{{ route('login.google') }}" class="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-slate-100 hover:border-slate-500">
+                <img src="{{ asset('images/gp.png') }}" alt="Google" class="h-5 w-5 object-contain">
+                Sign up with Google
+            </a>
+        </div>
+
         <form method="POST" action="{{ route('register') }}" class="mt-6 grid gap-4 sm:grid-cols-2">
             @csrf
             <div class="sm:col-span-2">

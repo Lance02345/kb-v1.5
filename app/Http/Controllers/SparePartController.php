@@ -22,6 +22,18 @@ use Intervention\Image\Facades\Image;
 
 class SparePartController extends Controller
 {
+    private const IMAGE_FIELDS = [
+        'front_img',
+        'back_img',
+        'right_img',
+        'left_img',
+        'interiorf_img',
+        'interiorb_img',
+        'opt_img1',
+        'opt_img2',
+        'opt_img3',
+    ];
+
     public function create()
     {
         $categories = SparePart::CATEGORIES;
@@ -40,29 +52,15 @@ class SparePartController extends Controller
             'price' => 'required|numeric',
             // Add validation rules for the photo uploads
             'front_img' => 'required|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff', // Example rules; customize as needed
-            'back_img' => 'file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'right_img' => 'file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'back_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'right_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'left_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'interiorf_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'interiorb_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'opt_img1' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'opt_img2' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'opt_img3' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
         ]);
-
-        $photos = [];
-
-        if ($request->hasFile('front_img')) {
-            $frontImg = $request->file('front_img');
-            $frontImgPath = $frontImg->store('photos', 'public'); // Customize the storage path as needed
-            $photos['front_img'] = $frontImgPath;
-        }
-
-        if ($request->hasFile('back_img')) {
-            $backImg = $request->file('back_img');
-            $backImgPath = $backImg->store('photos', 'public'); // Customize the storage path as needed
-            $photos['back_img'] = $backImgPath;
-        }
-
-        if ($request->hasFile('right_img')) {
-            $rightImg = $request->file('right_img');
-            $rightImgPath = $rightImg->store('photos', 'public'); // Customize the storage path as needed
-            $photos['right_img'] = $rightImgPath;
-        }
 
         // Store the spare part data and photo paths in the database
         $sparePart = new SparePart([
@@ -76,9 +74,7 @@ class SparePartController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        $imageFields = ['front_img', 'back_img', 'right_img'];
-
-        foreach ($imageFields as $fieldName) {
+        foreach (self::IMAGE_FIELDS as $fieldName) {
             if ($request->hasFile($fieldName)) {
                 $sparePart->$fieldName = $this->storeProcessedSparePartImage($request->file($fieldName), $fieldName);
             }
@@ -126,6 +122,12 @@ class SparePartController extends Controller
             'front_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
             'back_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
             'right_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'left_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'interiorf_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'interiorb_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'opt_img1' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'opt_img2' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'opt_img3' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
         ]);
 
         $sparePart->category = $request->category;
@@ -136,7 +138,7 @@ class SparePartController extends Controller
         $sparePart->location = $request->location;
         $sparePart->price = $request->price;
 
-        foreach (['front_img', 'back_img', 'right_img'] as $fieldName) {
+        foreach (self::IMAGE_FIELDS as $fieldName) {
             if ($request->hasFile($fieldName)) {
                 if (!empty($sparePart->{$fieldName})) {
                     Storage::delete('public/photos/' . $sparePart->{$fieldName});
@@ -154,7 +156,7 @@ class SparePartController extends Controller
     {
         abort_if((int) $sparePart->user_id !== (int) Auth::id(), 403);
 
-        foreach (['front_img', 'back_img', 'right_img'] as $fieldName) {
+        foreach (self::IMAGE_FIELDS as $fieldName) {
             if (!empty($sparePart->{$fieldName})) {
                 Storage::delete('public/photos/' . $sparePart->{$fieldName});
             }

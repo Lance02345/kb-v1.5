@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Models\Role;
 use App\Models\User;
 use App\Support\JourneyMailer;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -30,7 +31,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/user/my_list';
 
     /**
      * Create a new controller instance.
@@ -70,9 +71,22 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+        $this->assignDefaultUserRole($user);
 
         JourneyMailer::sendWelcome($user);
 
         return $user;
+    }
+
+    private function assignDefaultUserRole(User $user): void
+    {
+        $role = Role::query()
+            ->where('title', 'user')
+            ->orWhere('id', 3)
+            ->first();
+
+        if ($role) {
+            $user->roles()->syncWithoutDetaching([$role->id]);
+        }
     }
 }
