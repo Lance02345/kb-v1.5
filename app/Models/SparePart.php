@@ -32,6 +32,8 @@ class SparePart extends Model
             'location',
             'price',
             'user_id',
+            'listing_id',
+            'invoice_id',
             'front_img',
             'back_img',
             'right_img',
@@ -48,7 +50,7 @@ class SparePart extends Model
         }
 
         public function listing () {
-            return $this->belongsTo(Listing::class, 'user_id');
+            return $this->belongsTo(Listing::class, 'listing_id');
         }
 
         public function category() {

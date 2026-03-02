@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Garage;
+use App\Support\JourneyMailer;
+use App\Support\ListingBilling;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 class GarageController extends Controller
 {
@@ -38,26 +41,36 @@ class GarageController extends Controller
             'opt_img3' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
         ]);
 
-        $garage = new Garage();
-        $garage->garage_title = $request->input('garage_title');
-        $garage->garage_location = $request->input('garage_location');
-        $garage->garage_description = $request->input('garage_description');
-        $garage->user_id = auth()->id();
+        DB::transaction(function () use ($request) {
+            $garage = new Garage();
+            $garage->garage_title = $request->input('garage_title');
+            $garage->garage_location = $request->input('garage_location');
+            $garage->garage_description = $request->input('garage_description');
+            $garage->user_id = auth()->id();
 
-        foreach (['front_img', 'back_img', 'right_img', 'left_img', 'interiorf_img', 'interiorb_img', 'opt_img1', 'opt_img2', 'opt_img3'] as $fieldName) {
-            if ($request->hasFile($fieldName)) {
-                $garage->{$fieldName} = $this->storeGarageImage($request->file($fieldName), $fieldName);
+            foreach (['front_img', 'back_img', 'right_img', 'left_img', 'interiorf_img', 'interiorb_img', 'opt_img1', 'opt_img2', 'opt_img3'] as $fieldName) {
+                if ($request->hasFile($fieldName)) {
+                    $garage->{$fieldName} = $this->storeGarageImage($request->file($fieldName), $fieldName);
+                }
             }
-        }
 
-        $garage->save();
+            $garage->save();
 
-        return redirect()->route('user.mygarages')->with('success', 'Garage listing created successfully.');
+            $billing = ListingBilling::createFreeForUser((int) auth()->id());
+            $garage->listing_id = $billing['listing']->id;
+            $garage->invoice_id = $billing['invoice']->id;
+            $garage->save();
+
+            $billing['invoice']->load('user', 'package');
+            JourneyMailer::sendInvoiceGenerated($billing['invoice']);
+        });
+
+        return redirect()->route('user.mygarages')->with('success', 'Garage listing created successfully. Free package + invoice applied.');
     }
 
     public function mygarages()
     {
-        $garages = Garage::where('user_id', Auth::id())->latest('id')->get();
+        $garages = Garage::with(['listing.package', 'invoice'])->where('user_id', Auth::id())->latest('id')->get();
         return view('user.garages_list', compact('garages'));
     }
 

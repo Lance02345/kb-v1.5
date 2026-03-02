@@ -39,10 +39,14 @@
                             <p>Price: <span class="text-white">Ksh {{ number_format((float) $sparePart->price) }}</span></p>
                             <p>Condition: <span class="text-white">{{ $sparePart->condition }}</span></p>
                             <p>Location: <span class="text-white">{{ $sparePart->location }}</span></p>
+                            <p>Package: <span class="text-white">{{ optional(optional($sparePart->listing)->package)->package_name ?: 'Free Plan' }}</span></p>
                         </div>
                         <p class="line-clamp-2 text-sm text-slate-400">{{ $sparePart->item_description }}</p>
                         <div class="flex flex-wrap gap-2">
                             <a href="{{ route('sparepart', $sparePart->id) }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">View Details</a>
+                            @if($sparePart->invoice_id)
+                                <a href="{{ route('user.invoice.show', $sparePart->invoice_id) }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Invoice</a>
+                            @endif
                             <a href="{{ route('user.sparepartsedit', $sparePart->id) }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Edit</a>
                             <form action="{{ route('user.sparepartsdestroy', $sparePart->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this spare part?');">
                                 @csrf

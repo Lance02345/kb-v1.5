@@ -12,10 +12,12 @@ use App\Models\Package;
 use App\Models\SparePart;
 use App\Models\User;
 use App\Support\JourneyMailer;
+use App\Support\ListingBilling;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -62,37 +64,48 @@ class SparePartController extends Controller
             'opt_img3' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
         ]);
 
-        // Store the spare part data and photo paths in the database
-        $sparePart = new SparePart([
-            'category' => $request->category,
-            'make' => $request->make,
-            'item_name' => $request->item_name,
-            'item_description' => $request->item_description,
-            'condition' => $request->condition,
-            'location' => $request->location,
-            'price' => $request->price,
-            'user_id' => auth()->id(),
-        ]);
+        $sparePart = DB::transaction(function () use ($request) {
+            $sparePart = new SparePart([
+                'category' => $request->category,
+                'make' => $request->make,
+                'item_name' => $request->item_name,
+                'item_description' => $request->item_description,
+                'condition' => $request->condition,
+                'location' => $request->location,
+                'price' => $request->price,
+                'user_id' => auth()->id(),
+            ]);
 
-        foreach (self::IMAGE_FIELDS as $fieldName) {
-            if ($request->hasFile($fieldName)) {
-                $sparePart->$fieldName = $this->storeProcessedSparePartImage($request->file($fieldName), $fieldName);
+            foreach (self::IMAGE_FIELDS as $fieldName) {
+                if ($request->hasFile($fieldName)) {
+                    $sparePart->$fieldName = $this->storeProcessedSparePartImage($request->file($fieldName), $fieldName);
+                }
             }
-        }
 
-        $sparePart->save();
+            $sparePart->save();
+
+            $billing = ListingBilling::createFreeForUser((int) auth()->id());
+            $sparePart->listing_id = $billing['listing']->id;
+            $sparePart->invoice_id = $billing['invoice']->id;
+            $sparePart->save();
+
+            $billing['invoice']->load('user', 'package');
+            JourneyMailer::sendInvoiceGenerated($billing['invoice']);
+
+            return $sparePart;
+        });
 
         $sparePart->load('user');
         JourneyMailer::sendSparePartSubmitted($sparePart);
 
-        return redirect()->route('user.myspareparts')->with('success', 'Spare part added successfully.');
+        return redirect()->route('user.myspareparts')->with('success', 'Spare part added successfully. Free package + invoice applied.');
 
 
     }
 
     public function myspareparts(SparePart $spareParts, Listing $listing)
     {
-        $spareParts = SparePart::where('user_id', Auth::id())->latest('id')->get();
+        $spareParts = SparePart::with(['listing.package', 'invoice'])->where('user_id', Auth::id())->latest('id')->get();
         $vehicles = Vehicle::all();
         $listings = Listing::where('ads_status', 'Expired')->where('user_id', Auth::id())->get();
         return view('user.spareparts_list', compact('spareParts', 'listings', 'vehicles'));

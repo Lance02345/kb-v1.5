@@ -7,6 +7,8 @@
 @include('modern._nav')
 
 @php($invoiceStatus = strtoupper((string) $invoice->status))
+@php($invoicePackageName = optional($invoice->package)->package_name ?: 'Free Plan')
+@php($invoiceAmount = (float) ($invoice->total ?? optional($invoice->package)->package_amount ?? 0))
 
 <main class="w-full space-y-6 px-4 py-8 sm:px-6 lg:px-10">
     <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
@@ -43,15 +45,15 @@
                 <tbody>
                     <tr class="border-t border-slate-800">
                         <td class="px-4 py-3">
-                            {{ $invoice->package->package_name }}<br>
+                            {{ $invoicePackageName }}<br>
                             Payment ID: {{ $invoice->id }}<br>
                             Listing ID: {{ $invoice->listing_id }}
                         </td>
-                        <td class="px-4 py-3 text-right">Ksh {{ number_format((float) $invoice->package->package_amount) }}</td>
+                        <td class="px-4 py-3 text-right">Ksh {{ number_format($invoiceAmount) }}</td>
                     </tr>
                     <tr class="border-t border-slate-800">
                         <td class="px-4 py-3">Subtotal</td>
-                        <td class="px-4 py-3 text-right">Ksh {{ number_format((float) $invoice->package->package_amount) }}</td>
+                        <td class="px-4 py-3 text-right">Ksh {{ number_format($invoiceAmount) }}</td>
                     </tr>
                     <tr class="border-t border-slate-800">
                         <td class="px-4 py-3">VAT</td>
@@ -59,7 +61,7 @@
                     </tr>
                     <tr class="border-t border-slate-800">
                         <td class="px-4 py-3 font-semibold text-white">Total</td>
-                        <td class="px-4 py-3 text-right font-semibold text-white">Ksh {{ number_format((float) $invoice->package->package_amount) }}</td>
+                        <td class="px-4 py-3 text-right font-semibold text-white">Ksh {{ number_format($invoiceAmount) }}</td>
                     </tr>
                 </tbody>
             </table>

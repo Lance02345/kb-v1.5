@@ -36,10 +36,14 @@
                         <div class="grid grid-cols-2 gap-2 text-sm text-slate-300">
                             <p>ID: <span class="text-white">{{ $garage->id }}</span></p>
                             <p>Location: <span class="text-white">{{ $garage->garage_location }}</span></p>
+                            <p>Package: <span class="text-white">{{ optional(optional($garage->listing)->package)->package_name ?: 'Free Plan' }}</span></p>
                         </div>
                         <p class="line-clamp-2 text-sm text-slate-400">{{ \Illuminate\Support\Str::limit(strip_tags($garage->garage_description), 140) }}</p>
                         <div class="flex flex-wrap gap-2">
                             <a href="{{ route('garage.show', $garage->id) }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">View Details</a>
+                            @if($garage->invoice_id)
+                                <a href="{{ route('user.invoice.show', $garage->invoice_id) }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Invoice</a>
+                            @endif
                         </div>
                     </div>
                 </article>

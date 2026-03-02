@@ -74,7 +74,7 @@ class ListingController extends Controller
     public function userevent()
     {
 
-        $carevents = Carevent::where('user_id', Auth::id())->get();
+        $carevents = Carevent::with(['listing.package', 'invoice'])->where('user_id', Auth::id())->get();
         return view('user.index_carevent', compact('carevents'));
 
 

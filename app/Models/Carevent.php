@@ -20,10 +20,22 @@ class Carevent extends Model
         'ticket_price',
         'event_duration',
         'user_id',  
+        'listing_id',
+        'invoice_id',
 
         ];
 
         public function user () {
             return $this->belongsTo(User::class, 'user_id');
+        }
+
+        public function listing()
+        {
+            return $this->belongsTo(Listing::class, 'listing_id');
+        }
+
+        public function invoice()
+        {
+            return $this->belongsTo(Invoice::class, 'invoice_id');
         }
 }

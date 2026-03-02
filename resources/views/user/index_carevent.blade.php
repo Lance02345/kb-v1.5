@@ -36,10 +36,14 @@
                             <p>Time: <span class="text-white">{{ $carevent->event_time }}</span></p>
                             <p>Organizer: <span class="text-white">{{ $carevent->organizer }}</span></p>
                             <p>Ticket: <span class="text-white">Ksh {{ number_format((float) $carevent->ticket_price) }}</span></p>
+                            <p>Package: <span class="text-white">{{ optional(optional($carevent->listing)->package)->package_name ?: 'Free Plan' }}</span></p>
                         </div>
 
                         <div class="flex gap-2">
                             <a href="{{ route('user.edit_carevent', $carevent->id) }}" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Edit</a>
+                            @if($carevent->invoice_id)
+                                <a href="{{ route('user.invoice.show', $carevent->invoice_id) }}" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Invoice</a>
+                            @endif
                             <form action="{{ route('user.delete_carevent', $carevent->id) }}" method="post" onsubmit="return confirm('Are you sure want to delete this event?');">
                                 @method('DELETE')
                                 @csrf

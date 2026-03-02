@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Carevent;
 use App\Support\JourneyMailer;
+use App\Support\ListingBilling;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class CareventController extends Controller
@@ -60,22 +62,33 @@ class CareventController extends Controller
             $path = $request->file('event_image')->storeAs('public/photos', $event_imageStore);
         } 
 
-        $carevent->event_title = $request->event_title;
-        $carevent->event_description = $request->event_description;
-        $carevent->event_location = $request->event_location;
-        $carevent->event_date = $request->event_date;
-        $carevent->event_time = $request->event_time;
-        $carevent->organizer = $request->organizer;
-        $carevent->ticket_price = $request->ticket_price;
-        $carevent->event_duration = $request->event_duration;
-        $carevent->user_id = $request->user_id;
-    
-        if($request->hasFile('event_image')) { $carevent->event_image = $event_imageStore; }
+        DB::transaction(function () use ($request, $carevent, $event_imageStore) {
+            $carevent->event_title = $request->event_title;
+            $carevent->event_description = $request->event_description;
+            $carevent->event_location = $request->event_location;
+            $carevent->event_date = $request->event_date;
+            $carevent->event_time = $request->event_time;
+            $carevent->organizer = $request->organizer;
+            $carevent->ticket_price = $request->ticket_price;
+            $carevent->event_duration = $request->event_duration;
+            $carevent->user_id = $request->user_id;
+        
+            if($request->hasFile('event_image')) { $carevent->event_image = $event_imageStore; }
 
-        $carevent->save();
+            $carevent->save();
+
+            $billing = ListingBilling::createFreeForUser((int) $request->user_id, 7);
+            $carevent->listing_id = $billing['listing']->id;
+            $carevent->invoice_id = $billing['invoice']->id;
+            $carevent->save();
+
+            $billing['invoice']->load('user', 'package');
+            JourneyMailer::sendInvoiceGenerated($billing['invoice']);
+        });
+
         $carevent->load('user');
         JourneyMailer::sendCareventSubmitted($carevent);
-        return redirect() -> route('user.carevent')->with('success','Added Successfully');
+        return redirect() -> route('user.carevent')->with('success','Added Successfully. Free package + invoice applied.');
     }
 
     /**

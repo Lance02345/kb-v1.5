@@ -21,6 +21,8 @@
 <body>
 <div class="wrap">
     @php($invoiceStatus = strtoupper((string) $invoice->status))
+    @php($invoicePackageName = optional($invoice->package)->package_name ?: 'Free Plan')
+    @php($invoiceAmount = (float) ($invoice->total ?? optional($invoice->package)->package_amount ?? 0))
 
     <div class="row">
         <div class="title">Invoice #{{ $invoice->id }}</div>
@@ -59,15 +61,15 @@
             <tbody>
             <tr>
                 <td>
-                    {{ $invoice->package->package_name }}<br>
+                    {{ $invoicePackageName }}<br>
                     Payment ID: {{ $invoice->id }}<br>
                     Listing ID: {{ $invoice->listing_id }}
                 </td>
-                <td class="right">Ksh {{ number_format((float) $invoice->package->package_amount) }}</td>
+                <td class="right">Ksh {{ number_format($invoiceAmount) }}</td>
             </tr>
             <tr>
                 <td>Subtotal</td>
-                <td class="right">Ksh {{ number_format((float) $invoice->package->package_amount) }}</td>
+                <td class="right">Ksh {{ number_format($invoiceAmount) }}</td>
             </tr>
             <tr>
                 <td>VAT</td>
@@ -75,7 +77,7 @@
             </tr>
             <tr>
                 <td><strong>Total</strong></td>
-                <td class="right"><strong>Ksh {{ number_format((float) $invoice->package->package_amount) }}</strong></td>
+                <td class="right"><strong>Ksh {{ number_format($invoiceAmount) }}</strong></td>
             </tr>
             </tbody>
         </table>
