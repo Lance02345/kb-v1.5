@@ -104,6 +104,7 @@ Route :: get ('terms_condition',  [PagesController::class, 'terms_condition'])->
 Route::post('/add-to-favorites', [PagesController::class, 'addToFavorites'])->name('addtofavourites');
 Route :: get ('favourite_list',  [ListingController::class, 'showFavoriteVehicles'])->name('favourite_list');
 Route::get('/garages', [GarageController::class, 'index'])->name('garages.index');
+Route::get('/garage/{garage}', [GarageController::class, 'show'])->name('garage.show');
 Route::get('/sparepartssearch', [SparePartController::class, 'spare_parts_search'])->name('spare_parts_search');
 Route::get('/spareparts', [SparePartController::class, 'showspareparts'])->name('spareparts');
 Route::get('/sparepart/{id}', [SparePartController::class, 'sparepart'])->name('sparepart');
@@ -159,6 +160,7 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
     Route :: get ('pending_list',  [ListingController::class, 'pending_list'])->name('pending_list');
     Route :: post ('garages',  [GarageController::class, 'store_garage'])->name('garages');
     Route :: get ('garage_create',  [GarageController::class, 'create_garage'])->name('garage_create');
+    Route :: get ('mygarages',  [GarageController::class, 'mygarages'])->name('mygarages');
 
     Route :: get ('new_listing',  [ListingController::class, 'new_listing'])->name('new_listing');
     Route :: get ('index_vehiclesale',  [ListingController::class, 'index_vehiclesale'])->name('index_vehiclesale');

@@ -8,6 +8,7 @@
             <a href="{{ route('index') }}" class="{{ request()->routeIs('index') ? 'text-white' : 'text-slate-300 hover:text-white' }}">Home</a>
             <a href="{{ route('marketplace.index') }}" class="{{ request()->routeIs('marketplace.index') ? 'text-white' : 'text-slate-300 hover:text-white' }}">Marketplace</a>
             <a href="{{ route('spareparts') }}" class="{{ request()->routeIs('spareparts') || request()->routeIs('spare_parts_search') ? 'text-white' : 'text-slate-300 hover:text-white' }}">Vehicle Parts</a>
+            <a href="{{ route('garages.index') }}" class="{{ request()->routeIs('garages.index') || request()->routeIs('garage.show') ? 'text-white' : 'text-slate-300 hover:text-white' }}">Garages</a>
             <a href="{{ route('carevent') }}" class="{{ request()->routeIs('carevent') ? 'text-white' : 'text-slate-300 hover:text-white' }}">Car Events</a>
             <a href="{{ route('about_us') }}" class="{{ request()->routeIs('about_us') ? 'text-white' : 'text-slate-300 hover:text-white' }}">About</a>
         </nav>
@@ -24,6 +25,7 @@
                     <div class="absolute right-0 mt-2 w-48 overflow-hidden rounded-xl border border-slate-700 bg-slate-900 shadow-2xl">
                         <a href="{{ route('user.my_list') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">My List</a>
                         <a href="{{ route('user.myspareparts') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">Spare Parts</a>
+                        <a href="{{ route('user.mygarages') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">Garages</a>
                         <a href="{{ route('user.userevent') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">My Events</a>
                         <a href="{{ route('user.invoice.index') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">Invoices</a>
                         <a href="{{ route('user.user_profile', Auth::user()->id) }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">Profile</a>

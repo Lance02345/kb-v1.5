@@ -77,6 +77,9 @@
               <li class="nav-item {{ request()->routeIs('spareparts') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('spareparts') }}">Vehicle Parts</a>
               </li>
+              <li class="nav-item {{ request()->routeIs('garages.index') || request()->routeIs('garage.show') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('garages.index') }}">Garages</a>
+              </li>
               <li class="nav-item {{ request()->routeIs('carevent') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('carevent') }}">Car Events</a>
               </li>
@@ -106,6 +109,7 @@
                   <div class="dropdown-menu">
                     <a class="dropdown-item" href="{{ route('user.my_list') }}">My List</a>
                     <a class="dropdown-item" href="{{ route('user.myspareparts') }}">Spare Parts</a>
+                    <a class="dropdown-item" href="{{ route('user.mygarages') }}">Garages</a>
                     <a class="dropdown-item" href="{{ route('user.userevent') }}">Events</a>
                     <a class="dropdown-item" href="{{ route('user.invoice.index') }}">Invoices</a>
                     <a class="dropdown-item" href="{{ route('user.user_profile', Auth::user()->id) }}">User Profile</a>
@@ -175,6 +179,7 @@
           <ul>
             <li><a href="{{ route('vehicleslist') }}">Vehicle Listings</a></li>
             <li><a href="{{ route('spareparts') }}">Spare Parts</a></li>
+            <li><a href="{{ route('garages.index') }}">Garages</a></li>
             <li><a href="{{ route('carevent') }}">Car Events</a></li>
             <li><a href="{{ route('carhirelist') }}">Car Hire</a></li>
             <li><a href="{{ route('index') }}">Home</a></li>

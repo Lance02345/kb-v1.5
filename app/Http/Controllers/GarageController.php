@@ -5,61 +5,73 @@ namespace App\Http\Controllers;
 use App\Models\Garage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\UploadedFile;
 
 class GarageController extends Controller
 {
     public function index()
     {
-        $garages = Garage::all();
+        $garages = Garage::with('user')->latest('id')->paginate(12);
 
-        return view('pages.garages', compact('garages'));
+        return view('modern.garages', compact('garages'));
     }
 
     public function create_garage()
     {
-
-        $garage = Garage::where('user_id', Auth::id())->get();
-        return view('user.create_garage', compact('garage'));
-
-
+        return view('user.create_garage');
     }
 
     public function store_garage(Request $request)
     {
         $request->validate([
-            'garage_title' => 'required',
-            'garage_location' => 'required',
-            'garage_description' => 'required',
-            'front_img' => 'required|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff', // Example rules; customize as needed
-            'back_img' => 'file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'right_img' => 'file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-
+            'garage_title' => 'required|string|max:255',
+            'garage_location' => 'required|string|max:255',
+            'garage_description' => 'required|string',
+            'front_img' => 'required|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'back_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'right_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'left_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'interiorf_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'interiorb_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'opt_img1' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'opt_img2' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'opt_img3' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
         ]);
-        $garage = new Garage();
 
+        $garage = new Garage();
         $garage->garage_title = $request->input('garage_title');
         $garage->garage_location = $request->input('garage_location');
         $garage->garage_description = $request->input('garage_description');
-        $garage->front_img = $request->file('front_img')->store('garages');
-        $garage->back_img = $request->file('back_img')->store('garages');
-        $garage->right_img = $request->file('right_img')->store('garages');
-        $garage->left_img = $request->file('left_img');
-        $garage->interiorf_img = $request->file('interiorf_img');
-        $garage->interiorb_img = $request->file('interiorb_img');
-        $garage->opt_img1 = $request->file('opt_img1');
-        $garage->opt_img2 = $request->file('opt_img2');
-        $garage->opt_img3 = $request->file('opt_img3');
-        $garage->user_id = auth()->user()->id;
+        $garage->user_id = auth()->id();
 
-
+        foreach (['front_img', 'back_img', 'right_img', 'left_img', 'interiorf_img', 'interiorb_img', 'opt_img1', 'opt_img2', 'opt_img3'] as $fieldName) {
+            if ($request->hasFile($fieldName)) {
+                $garage->{$fieldName} = $this->storeGarageImage($request->file($fieldName), $fieldName);
+            }
+        }
 
         $garage->save();
 
-        return redirect()->route('garages.index');
+        return redirect()->route('user.mygarages')->with('success', 'Garage listing created successfully.');
+    }
+
+    public function mygarages()
+    {
+        $garages = Garage::where('user_id', Auth::id())->latest('id')->get();
+        return view('user.garages_list', compact('garages'));
     }
 
     public function show(Garage $garage)
     {
-        return view('garages.show', compact('garage'));
+        $garage->load('user');
+        return view('modern.garage', compact('garage'));
+    }
+
+    private function storeGarageImage(UploadedFile $image, string $fieldPrefix): string
+    {
+        $extension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
+        $imageName = $fieldPrefix . '_' . time() . '_' . uniqid() . '.' . $extension;
+        $image->storeAs('garages', $imageName, 'public');
+        return 'garages/' . $imageName;
     }
 }

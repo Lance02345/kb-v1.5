@@ -1,293 +1,72 @@
-@extends('layouts.kingsbridge')
+@extends('layouts.modern-app')
+
+@section('title', 'Create Garage Listing - Kingsbridge Motors')
+@section('description', 'Post your garage details and photos.')
+
 @section('content')
+@include('modern._nav')
 
-<section class="section-sm">
-    <div class="container">
-    <form action="{{ route('user.garages') }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    <div class="col-lg-6"> 
-          <h6 class="font-weight-bold pt-4 pb-1">Garage Title:</h6>
-          <input type="text" value="{{ old('garage_title')}}" name="garage_title" class="border w-100 p-2 bg-white text-capitalize @error('year_of_build') is-invalid @enderror" placeholder="Garage Title">
-              @error('garage_title')
-                  <span class="invalid"  role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-              @enderror
+<main class="w-full space-y-6 px-4 py-8 sm:px-6 lg:px-10">
+    <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
+        <h1 class="font-display text-3xl font-bold text-white">Post Garage Listing</h1>
+        <p class="mt-2 text-sm text-slate-300">Add your garage profile and photos so customers can discover your services.</p>
+    </section>
+
+    <form action="{{ route('user.garages') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        @csrf
+
+        <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
+            <h2 class="font-display text-xl font-semibold text-white">Garage Details</h2>
+            <div class="mt-5 grid gap-5 md:grid-cols-2">
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Garage Title</label>
+                    <input type="text" name="garage_title" required value="{{ old('garage_title') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    @error('garage_title')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Location</label>
+                    <input type="text" name="garage_location" required value="{{ old('garage_location') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    @error('garage_location')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Description</label>
+                    <textarea name="garage_description" required rows="6" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">{{ old('garage_description') }}</textarea>
+                    @error('garage_description')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
             </div>
-            <div class="col-lg-6"> 
-          <h6 class="font-weight-bold pt-4 pb-1">Garage Location:</h6>
-          <input type="text" value="{{ old('garage_location')}}" name="garage_location" class="border w-100 p-2 bg-white text-capitalize @error('year_of_build') is-invalid @enderror" placeholder="Garage Location">
-              @error('garage_location')
-                  <span class="invalid"  role="alert">
-                      <strong>{{ $message }}</strong>
-                  </span>
-              @enderror
+        </section>
+
+        <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
+            <h2 class="font-display text-xl font-semibold text-white">Upload Photos</h2>
+            <p class="mt-1 text-sm text-slate-400">First image is required. Add up to 9 images.</p>
+
+            <div class="mt-5 grid gap-4 md:grid-cols-3">
+                @foreach ([
+                    'front_img' => 'First Image (Required)',
+                    'back_img' => 'Second Image',
+                    'right_img' => 'Third Image',
+                    'left_img' => 'Optional 1',
+                    'interiorf_img' => 'Optional 2',
+                    'interiorb_img' => 'Optional 3',
+                    'opt_img1' => 'Optional 4',
+                    'opt_img2' => 'Optional 5',
+                    'opt_img3' => 'Optional 6',
+                ] as $field => $label)
+                    <label class="rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
+                        <span class="mb-2 block font-semibold text-white">{{ $label }}</span>
+                        <input type="file" name="{{ $field }}" {{ $field === 'front_img' ? 'required' : '' }} class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
+                        @error($field)<span class="mt-2 block text-xs font-medium text-rose-300">{{ $message }}</span>@enderror
+                    </label>
+                @endforeach
             </div>
-            <div class="col-lg-12">
-          <h6 class="font-weight-bold pt-4 pb-1">Garage Description:</h6>
-          <textarea name="garage_description"  class="description ckeditor form-control" name="wysiwyg-editor">
-            {{ old('garage_description')}}
-          </textarea>
+        </section>
 
-          @error('garage_description')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-          @enderror
-
-          </div>
-    <fieldset class="border border-gary p-4 mb-5">
-  <h4 style=" text-align: center;">Upload Photos to showcase your work.</h4>
-  <h6 class="font-weight-bold pt-4 pb-1">Images can come in any order. Upload atleast three photos</h6>
-  <div class="row">
-    <div class="space column">
-      <div class="card">
-        <h3>First-image</h3>
-        <input type="file" id="files"  name="front_img"/>
-      </div>
-      @error('front_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-  
-    <div class="space column">
-      <div class="card">
-        <h3>Second-image</h3>
-        <input type="file" id="back" name="back_img" />
-      </div>
-      @error('back_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-    
-    <div class="space column">
-      <div class="card">
-        <h3>Third-image</h3>
-        <input type="file" id="right_img" name="right_img"/>
-      </div>
-      @error('right_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-    
-    <div class="space column">
-      <div class="card">
-        <h3>Optional 1</h3>
-        <input type="file" id="left_img" name="left_img" />
-      </div>
-      @error('left_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-    <div class="space column">
-      <div class="card">
-        <h3>Optional 2</h3>
-        <input type="file" id="interior_front" name="interiorf_img"  />
-      </div>
-      @error('interiorf_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-    <div class="space column">
-      <div class="card">
-        <h3>Optional 3</h3>
-        <input type="file" id="interior_back" name="interiorb_img"  />
-      </div>
-      @error('interiorb_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-    <div class="space column">
-      <div class="card">
-        <h3>Optional 4</h3>
-        <input type="file" id="optional_1" name="opt_img1" />
-      </div>
-    </div>
-    <div class="space column">
-      <div class="card">
-        <h3>Optional 5</h3>
-        <input type="file" id="optional_2" name="opt_img2" />
-      </div>
-    </div>
-    <div class="space column">
-      <div class="card">
-        <h3>Optional 6</h3>
-        <input type="file" id="optional_3" name="opt_img3" />
-      </div>
-    </div>
-  </div>
-</fieldset>
-<button type="submit" class="btn btn-primary d-block mt-2">Post Your Garage</button>
-
-</form>   
-
-</section>
-<script src="{{ asset('js/gsdk-bootstrap-wizard.js')}}"></script>
-<script src="{{ asset('js/jquery-1.10.2.js')}}"></script>
-<script src="{{ asset('js/bootstrap.min.js')}}"></script>
-<script src="{{ asset('js/jquery.bootstrap.wizard.js')}}"></script>
-<script src="{{ asset('js/wizard.js')}}"></script>  
-
-<script>
-
-  
-$(document).ready(function(){
-// Prepare the preview for profile picture
-    $("#wizard-picture").change(function(){
-        readURL(this);
-    });
-});
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
-        }
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-
-  
-  $('.wizard-card').bootstrapWizard({
-        'tabClass': 'nav nav-pills',
-        'nextSelector': '.btn-next',
-        'previousSelector': '.btn-previous',
-
-         onInit : function(tab, navigation, index){
-
-           //check number of tabs and fill the entire row
-           var $total = navigation.find('li').length;
-           $width = 100/$total;
-
-           $display_width = $(document).width();
-
-           console.log($total);
-
-           if($display_width < 600 && $total > 3){
-               $width = 50;
-           }
-
-           navigation.find('li').css('width',$width + '%');
-
-        },
-        
-        onTabClick : function(tab, navigation, index){
-            // Disable the posibility to click on tabs
-            return false;
-        },
-        onTabShow: function(tab, navigation, index) {
-            var $total = navigation.find('li').length;
-            var $current = index+1;
-
-            var wizard = navigation.closest('.wizard-card');
-
-            // If it's the last tab then hide the last button and show the finish instead
-            if($current >= $total) {
-                $(wizard).find('.btn-next').hide();
-                $(wizard).find('.btn-finish').show();
-            } else {
-                $(wizard).find('.btn-next').show();
-                $(wizard).find('.btn-finish').hide();
-            }
-        }
-    });
-        
-         
-  </script>
-<script src="//cdn.ckeditor.com/4.25.1-lts/standard/ckeditor.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script type="text/javascript">
-  $(document).ready(function () {
-      $('.ckeditor').ckeditor();
-  });
-</script>
-
-
-<style>
-  
-input[type="file"] {
-  display: block;
-}
-.imageThumb {
-  max-height: 100px;
-  border: 2px solid;
-  padding: 1px;
-  cursor: pointer;
-}
-.pip {
-  display: inline-block;
-  margin: 10px 10px 0 0;
-}
-.remove {
-  display: block;
-  background: #444;
-  border: 1px solid black;
-  color: white;
-  text-align: center;
-  cursor: pointer;
-}
-.remove:hover {
-  background: white;
-  color: black;
-}
-</style>
-
-<script>
-
-
-
-$(document).ready(function() {
-    if (window.File && window.FileList && window.FileReader) {
-      $("#files").on("change", function(e) {
-        var files = e.target.files,
-          filesLength = files.length;
-        for (var i = 0; i < filesLength; i++) {
-          var f = files[i]
-          var fileReader = new FileReader();
-          fileReader.onload = (function(e) {
-            var file = e.target;
-            $("<span class=\"pip\">" +
-              "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-              "<br/><span class=\"remove\">Remove image</span>" +
-              "</span>").insertAfter("#files");
-            $(".remove").click(function(){
-              $(this).parent(".pip").remove();
-            });
-            
-            // Old code here
-            /*$("<img></img>", {
-              class: "imageThumb",
-              src: e.target.result,
-              title: file.name + " | Click to remove"
-            }).insertAfter("#files").click(function(){$(this).remove();});*/
-            
-          });
-          fileReader.readAsDataURL(f);
-        }
-      });
-    } else {
-      alert("Your browser doesn't support to File API")
-    }
-  });
-
-
-
-
-  </script>
-
-
-  @endsection
+        <div class="flex items-center gap-3">
+            <button type="submit" class="rounded-lg bg-amber-300 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Post Garage</button>
+            <a href="{{ route('user.mygarages') }}" class="rounded-lg border border-slate-700 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">My Garages</a>
+        </div>
+    </form>
+</main>
+@endsection

@@ -20,7 +20,7 @@
         </div>
     </section>
 
-    <section class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <section class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
             <h2 class="font-display text-xl font-semibold text-white">Vehicle Sale</h2>
             <p class="mt-2 text-sm text-slate-300">Post a car for sale with photos, specs, and pricing.</p>
@@ -43,6 +43,12 @@
             <h2 class="font-display text-xl font-semibold text-white">Spare Parts</h2>
             <p class="mt-2 text-sm text-slate-300">Advertise spare parts and accessories to active buyers.</p>
             <a href="{{ route('user.sparepartscreate') }}" class="mt-4 inline-flex rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Choose</a>
+        </article>
+
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
+            <h2 class="font-display text-xl font-semibold text-white">Garage</h2>
+            <p class="mt-2 text-sm text-slate-300">Showcase your garage services and workspace to potential clients.</p>
+            <a href="{{ route('user.garage_create') }}" class="mt-4 inline-flex rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Choose</a>
         </article>
     </section>
 </main>
