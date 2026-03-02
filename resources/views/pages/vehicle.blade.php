@@ -24,6 +24,13 @@
 @endphp
 
 <main class="w-full space-y-8 px-4 py-8 sm:px-6 lg:px-10">
+    <div class="flex flex-wrap gap-2">
+        <a href="{{ route('vehicleslist') }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Back to Listings</a>
+        @auth
+            <a href="{{ route('user.my_list') }}" class="inline-flex rounded-lg border border-amber-300/40 bg-amber-300/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-amber-200 hover:bg-amber-300/20">Return to Dashboard</a>
+        @endauth
+    </div>
+
     <section class="grid gap-6 lg:grid-cols-3">
         <article class="space-y-5 rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-2">
             <div class="flex flex-wrap items-start justify-between gap-3">

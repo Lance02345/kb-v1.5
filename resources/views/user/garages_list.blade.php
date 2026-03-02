@@ -17,12 +17,15 @@
                 <h1 class="font-display text-3xl font-bold text-white">My Garages</h1>
                 <p class="mt-2 text-sm text-slate-300">Review your garage listings and open public pages.</p>
             </div>
-            <a href="{{ route('user.garage_create') }}" class="rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Add Garage</a>
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('user.my_list') }}" class="rounded-lg border border-slate-700 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Dashboard</a>
+                <a href="{{ route('user.garage_create') }}" class="rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Add Garage</a>
+            </div>
         </div>
     </section>
 
     @if(!is_null($garages) && count($garages) > 0)
-        <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             @foreach($garages as $garage)
                 <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
                     <a href="{{ route('garage.show', $garage->id) }}">

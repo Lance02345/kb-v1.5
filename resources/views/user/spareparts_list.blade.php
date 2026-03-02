@@ -17,7 +17,10 @@
                 <h1 class="font-display text-3xl font-bold text-white">My Spare Parts</h1>
                 <p class="mt-2 text-sm text-slate-300">Review and manage all your spare part listings.</p>
             </div>
-            <a href="{{ route('user.sparepartscreate') }}" class="rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Add Spare Part</a>
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('user.my_list') }}" class="rounded-lg border border-slate-700 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Dashboard</a>
+                <a href="{{ route('user.sparepartscreate') }}" class="rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Add Spare Part</a>
+            </div>
         </div>
     </section>
 

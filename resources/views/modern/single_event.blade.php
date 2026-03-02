@@ -7,7 +7,12 @@
 @include('modern._nav')
 
 <main class="w-full space-y-6 px-4 py-8 sm:px-6 lg:px-10">
-    <a href="{{ route('carevent') }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Back to Events</a>
+    <div class="flex flex-wrap gap-2">
+        <a href="{{ route('carevent') }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Back to Events</a>
+        @auth
+            <a href="{{ route('user.my_list') }}" class="inline-flex rounded-lg border border-amber-300/40 bg-amber-300/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-amber-200 hover:bg-amber-300/20">Return to Dashboard</a>
+        @endauth
+    </div>
 
     <section class="grid gap-6 lg:grid-cols-3">
         <article class="space-y-4 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 p-4 lg:col-span-2">

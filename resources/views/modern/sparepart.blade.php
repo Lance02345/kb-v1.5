@@ -21,7 +21,12 @@
 @endphp
 
 <main class="w-full space-y-6 px-4 py-8 sm:px-6 lg:px-10">
-    <a href="{{ route('spareparts') }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Back to Spare Parts</a>
+    <div class="flex flex-wrap gap-2">
+        <a href="{{ route('spareparts') }}" class="inline-flex rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-200 hover:border-slate-500">Back to Spare Parts</a>
+        @auth
+            <a href="{{ route('user.my_list') }}" class="inline-flex rounded-lg border border-amber-300/40 bg-amber-300/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-amber-200 hover:bg-amber-300/20">Return to Dashboard</a>
+        @endauth
+    </div>
     @auth
         @if((int) auth()->id() === (int) $sparePart->user_id)
             <div class="flex flex-wrap gap-2">
@@ -41,14 +46,19 @@
             <p class="text-sm text-slate-300">{{ $sparePart->item_description }}</p>
 
             @if(count($images))
-                <div class="grid gap-3 sm:grid-cols-2">
-                    @foreach($images as $index => $image)
-                        <button type="button" class="spare-thumb block w-full overflow-hidden rounded-xl border border-slate-800 bg-transparent p-0 text-left hover:border-amber-300" data-src="{{ asset('storage/photos/' . $image) }}" data-index="{{ $index }}">
-                            <img src="{{ asset('storage/photos/' . $image) }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 hover:scale-105">
-                        </button>
-                    @endforeach
+                <div class="space-y-3">
+                    <button type="button" id="spare-main-photo-trigger" class="block w-full rounded-xl border-0 bg-transparent p-0 text-left" aria-label="Open spare part photo fullscreen">
+                        <img id="spare-main-photo" src="{{ asset('storage/photos/' . $images[0]) }}" alt="{{ $sparePart->item_name }}" class="h-72 w-full rounded-xl object-cover sm:h-[28rem]">
+                    </button>
+                    <p class="text-xs text-slate-400">Click image to view fullscreen.</p>
+                    <div class="grid grid-cols-3 gap-2 sm:grid-cols-5">
+                        @foreach($images as $index => $image)
+                            <button type="button" class="spare-thumb overflow-hidden rounded-lg border border-slate-700 transition hover:border-amber-300" data-src="{{ asset('storage/photos/' . $image) }}" data-index="{{ $index }}">
+                                <img src="{{ asset('storage/photos/' . $image) }}" alt="{{ $sparePart->item_name }}" class="h-20 w-full object-cover">
+                            </button>
+                        @endforeach
+                    </div>
                 </div>
-                <p class="text-xs text-slate-400">Click any image to view fullscreen.</p>
             @else
                 <div class="rounded-xl border border-slate-800 bg-slate-950/50 p-6 text-sm text-slate-400">No images available.</div>
             @endif
@@ -91,6 +101,8 @@
 
 <script>
     (function () {
+        var main = document.getElementById('spare-main-photo');
+        var mainTrigger = document.getElementById('spare-main-photo-trigger');
         var thumbs = Array.prototype.slice.call(document.querySelectorAll('.spare-thumb'));
         if (thumbs.length === 0) return;
 
@@ -110,6 +122,9 @@
 
         function showImage(index) {
             currentIndex = (index + images.length) % images.length;
+            if (main) {
+                main.src = images[currentIndex];
+            }
             if (image) {
                 image.src = images[currentIndex];
             }
@@ -133,10 +148,15 @@
 
         thumbs.forEach(function (thumb, index) {
             thumb.addEventListener('click', function () {
-                openLightbox(index);
+                showImage(index);
             });
         });
 
+        if (mainTrigger) {
+            mainTrigger.addEventListener('click', function () {
+                openLightbox(currentIndex);
+            });
+        }
         if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
         if (prevBtn) prevBtn.addEventListener('click', function () { showImage(currentIndex - 1); });
         if (nextBtn) nextBtn.addEventListener('click', function () { showImage(currentIndex + 1); });
@@ -152,6 +172,8 @@
             if (event.key === 'ArrowLeft') showImage(currentIndex - 1);
             if (event.key === 'ArrowRight') showImage(currentIndex + 1);
         });
+
+        showImage(0);
     })();
 </script>
 @endsection
