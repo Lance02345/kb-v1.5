@@ -8,8 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class SparePart extends Model
 {
     use HasFactory;
+
+        public const CATEGORIES = [
+            'Engine Parts',
+            'Transmission',
+            'Suspension & Steering',
+            'Brakes',
+            'Electrical & Lighting',
+            'Body & Exterior',
+            'Interior',
+            'Tyres & Wheels',
+            'Filters & Fluids',
+            'Accessories',
+            'Other',
+        ];
     
         protected $fillable = [
+            'category',
             'make', 
             'item_name',
             'item_description',

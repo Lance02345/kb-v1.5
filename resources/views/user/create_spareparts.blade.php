@@ -26,6 +26,17 @@
 
             <div class="mt-5 grid gap-5 md:grid-cols-2">
                 <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Category</label>
+                    <select name="category" required class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">
+                        <option value="" disabled {{ old('category') ? '' : 'selected' }}>Select category</option>
+                        @foreach(($categories ?? []) as $category)
+                            <option value="{{ $category }}" {{ old('category') === $category ? 'selected' : '' }}>{{ $category }}</option>
+                        @endforeach
+                    </select>
+                    @error('category')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Make</label>
                     <input type="text" name="make" required value="{{ old('make') }}" placeholder="Spare part make" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
                     @error('make')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror

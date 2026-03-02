@@ -49,6 +49,7 @@
 
             <div class="grid gap-3 rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-300 sm:grid-cols-2">
                 <p>Price: <span class="font-semibold text-white">KSH {{ number_format((float) $sparePart->price) }}</span></p>
+                <p>Category: <span class="font-semibold text-white">{{ $sparePart->category ?: 'Other' }}</span></p>
                 <p>Condition: <span class="font-semibold text-white">{{ $sparePart->condition }}</span></p>
                 <p>Location: <span class="font-semibold text-white">{{ $sparePart->location }}</span></p>
                 <p>Seller: <span class="font-semibold text-white">{{ $userWhoPosted->name ?? 'Unknown' }}</span></p>

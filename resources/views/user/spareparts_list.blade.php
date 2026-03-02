@@ -32,6 +32,7 @@
                         <h2 class="font-display text-xl font-semibold text-white">{{ $sparePart->make }} - {{ $sparePart->item_name }}</h2>
                         <div class="grid grid-cols-2 gap-2 text-sm text-slate-300">
                             <p>ID: <span class="text-white">{{ $sparePart->id }}</span></p>
+                            <p>Category: <span class="text-white">{{ $sparePart->category ?: 'Other' }}</span></p>
                             <p>Price: <span class="text-white">Ksh {{ number_format((float) $sparePart->price) }}</span></p>
                             <p>Condition: <span class="text-white">{{ $sparePart->condition }}</span></p>
                             <p>Location: <span class="text-white">{{ $sparePart->location }}</span></p>

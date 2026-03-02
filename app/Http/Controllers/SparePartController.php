@@ -24,12 +24,14 @@ class SparePartController extends Controller
 {
     public function create()
     {
-        return view('user.create_spareparts');
+        $categories = SparePart::CATEGORIES;
+        return view('user.create_spareparts', compact('categories'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
+            'category' => 'required|string|in:' . implode(',', SparePart::CATEGORIES),
             'make' => 'required',
             'item_name' => 'required',
             'item_description' => 'required',
@@ -64,6 +66,7 @@ class SparePartController extends Controller
 
         // Store the spare part data and photo paths in the database
         $sparePart = new SparePart([
+            'category' => $request->category,
             'make' => $request->make,
             'item_name' => $request->item_name,
             'item_description' => $request->item_description,
@@ -104,7 +107,8 @@ class SparePartController extends Controller
     public function edit(SparePart $sparePart)
     {
         abort_if((int) $sparePart->user_id !== (int) Auth::id(), 403);
-        return view('user.edit_spareparts', compact('sparePart'));
+        $categories = SparePart::CATEGORIES;
+        return view('user.edit_spareparts', compact('sparePart', 'categories'));
     }
 
     public function update(Request $request, SparePart $sparePart)
@@ -112,6 +116,7 @@ class SparePartController extends Controller
         abort_if((int) $sparePart->user_id !== (int) Auth::id(), 403);
 
         $request->validate([
+            'category' => 'required|string|in:' . implode(',', SparePart::CATEGORIES),
             'make' => 'required',
             'item_name' => 'required',
             'item_description' => 'required',
@@ -123,6 +128,7 @@ class SparePartController extends Controller
             'right_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
         ]);
 
+        $sparePart->category = $request->category;
         $sparePart->make = $request->make;
         $sparePart->item_name = $request->item_name;
         $sparePart->item_description = $request->item_description;
@@ -165,7 +171,16 @@ class SparePartController extends Controller
             ->latest('id')
             ->paginate(12);
 
-        return view('modern.spareparts', compact('spareParts'));
+        $categories = SparePart::CATEGORIES;
+        $categoryCounts = SparePart::query()
+            ->selectRaw('category, COUNT(*) as total')
+            ->whereNotNull('category')
+            ->where('category', '!=', '')
+            ->groupBy('category')
+            ->orderByDesc('total')
+            ->pluck('total', 'category');
+
+        return view('modern.spareparts', compact('spareParts', 'categories', 'categoryCounts'));
 
 
     }
@@ -181,6 +196,7 @@ class SparePartController extends Controller
     public function spare_parts_search(Request $request)
     {
         $request->validate([
+            'category' => 'nullable|string|in:' . implode(',', SparePart::CATEGORIES),
             'make' => 'nullable|string',
             'item_name' => 'nullable|string',
             // ... (other validation rules)
@@ -210,6 +226,10 @@ class SparePartController extends Controller
             $query->where('condition', ucfirst(strtolower($request->condition)));
         }
 
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
         // Search by minimum price
         if ($request->filled('min_price')) {
             $query->where('price', '>=', $request->input('min_price'));
@@ -221,8 +241,16 @@ class SparePartController extends Controller
         }
 
         $spareParts = $query->latest('id')->paginate(12)->withQueryString();
+        $categories = SparePart::CATEGORIES;
+        $categoryCounts = SparePart::query()
+            ->selectRaw('category, COUNT(*) as total')
+            ->whereNotNull('category')
+            ->where('category', '!=', '')
+            ->groupBy('category')
+            ->orderByDesc('total')
+            ->pluck('total', 'category');
 
-        return view('modern.spareparts', ['spareParts' => $spareParts]);
+        return view('modern.spareparts', compact('spareParts', 'categories', 'categoryCounts'));
     }
 
     private function storeProcessedSparePartImage(UploadedFile $image, string $fieldPrefix): string
