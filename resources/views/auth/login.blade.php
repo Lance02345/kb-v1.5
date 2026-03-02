@@ -48,10 +48,6 @@
                     <img src="{{ asset('images/gp.png') }}" alt="Google" class="h-5 w-5 object-contain">
                     Continue with Google
                 </a>
-                <a href="{{ route('login.facebook') }}" class="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-2 text-sm font-medium text-slate-100 hover:border-slate-500">
-                    <img src="{{ asset('images/fb.png') }}" alt="Facebook" class="h-5 w-5 object-contain">
-                    Continue with Facebook
-                </a>
             </div>
 
             <p class="mt-5 text-center text-sm text-slate-300">No account yet? <a href="{{ route('register') }}" class="font-semibold text-amber-300 hover:text-amber-200">Create one</a></p>

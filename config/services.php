@@ -32,7 +32,7 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => 'kingsbridgeke.com/login/google/callback',
+        'redirect' => env('GOOGLE_REDIRECT_URI', env('APP_URL') . '/login/google/callback'),
     ],
 
 ];
