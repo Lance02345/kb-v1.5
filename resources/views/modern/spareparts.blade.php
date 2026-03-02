@@ -58,9 +58,9 @@
     @if($spareParts->count())
         <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             @foreach($spareParts as $sparePart)
-                <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+                <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
                     <a href="{{ route('sparepart', $sparePart->id) }}">
-                        <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover">
+                        <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
                     </a>
                     <div class="space-y-2 p-4">
                         <h3 class="font-display truncate text-base font-semibold text-white">{{ $sparePart->make }} - {{ $sparePart->item_name }}</h3>

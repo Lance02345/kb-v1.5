@@ -30,10 +30,11 @@
 	<main class="w-full space-y-12 px-4 py-10 sm:px-6 lg:px-10">
     <section class="space-y-4">
         <h2 class="font-display text-2xl font-semibold text-white">Our Services</h2>
-        <div class="grid gap-3 sm:grid-cols-3">
+        <div class="grid gap-3 sm:grid-cols-4">
             <a href="{{ route('marketplace.index') }}" class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white hover:border-amber-300 hover:text-amber-200">Cars on Sale</a>
             <a href="{{ route('spareparts') }}" class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white hover:border-amber-300 hover:text-amber-200">Spare Parts</a>
             <a href="{{ route('carevent') }}" class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white hover:border-amber-300 hover:text-amber-200">Events</a>
+            <a href="{{ route('garages.index') }}" class="rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-center text-sm font-semibold text-white hover:border-amber-300 hover:text-amber-200">Garages</a>
         </div>
     </section>
 
@@ -80,9 +81,9 @@
         @if(($latestSpareParts ?? collect())->count())
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 @foreach($latestSpareParts as $sparePart)
-                    <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15">
+                    <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
                         <a href="{{ route('sparepart', $sparePart->id) }}">
-                            <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover">
+                            <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
                         </a>
                         <div class="space-y-2 p-4">
                             <h3 class="font-display text-lg font-semibold text-white">
@@ -96,6 +97,37 @@
             </div>
         @else
             <div class="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-sm text-slate-400">No spare parts yet.</div>
+        @endif
+    </section>
+
+    <section class="space-y-4">
+        <div class="flex items-center justify-between">
+            <h2 class="font-display text-2xl font-semibold text-white">Top Garages</h2>
+            <a href="{{ route('garages.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">See all garages</a>
+        </div>
+        @if(($latestGarages ?? collect())->count())
+            <div class="relative">
+                <button type="button" data-garage-carousel-prev class="absolute left-0 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-slate-600 bg-slate-950/80 px-3 py-2 text-xs font-semibold text-white shadow-lg backdrop-blur md:block">&larr;</button>
+                <div id="home-garage-carousel" class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                    @foreach($latestGarages as $garage)
+                        <article class="group min-w-[280px] snap-start overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40 sm:min-w-[320px]">
+                            <a href="{{ route('garage.show', $garage->id) }}" class="block">
+                                <img src="{{ !empty($garage->front_img) ? asset('storage/' . ltrim($garage->front_img, '/')) : asset('images/land1.jpg') }}" alt="{{ $garage->garage_title }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
+                            </a>
+                            <div class="space-y-2 p-4">
+                                <h3 class="font-display text-lg font-semibold text-white">
+                                    <a href="{{ route('garage.show', $garage->id) }}" class="hover:text-amber-200">{{ $garage->garage_title }}</a>
+                                </h3>
+                                <p class="text-xs text-slate-400">{{ $garage->garage_location }}</p>
+                                <p class="line-clamp-2 text-xs text-slate-500">{{ \Illuminate\Support\Str::limit(strip_tags($garage->garage_description), 120) }}</p>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+                <button type="button" data-garage-carousel-next class="absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-slate-600 bg-slate-950/80 px-3 py-2 text-xs font-semibold text-white shadow-lg backdrop-blur md:block">&rarr;</button>
+            </div>
+        @else
+            <div class="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-sm text-slate-400">No garages yet.</div>
         @endif
     </section>
 
@@ -165,4 +197,21 @@
         </div>
     </section>
 </main>
+<script>
+    (function () {
+        var track = document.getElementById('home-garage-carousel');
+        if (!track) return;
+
+        var prevBtn = document.querySelector('[data-garage-carousel-prev]');
+        var nextBtn = document.querySelector('[data-garage-carousel-next]');
+        var step = 340;
+
+        function move(direction) {
+            track.scrollBy({ left: direction * step, behavior: 'smooth' });
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', function () { move(-1); });
+        if (nextBtn) nextBtn.addEventListener('click', function () { move(1); });
+    })();
+</script>
 @endsection

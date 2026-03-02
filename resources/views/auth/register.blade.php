@@ -22,7 +22,7 @@
 
             <div class="sm:col-span-2">
                 <label for="email" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-300">Email address</label>
-                <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" class="w-full rounded-lg border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-white focus:border-amber-300 focus:outline-none">
+                <input id="email" type="email" name="email" value="{{ old('email', request('email')) }}" required autocomplete="email" class="w-full rounded-lg border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-white focus:border-amber-300 focus:outline-none">
                 @error('email')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
             </div>
 

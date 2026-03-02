@@ -24,9 +24,9 @@
     @if(!is_null($spareParts) && count($spareParts) > 0)
         <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             @foreach($spareParts as $sparePart)
-                <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+                <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
                     <a href="{{ route('sparepart', $sparePart->id) }}">
-                        <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="h-52 w-full object-cover">
+                        <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
                     </a>
                     <div class="space-y-3 p-4">
                         <h2 class="font-display text-xl font-semibold text-white">{{ $sparePart->make }} - {{ $sparePart->item_name }}</h2>

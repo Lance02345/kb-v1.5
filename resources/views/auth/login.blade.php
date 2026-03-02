@@ -18,11 +18,26 @@
             @if (session('status'))
                 <div class="mb-4 rounded-lg border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">{{ session('status') }}</div>
             @endif
+            @if (session('google_signup_required'))
+                <div class="mb-4 space-y-2 rounded-lg border border-amber-300/20 bg-amber-300/10 px-4 py-3 text-sm text-amber-100">
+                    <p>{{ session('google_signup_required') }}</p>
+                    @if(session('google_email'))
+                        <p class="text-xs text-amber-200">Google email: {{ session('google_email') }}</p>
+                    @endif
+                    <a href="{{ route('register', ['email' => session('google_email')]) }}" class="inline-flex rounded-lg bg-amber-300 px-3 py-1.5 text-xs font-semibold text-slate-900 hover:bg-amber-200">Create Account</a>
+                </div>
+            @endif
+            @if (session('google_error'))
+                <div class="mb-4 rounded-lg border border-rose-300/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-200">{{ session('google_error') }}</div>
+            @endif
+            @if (session('error'))
+                <div class="mb-4 rounded-lg border border-rose-300/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-200">{{ session('error') }}</div>
+            @endif
             <form method="POST" action="{{ route('login') }}" class="space-y-4">
                 @csrf
                 <div>
                     <label for="email" class="mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-300">Email</label>
-                    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus class="w-full rounded-lg border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-white focus:border-amber-300 focus:outline-none">
+                    <input id="email" type="email" name="email" value="{{ old('email', session('google_email')) }}" required autofocus class="w-full rounded-lg border border-slate-700 bg-slate-950/70 px-3 py-2 text-sm text-white focus:border-amber-300 focus:outline-none">
                     @error('email')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
                 </div>
 

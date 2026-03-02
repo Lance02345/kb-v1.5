@@ -7,6 +7,7 @@ use App\Models\Carmodel;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\Favourites;
+use App\Models\Garage;
 use App\Models\Listing;
 use App\Models\Package;
 use App\Models\SparePart;
@@ -39,6 +40,7 @@ private function marketplacePayload()
     $arr['models'] = Carmodel::orderBy('model')->get();
     $arr['carevents'] = Carevent::query()->with('user')->latest('id')->take(6)->get();
     $arr['latestSpareParts'] = SparePart::query()->latest('id')->take(6)->get();
+    $arr['latestGarages'] = Garage::query()->with('user')->latest('id')->take(8)->get();
 
     $baseVehicleQuery = Vehicle::query()
         ->with(['carmodel.carmake', 'listing.category', 'listing.city', 'listing.package'])

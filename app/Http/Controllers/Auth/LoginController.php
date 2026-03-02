@@ -92,12 +92,13 @@ class LoginController extends Controller
             // Redirect to the home page or dashboard
  return redirect()->route('user.my_list');
         } else {
-            // If the user doesn't exist, throw an error
-            return redirect('/login')->with('error', 'User not found. Please sign up.');
+            return redirect()->route('login')
+                ->with('google_signup_required', 'No account exists for this Google email yet.')
+                ->with('google_email', $user->email)
+                ->withInput(['email' => $user->email]);
         }
     } catch (\Exception $e) {
-        // Handle any exceptions that may occur
-        return redirect('/login')->with('error', 'Google login failed');
+        return redirect()->route('login')->with('google_error', 'Google sign-in failed. Please try again.');
     }
 }
 }

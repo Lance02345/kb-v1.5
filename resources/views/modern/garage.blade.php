@@ -18,6 +18,8 @@
         $garage->opt_img2 ?? null,
         $garage->opt_img3 ?? null,
     ]));
+    $ownerPhone = optional($garage->user)->phone_number;
+    $ownerWhatsapp = $ownerPhone ? preg_replace('/\D+/', '', $ownerPhone) : null;
 @endphp
 
 <main class="w-full space-y-6 px-4 py-8 sm:px-6 lg:px-10">
@@ -31,7 +33,9 @@
             @if(count($images))
                 <div class="grid gap-3 sm:grid-cols-2">
                     @foreach($images as $image)
-                        <img src="{{ asset('storage/' . ltrim($image, '/')) }}" alt="{{ $garage->garage_title }}" class="h-56 w-full rounded-xl border border-slate-800 object-cover">
+                        <div class="overflow-hidden rounded-xl border border-slate-800">
+                            <img src="{{ asset('storage/' . ltrim($image, '/')) }}" alt="{{ $garage->garage_title }}" class="aspect-[4/3] w-full object-cover transition duration-500 hover:scale-105">
+                        </div>
                     @endforeach
                 </div>
             @endif
@@ -51,6 +55,13 @@
                     <p class="text-xs text-slate-400">Member since {{ optional(optional($garage->user)->created_at)->diffForHumans() }}</p>
                 </div>
             </div>
+
+            @if($ownerPhone)
+                <a href="tel:{{ $ownerPhone }}" class="inline-flex w-full justify-center rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Call Garage Owner</a>
+                @if($ownerWhatsapp)
+                    <a href="https://wa.me/{{ $ownerWhatsapp }}" class="inline-flex w-full justify-center rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20">WhatsApp Owner</a>
+                @endif
+            @endif
         </aside>
     </section>
 </main>

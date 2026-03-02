@@ -38,7 +38,7 @@
                 <div class="grid gap-3 sm:grid-cols-2">
                     @foreach($images as $index => $image)
                         <button type="button" class="spare-thumb block w-full overflow-hidden rounded-xl border border-slate-800 bg-transparent p-0 text-left hover:border-amber-300" data-src="{{ asset('storage/photos/' . $image) }}" data-index="{{ $index }}">
-                            <img src="{{ asset('storage/photos/' . $image) }}" alt="{{ $sparePart->item_name }}" class="h-56 w-full object-cover">
+                            <img src="{{ asset('storage/photos/' . $image) }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 hover:scale-105">
                         </button>
                     @endforeach
                 </div>

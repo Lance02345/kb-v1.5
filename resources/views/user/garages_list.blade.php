@@ -24,9 +24,9 @@
     @if(!is_null($garages) && count($garages) > 0)
         <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             @foreach($garages as $garage)
-                <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+                <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
                     <a href="{{ route('garage.show', $garage->id) }}">
-                        <img src="{{ !empty($garage->front_img) ? asset('storage/' . ltrim($garage->front_img, '/')) : asset('images/land1.jpg') }}" alt="{{ $garage->garage_title }}" class="h-52 w-full object-cover">
+                        <img src="{{ !empty($garage->front_img) ? asset('storage/' . ltrim($garage->front_img, '/')) : asset('images/land1.jpg') }}" alt="{{ $garage->garage_title }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
                     </a>
                     <div class="space-y-3 p-4">
                         <h2 class="font-display text-xl font-semibold text-white">{{ $garage->garage_title }}</h2>
