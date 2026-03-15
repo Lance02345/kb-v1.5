@@ -47,14 +47,20 @@
 
             @if(count($images))
                 <div class="space-y-3">
-                    <button type="button" id="spare-main-photo-trigger" class="block w-full rounded-xl border-0 bg-transparent p-0 text-left" aria-label="Open spare part photo fullscreen">
-                        <img id="spare-main-photo" src="{{ asset('storage/photos/' . $images[0]) }}" alt="{{ $sparePart->item_name }}" class="h-72 w-full rounded-xl object-cover sm:h-[28rem]">
-                    </button>
+                    <div class="relative">
+                        <button type="button" id="spare-main-photo-trigger" class="block w-full rounded-xl border-0 bg-transparent p-0 text-left" aria-label="Open spare part photo fullscreen">
+                            <img id="spare-main-photo" src="{{ asset('storage/photos/' . $images[0]) }}" alt="{{ $sparePart->item_name }}" loading="lazy" class="h-72 w-full rounded-xl object-cover sm:h-[28rem]">
+                        </button>
+                        @if(count($images) > 1)
+                            <button type="button" id="spare-gallery-prev" class="absolute left-3 top-1/2 -translate-y-1/2 rounded-full border border-slate-600 bg-slate-900/70 px-3 py-2 text-2xl font-semibold text-slate-100 shadow-lg" aria-label="Previous image">&larr;</button>
+                            <button type="button" id="spare-gallery-next" class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-slate-600 bg-slate-900/70 px-3 py-2 text-2xl font-semibold text-slate-100 shadow-lg" aria-label="Next image">&rarr;</button>
+                        @endif
+                    </div>
                     <p class="text-xs text-slate-400">Click image to view fullscreen.</p>
                     <div class="grid grid-cols-3 gap-2 sm:grid-cols-5">
                         @foreach($images as $index => $image)
                             <button type="button" class="spare-thumb overflow-hidden rounded-lg border border-slate-700 transition hover:border-amber-300" data-src="{{ asset('storage/photos/' . $image) }}" data-index="{{ $index }}">
-                                <img src="{{ asset('storage/photos/' . $image) }}" alt="{{ $sparePart->item_name }}" class="h-20 w-full object-cover">
+                                <img src="{{ asset('storage/photos/' . $image) }}" alt="{{ $sparePart->item_name }}" loading="lazy" class="h-20 w-full object-cover">
                             </button>
                         @endforeach
                     </div>
@@ -64,7 +70,7 @@
             @endif
 
             <div class="grid gap-3 rounded-xl border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-300 sm:grid-cols-2">
-                <p>Price: <span class="font-semibold text-white">KSH {{ number_format((float) $sparePart->price) }}</span></p>
+                <p>Price: <span class="font-semibold text-white">{{ format_currency($sparePart->price) }}</span></p>
                 <p>Category: <span class="font-semibold text-white">{{ $sparePart->category ?: 'Other' }}</span></p>
                 <p>Condition: <span class="font-semibold text-white">{{ $sparePart->condition }}</span></p>
                 <p>Location: <span class="font-semibold text-white">{{ $sparePart->location }}</span></p>
@@ -87,6 +93,30 @@
                 <a href="https://wa.me/{{ $userWhoPosted->phone_number }}" class="inline-flex w-full justify-center rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20">WhatsApp</a>
             @endif
         </aside>
+    </section>
+    <section class="space-y-4 px-4 py-6 sm:px-6 lg:px-10">
+        <div class="flex items-end justify-between gap-3">
+            <h2 class="font-display text-xl font-semibold text-white">Similar parts</h2>
+            <a href="{{ route('spareparts') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">Back to parts</a>
+        </div>
+        @if(($similarParts ?? collect())->count())
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                @foreach($similarParts as $part)
+                    <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+                        <a href="{{ route('sparepart', $part->id) }}">
+                            <img src="{{ $part->front_img ? asset('storage/photos/' . $part->front_img) : asset('images/land1.jpg') }}" alt="{{ $part->item_name }}" loading="lazy" class="h-44 w-full object-cover">
+                        </a>
+                        <div class="space-y-2 p-3">
+                            <h3 class="font-display text-sm font-semibold text-white"><a href="{{ route('sparepart', $part->id) }}" class="hover:text-amber-200">{{ $part->make }} {{ $part->item_name }}</a></h3>
+                            <p class="text-xs text-slate-400">{{ $part->location }} · {{ $part->condition }}</p>
+                            <span class="text-sm font-semibold text-amber-300">{{ format_currency($part->price) }}</span>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        @else
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 text-sm text-slate-400">We did not find similar parts yet. Check back soon or broaden your filters.</div>
+        @endif
     </section>
 </main>
 
@@ -160,6 +190,10 @@
         if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
         if (prevBtn) prevBtn.addEventListener('click', function () { showImage(currentIndex - 1); });
         if (nextBtn) nextBtn.addEventListener('click', function () { showImage(currentIndex + 1); });
+        var galleryPrev = document.getElementById('spare-gallery-prev');
+        var galleryNext = document.getElementById('spare-gallery-next');
+        if (galleryPrev) galleryPrev.addEventListener('click', function () { showImage(currentIndex - 1); });
+        if (galleryNext) galleryNext.addEventListener('click', function () { showImage(currentIndex + 1); });
         if (lightbox) {
             lightbox.addEventListener('click', function (event) {
                 if (event.target === lightbox) closeLightbox();

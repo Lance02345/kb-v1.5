@@ -30,6 +30,18 @@
                     @error('garage_location')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Latitude (optional)</label>
+                    <input type="text" name="latitude" id="garage-latitude" value="{{ old('latitude') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none" placeholder="Latitude">
+                    @error('latitude')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Longitude (optional)</label>
+                    <input type="text" name="longitude" id="garage-longitude" value="{{ old('longitude') }}" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none" placeholder="Longitude">
+                    @error('longitude')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
                 <div class="md:col-span-2">
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Description</label>
                     <textarea name="garage_description" required rows="6" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white focus:border-amber-300 focus:outline-none">{{ old('garage_description') }}</textarea>
@@ -41,6 +53,7 @@
         <section class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
             <h2 class="font-display text-xl font-semibold text-white">Upload Photos</h2>
             <p class="mt-1 text-sm text-slate-400">First image is required. Add up to 9 images.</p>
+            <p class="text-xs text-slate-400">Supported formats: JPEG, PNG, WEBP, GIF, SVG, HEIC, HEIF. Each file must be under 20MB.</p>
 
             <div class="mt-5 grid gap-4 md:grid-cols-3">
                 @foreach ([
@@ -69,4 +82,26 @@
         </div>
     </form>
 </main>
+<script>
+    (function () {
+        var latInput = document.getElementById('garage-latitude');
+        var lngInput = document.getElementById('garage-longitude');
+        if (!latInput || !lngInput || latInput.value || lngInput.value || !('geolocation' in navigator)) {
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(function (position) {
+            if (!position?.coords) {
+                return;
+            }
+
+            latInput.value = position.coords.latitude.toFixed(6);
+            lngInput.value = position.coords.longitude.toFixed(6);
+        }, function () {}, {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 600000,
+        });
+    })();
+</script>
 @endsection

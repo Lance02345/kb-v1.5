@@ -17,7 +17,7 @@
             @foreach ($packages as $package)
                 @if ($package->id == $packageid)
                     <h2 class="font-display text-2xl font-semibold text-white">{{ $package->package_name }}</h2>
-                    <p class="mt-2 text-3xl font-bold text-amber-300">Ksh {{ number_format((float) $package->package_amount) }}</p>
+                    <p class="mt-2 text-3xl font-bold text-amber-300">{{ format_currency($package->package_amount) }}</p>
                     <p class="mt-1 text-sm text-slate-300">Featured for {{ $package->package_featured }} days</p>
                     <ul class="mt-4 space-y-2 text-sm text-slate-300">
                         <li>Featured ad placement</li>
@@ -44,9 +44,9 @@
                         <input type="hidden" name="total" value="{{ $package->package_amount }}">
                         <input type="hidden" name="package_duration" value="{{ $package->package_duration }}">
                         <div class="rounded-lg border border-slate-800 bg-slate-950/40 p-4 text-sm text-slate-300">
-                            <div class="flex justify-between"><span>Subtotal</span><span class="text-white">Ksh {{ number_format((float) $package->package_amount) }}</span></div>
+                            <div class="flex justify-between"><span>Subtotal</span><span class="text-white">{{ format_currency($package->package_amount) }}</span></div>
                             <div class="mt-2 flex justify-between"><span>VAT</span><span class="text-white">0%</span></div>
-                            <div class="mt-2 border-t border-slate-800 pt-2 flex justify-between text-base font-semibold"><span class="text-white">Total</span><span class="text-amber-300">Ksh {{ number_format((float) $package->package_amount) }}</span></div>
+                            <div class="mt-2 border-t border-slate-800 pt-2 flex justify-between text-base font-semibold"><span class="text-white">Total</span><span class="text-amber-300">{{ format_currency($package->package_amount) }}</span></div>
                         </div>
                     @endif
                 @endforeach

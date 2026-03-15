@@ -11,6 +11,9 @@ class Garage extends Model
     protected $fillable = [
         'garage_title',
         'garage_location',
+        'location_normalized',
+        'latitude',
+        'longitude',
         'garage_description',
         'front_img',
         'back_img',

@@ -38,6 +38,71 @@
         </div>
     </section>
 
+    <section class="space-y-4">
+        <div class="flex items-end justify-between gap-3">
+            <div>
+                <h2 class="font-display text-2xl font-semibold text-white">Garages near {{ $nearbyCity }}</h2>
+                <p class="text-xs text-slate-400">{{ $nearbyGarages->count() }} {{ \Illuminate\Support\Str::plural('garage', $nearbyGarages->count()) }} in your area</p>
+            </div>
+            <a href="{{ route('garages.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">See all garages</a>
+        </div>
+
+        @if($nearbyGarages->count())
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                @foreach($nearbyGarages as $garage)
+                    <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
+                        <a href="{{ route('garage.show', $garage->id) }}" class="block relative">
+                            <img src="{{ !empty($garage->front_img) ? asset('storage/' . ltrim($garage->front_img, '/')) : asset('images/land1.jpg') }}" alt="{{ $garage->garage_title }}" loading="lazy" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
+                        </a>
+                        <div class="space-y-2 p-4">
+                            <h3 class="font-display truncate text-base font-semibold text-white">{{ $garage->garage_title }}</h3>
+                            <p class="text-xs text-slate-400">{{ $garage->garage_location }}</p>
+                            <p class="line-clamp-2 text-xs text-slate-400">{{ Str::limit(strip_tags($garage->garage_description), 120) }}</p>
+                            <a href="{{ route('garage.show', $garage->id) }}" class="inline-flex rounded-lg border border-amber-300/40 bg-amber-300/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-amber-200 hover:bg-amber-300/20">View Garage</a>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        @else
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 text-sm text-slate-400">
+                No garages near {{ $nearbyCity }} yet. Explore the directory for more.
+            </div>
+        @endif
+    </section>
+
+    <section class="space-y-4">
+        <div class="flex items-end justify-between gap-3">
+            <div>
+                <h2 class="font-display text-2xl font-semibold text-white">Parts near {{ $nearbyCity }}</h2>
+                <p class="text-xs text-slate-400">{{ $nearbyParts->count() }} {{ \Illuminate\Support\Str::plural('part', $nearbyParts->count()) }} spotted close by</p>
+            </div>
+            <a href="{{ route('spareparts') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">Browse all parts</a>
+        </div>
+
+        @if($nearbyParts->count())
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+                @foreach($nearbyParts as $part)
+                    <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
+                        <a href="{{ route('sparepart', $part->id) }}">
+                            <img src="{{ $part->front_img ? asset('storage/photos/' . $part->front_img) : asset('images/land1.jpg') }}" loading="lazy" alt="{{ $part->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
+                        </a>
+                        <div class="space-y-2 p-4">
+                            <h3 class="font-display text-base font-semibold text-white">
+                                <a href="{{ route('sparepart', $part->id) }}" class="hover:text-amber-200">{{ $part->make }} · {{ $part->item_name }}</a>
+                            </h3>
+                            <p class="text-xs text-slate-400">{{ $part->condition }} · {{ $part->location }}</p>
+                            <span class="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200">{{ format_currency($part->price) }}</span>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+        @else
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 text-sm text-slate-400">
+                No nearby parts detected yet. Expand your search to access more inventory.
+            </div>
+        @endif
+    </section>
+
     <section class="grid gap-4 sm:grid-cols-3">
         <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Live Listings</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($latestVehicles ?? collect())->count() }}</p></article>
         <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Featured Cars</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($featuredVehicles ?? collect())->count() }}</p></article>
@@ -177,12 +242,18 @@
 
     <section class="space-y-4">
         <h2 class="font-display text-2xl font-semibold text-white">Our Partners</h2>
-        <div class="grid gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:grid-cols-2">
+        <div class="grid gap-4 rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:grid-cols-2 lg:grid-cols-4">
             <div class="flex items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/40 p-5">
-                <img src="{{ asset('images/GarageGallery Logo.jpg') }}" alt="GarageGallery" class="max-h-24 w-auto rounded-md object-contain">
+                <img src="{{ asset('images/GarageGallery Logo.jpg') }}" alt="GarageGallery" class="max-h-24 w-auto rounded-md object-contain" loading="lazy">
             </div>
             <div class="flex items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/40 p-5">
-                <img src="{{ asset('images/nexraAfrica.jpg') }}" alt="NexraAfrica" class="max-h-24 w-auto rounded-md object-contain" onerror="this.onerror=null;this.src='{{ asset('images/nexuraAfrica.jpg') }}';">
+                <img src="{{ asset('images/nexraAfrica.jpg') }}" alt="NexraAfrica" class="max-h-24 w-auto rounded-md object-contain" loading="lazy" onerror="this.onerror=null;this.src='{{ asset('images/nexuraAfrica.jpg') }}';">
+            </div>
+            <div class="flex items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/40 p-5">
+                <img src="{{ asset('images/M-PESA_LOGO-01.svg') }}" alt="M-Pesa" class="max-h-20 w-auto rounded-md object-contain" loading="lazy">
+            </div>
+            <div class="flex items-center justify-center rounded-xl border border-slate-700/70 bg-slate-950/40 p-5">
+                <img src="{{ asset('images/WhatsAppButtonGreenSmall.png') }}" alt="WhatsApp" class="max-h-20 w-auto rounded-md object-contain" loading="lazy">
             </div>
         </div>
     </section>
@@ -212,6 +283,58 @@
 
         if (prevBtn) prevBtn.addEventListener('click', function () { move(-1); });
         if (nextBtn) nextBtn.addEventListener('click', function () { move(1); });
+    })();
+</script>
+<script>
+    (function () {
+        if (!('geolocation' in navigator)) {
+            return;
+        }
+
+        const storageKey = 'kb_nearby_location_sent';
+        if (sessionStorage.getItem(storageKey)) {
+            return;
+        }
+
+        const endpoint = @json(route('location.set'));
+        const csrfToken = @json(csrf_token());
+
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                if (!position?.coords) {
+                    return;
+                }
+
+                fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: JSON.stringify({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                    }),
+                })
+                .then(function (response) {
+                    if (response.ok) {
+                        sessionStorage.setItem(storageKey, '1');
+                    }
+                })
+                .catch(function () {
+                    // Silent failure; we still want to avoid repeated prompts
+                    sessionStorage.setItem(storageKey, '1');
+                });
+            },
+            function () {
+                sessionStorage.setItem(storageKey, '1');
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 600000,
+            }
+        );
     })();
 </script>
 @endsection

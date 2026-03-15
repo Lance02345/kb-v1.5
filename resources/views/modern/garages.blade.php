@@ -20,7 +20,7 @@
             @foreach($garages as $garage)
                 <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
                     <a href="{{ route('garage.show', $garage->id) }}">
-                        <img src="{{ !empty($garage->front_img) ? asset('storage/' . ltrim($garage->front_img, '/')) : asset('images/land1.jpg') }}" alt="{{ $garage->garage_title }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
+                        <img src="{{ !empty($garage->front_img) ? asset('storage/' . ltrim($garage->front_img, '/')) : asset('images/land1.jpg') }}" alt="{{ $garage->garage_title }}" loading="lazy" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
                     </a>
                     <div class="space-y-2 p-4">
                         <h3 class="font-display truncate text-base font-semibold text-white">{{ $garage->garage_title }}</h3>

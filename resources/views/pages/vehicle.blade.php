@@ -33,25 +33,31 @@
 
     <section class="grid gap-6 lg:grid-cols-3">
         <article class="space-y-5 rounded-2xl border border-slate-800 bg-slate-900 p-5 lg:col-span-2">
-            <div class="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                    <p class="text-xs uppercase tracking-[0.2em] text-amber-300">Vehicle Listing</p>
-                    <h1 class="font-display text-2xl font-bold text-white sm:text-3xl">{{ $title }}</h1>
-                    <p class="mt-2 text-sm text-slate-300">{{ $listing->city->city ?? 'Unknown city' }} · {{ $listing->category->category_name ?? 'Vehicle' }}</p>
+                <div class="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.2em] text-amber-300">Vehicle Listing</p>
+                        <h1 class="font-display text-2xl font-bold text-white sm:text-3xl">{{ $title }}</h1>
+                        <p class="mt-2 text-sm text-slate-300">{{ $listing->city->city ?? 'Unknown city' }} · {{ $listing->category->category_name ?? 'Vehicle' }}</p>
+                    </div>
+                    <p class="rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-lg font-semibold text-white">{{ format_currency($vehicle->price) }}</p>
                 </div>
-                <p class="rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-lg font-semibold text-white">KSH {{ number_format((float) $vehicle->price, 0, '.', ',') }}</p>
-            </div>
 
             @if(count($images))
                 <div class="space-y-3">
-                    <button type="button" id="main-photo-trigger" class="block w-full rounded-xl border-0 bg-transparent p-0 text-left" aria-label="Open photo fullscreen">
-                        <img id="main-photo" src="{{ asset('storage/photos/' . $images[0]) }}" alt="{{ $title }}" class="h-72 w-full rounded-xl object-cover sm:h-[28rem]">
-                    </button>
+                    <div class="relative">
+                        <button type="button" id="main-photo-trigger" class="block w-full rounded-xl border-0 bg-transparent p-0 text-left" aria-label="Open photo fullscreen">
+                            <img id="main-photo" src="{{ asset('storage/photos/' . $images[0]) }}" alt="{{ $title }}" loading="lazy" class="h-72 w-full rounded-xl object-cover sm:h-[28rem]">
+                        </button>
+                        @if(count($images) > 1)
+                            <button type="button" id="gallery-nav-prev" class="absolute left-3 top-1/2 -translate-y-1/2 rounded-full border border-slate-600 bg-slate-900/70 px-3 py-2 text-2xl font-semibold text-slate-100 shadow-lg" aria-label="Previous photo">&larr;</button>
+                            <button type="button" id="gallery-nav-next" class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full border border-slate-600 bg-slate-900/70 px-3 py-2 text-2xl font-semibold text-slate-100 shadow-lg" aria-label="Next photo">&rarr;</button>
+                        @endif
+                    </div>
                     <p class="text-xs text-slate-400">Click image to view fullscreen.</p>
                     <div class="grid grid-cols-3 gap-2 sm:grid-cols-5">
                         @foreach($images as $image)
                             <button type="button" class="photo-thumb overflow-hidden rounded-lg border border-slate-700 transition hover:border-amber-300" data-src="{{ asset('storage/photos/' . $image) }}">
-                                <img src="{{ asset('storage/photos/' . $image) }}" alt="Vehicle photo" class="h-20 w-full object-cover">
+                                <img src="{{ asset('storage/photos/' . $image) }}" alt="Vehicle photo" loading="lazy" class="h-20 w-full object-cover">
                             </button>
                         @endforeach
                     </div>
@@ -93,6 +99,37 @@
                         </tbody>
                     </table>
                 </div>
+            </section>
+
+            <section class="space-y-4">
+                <div class="flex items-end justify-between gap-3">
+                    <h2 class="font-display text-xl font-semibold text-white">Similar vehicles</h2>
+                    <a href="{{ route('marketplace.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">Browse marketplace</a>
+                </div>
+                @if(($similarVehicles ?? collect())->count())
+                    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        @foreach($similarVehicles as $suggested)
+                            @php
+                                $suggestedListing = $suggested->listing;
+                                $makeName = optional(optional($suggested->carmodel)->carmake)->make;
+                                $suggestedTitle = trim((string) ($makeName ?? '') . ' ' . (optional($suggested->carmodel)->model ?? '') . ' ' . ($suggested->year_of_build ?? ''));
+                                $listRoute = $suggestedListing ? route('vehicle', [$suggestedListing->id, $suggested->id]) : '#';
+                            @endphp
+                            <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+                                <a href="{{ $listRoute }}">
+                                    <img src="{{ $suggested->front_img ? asset('storage/photos/' . $suggested->front_img) : asset('images/land1.jpg') }}" alt="{{ $suggestedTitle }}" loading="lazy" class="h-44 w-full object-cover">
+                                </a>
+                                <div class="space-y-1 p-3">
+                                    <a href="{{ $listRoute }}" class="font-display text-sm font-semibold text-white hover:text-amber-200">{{ $suggestedTitle }}</a>
+                                    <p class="text-xs text-slate-400">{{ optional($suggestedListing->city)->city ?? 'Kenya' }} · {{ $suggestedListing->ads_status ?? 'Unknown' }}</p>
+                                    <span class="text-sm font-semibold text-amber-300">{{ format_currency($suggested->price) }}</span>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 text-sm text-slate-400">No similar vehicles caught our radar yet.</div>
+                @endif
             </section>
         </article>
 
@@ -216,6 +253,14 @@
         }
         if (nextBtn) {
             nextBtn.addEventListener('click', function () { showImage(currentIndex + 1); });
+        }
+        var galleryPrev = document.getElementById('gallery-nav-prev');
+        var galleryNext = document.getElementById('gallery-nav-next');
+        if (galleryPrev) {
+            galleryPrev.addEventListener('click', function () { showImage(currentIndex - 1); });
+        }
+        if (galleryNext) {
+            galleryNext.addEventListener('click', function () { showImage(currentIndex + 1); });
         }
         if (lightbox) {
             lightbox.addEventListener('click', function (event) {

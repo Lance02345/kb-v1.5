@@ -69,6 +69,18 @@
                     @error('location')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Latitude (optional)</label>
+                    <input type="text" name="latitude" id="spare-latitude" value="{{ old('latitude') }}" placeholder="Latitude" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
+                    @error('latitude')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
+                <div>
+                    <label class="mb-2 block text-sm font-semibold text-slate-200">Longitude (optional)</label>
+                    <input type="text" name="longitude" id="spare-longitude" value="{{ old('longitude') }}" placeholder="Longitude" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">
+                    @error('longitude')<p class="mt-2 text-xs font-medium text-rose-300">{{ $message }}</p>@enderror
+                </div>
+
                 <div class="md:col-span-2">
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Item Description</label>
                     <textarea name="item_description" required rows="6" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-white placeholder-slate-500 focus:border-amber-300 focus:outline-none">{{ old('item_description') }}</textarea>
@@ -80,6 +92,7 @@
         <section data-step-panel class="rounded-2xl border border-slate-800 bg-slate-900 p-6 sm:p-8">
             <h2 class="font-display text-xl font-semibold text-white">Upload Photos</h2>
             <p class="mt-1 text-sm text-slate-400">First image is required. Add up to 9 photos.</p>
+            <p class="text-xs text-slate-400">Upload high-resolution JPEG, PNG, WEBP, GIF, SVG, HEIC, or HEIF files (max 20MB each).</p>
 
             <div class="mt-5 grid gap-4 md:grid-cols-3">
                 @foreach ([
@@ -106,4 +119,26 @@
     </form>
 </main>
 @include('user.partials.listing-stepper-script')
+<script>
+    (function () {
+        var latInput = document.getElementById('spare-latitude');
+        var lngInput = document.getElementById('spare-longitude');
+        if (!latInput || !lngInput || latInput.value || lngInput.value || !('geolocation' in navigator)) {
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(function (position) {
+            if (!position?.coords) {
+                return;
+            }
+
+            latInput.value = position.coords.latitude.toFixed(6);
+            lngInput.value = position.coords.longitude.toFixed(6);
+        }, function () {}, {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 600000,
+        });
+    })();
+</script>
 @endsection

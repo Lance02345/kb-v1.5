@@ -222,6 +222,20 @@ class ListingController extends Controller
 
         $vehicles = $allVehicles->whereIn('listing_id', $listings->pluck('id'))->values();
 
+        $statusCounts = $allListings
+            ->groupBy(function ($listing) {
+                return strtolower((string) $listing->ads_status);
+            })
+            ->map->count();
+
+        $statusTotals = [
+            'total' => $allListings->count(),
+            'active' => ($statusCounts->get('approved', 0) + $statusCounts->get('active', 0)),
+            'pending' => $statusCounts->get('pending', 0),
+            'sold' => $statusCounts->get('sold', 0),
+            'expired' => $statusCounts->get('expired', 0),
+        ];
+
         $expiringSoon = $allListings->filter(function ($listing) {
             if (empty($listing->ads_duration)) {
                 return false;
@@ -337,6 +351,7 @@ class ListingController extends Controller
             'analytics' => $analytics,
             'recommendations' => $recommendations,
             'quality' => $quality,
+            'statusTotals' => $statusTotals,
             'searchQuery' => $search,
             'sortBy' => $sort,
         ]);

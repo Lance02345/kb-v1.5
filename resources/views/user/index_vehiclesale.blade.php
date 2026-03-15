@@ -7,12 +7,7 @@
 @include('modern._nav')
 
 @php
-    $pool = $allListings ?? $listings;
-    $total = $pool->count();
-    $active = $pool->filter(fn($l) => in_array(strtolower((string) $l->ads_status), ['approved', 'active']))->count();
-    $pending = $pool->filter(fn($l) => strtolower((string) $l->ads_status) === 'pending')->count();
-    $sold = $pool->filter(fn($l) => strtolower((string) $l->ads_status) === 'sold')->count();
-    $expired = $pool->filter(fn($l) => strtolower((string) $l->ads_status) === 'expired')->count();
+    $totals = $statusTotals ?? ['total' => 0, 'active' => 0, 'pending' => 0, 'sold' => 0, 'expired' => 0];
 @endphp
 
 <main class="w-full space-y-6 px-4 py-8 sm:px-6 lg:px-10">
@@ -35,20 +30,20 @@
         </div>
     </section>
 
-    <section class="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-        <article class="rounded-xl border border-slate-800 bg-slate-900 p-4"><p class="text-xs text-slate-400">Total</p><p class="mt-1 text-2xl font-bold text-white">{{ $total }}</p></article>
-        <article class="rounded-xl border border-slate-800 bg-slate-900 p-4"><p class="text-xs text-slate-400">Active</p><p class="mt-1 text-2xl font-bold text-emerald-300">{{ $active }}</p></article>
-        <article class="rounded-xl border border-slate-800 bg-slate-900 p-4"><p class="text-xs text-slate-400">Pending</p><p class="mt-1 text-2xl font-bold text-amber-300">{{ $pending }}</p></article>
-        <article class="rounded-xl border border-slate-800 bg-slate-900 p-4"><p class="text-xs text-slate-400">Sold</p><p class="mt-1 text-2xl font-bold text-cyan-300">{{ $sold }}</p></article>
-        <article class="rounded-xl border border-slate-800 bg-slate-900 p-4"><p class="text-xs text-slate-400">Expired</p><p class="mt-1 text-2xl font-bold text-rose-300">{{ $expired }}</p></article>
+        <section class="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        <article class="rounded-xl border border-slate-800 bg-slate-900 p-4"><p class="text-xs text-slate-400">Total</p><p class="mt-1 text-2xl font-bold text-white">{{ $totals['total'] }}</p></article>
+        <article class="rounded-xl border border-slate-800 bg-slate-900 p-4"><p class="text-xs text-slate-400">Active</p><p class="mt-1 text-2xl font-bold text-emerald-300">{{ $totals['active'] }}</p></article>
+        <article class="rounded-xl border border-slate-800 bg-slate-900 p-4"><p class="text-xs text-slate-400">Pending</p><p class="mt-1 text-2xl font-bold text-amber-300">{{ $totals['pending'] }}</p></article>
+        <article class="rounded-xl border border-slate-800 bg-slate-900 p-4"><p class="text-xs text-slate-400">Sold</p><p class="mt-1 text-2xl font-bold text-cyan-300">{{ $totals['sold'] }}</p></article>
+        <article class="rounded-xl border border-slate-800 bg-slate-900 p-4"><p class="text-xs text-slate-400">Expired</p><p class="mt-1 text-2xl font-bold text-rose-300">{{ $totals['expired'] }}</p></article>
     </section>
 
     <section class="flex flex-wrap gap-2">
-      <a href="{{ route('user.index_vehiclesale') }}" class="rounded-full border px-3 py-1.5 text-xs {{ empty($statusFilter) ? 'border-amber-300 bg-amber-300/10 text-amber-200' : 'border-slate-700 text-slate-300' }}">All {{ $total }}</a>
-      <a href="{{ route('user.active_list') }}" class="rounded-full border px-3 py-1.5 text-xs {{ ($statusFilter ?? '') === 'Approved' ? 'border-emerald-300 bg-emerald-300/10 text-emerald-200' : 'border-slate-700 text-slate-300' }}">Active {{ $active }}</a>
-      <a href="{{ route('user.pending_list') }}" class="rounded-full border px-3 py-1.5 text-xs {{ ($statusFilter ?? '') === 'Pending' ? 'border-amber-300 bg-amber-300/10 text-amber-200' : 'border-slate-700 text-slate-300' }}">Pending {{ $pending }}</a>
-      <a href="{{ route('user.sold_list') }}" class="rounded-full border px-3 py-1.5 text-xs {{ ($statusFilter ?? '') === 'Sold' ? 'border-cyan-300 bg-cyan-300/10 text-cyan-200' : 'border-slate-700 text-slate-300' }}">Sold {{ $sold }}</a>
-      <a href="{{ route('user.expired_list') }}" class="rounded-full border px-3 py-1.5 text-xs {{ ($statusFilter ?? '') === 'Expired' ? 'border-rose-300 bg-rose-300/10 text-rose-200' : 'border-slate-700 text-slate-300' }}">Expired {{ $expired }}</a>
+      <a href="{{ route('user.index_vehiclesale') }}" class="rounded-full border px-3 py-1.5 text-xs {{ empty($statusFilter) ? 'border-amber-300 bg-amber-300/10 text-amber-200' : 'border-slate-700 text-slate-300' }}">All {{ $totals['total'] }}</a>
+      <a href="{{ route('user.active_list') }}" class="rounded-full border px-3 py-1.5 text-xs {{ ($statusFilter ?? '') === 'Approved' ? 'border-emerald-300 bg-emerald-300/10 text-emerald-200' : 'border-slate-700 text-slate-300' }}">Active {{ $totals['active'] }}</a>
+      <a href="{{ route('user.pending_list') }}" class="rounded-full border px-3 py-1.5 text-xs {{ ($statusFilter ?? '') === 'Pending' ? 'border-amber-300 bg-amber-300/10 text-amber-200' : 'border-slate-700 text-slate-300' }}">Pending {{ $totals['pending'] }}</a>
+      <a href="{{ route('user.sold_list') }}" class="rounded-full border px-3 py-1.5 text-xs {{ ($statusFilter ?? '') === 'Sold' ? 'border-cyan-300 bg-cyan-300/10 text-cyan-200' : 'border-slate-700 text-slate-300' }}">Sold {{ $totals['sold'] }}</a>
+      <a href="{{ route('user.expired_list') }}" class="rounded-full border px-3 py-1.5 text-xs {{ ($statusFilter ?? '') === 'Expired' ? 'border-rose-300 bg-rose-300/10 text-rose-200' : 'border-slate-700 text-slate-300' }}">Expired {{ $totals['expired'] }}</a>
     </section>
 
     <form action="{{ url()->current() }}" method="get" class="grid gap-2 rounded-xl border border-slate-800 bg-slate-900 p-4 md:grid-cols-4">
@@ -105,8 +100,8 @@
                                 <span class="rounded-full border px-3 py-1 text-xs font-semibold {{ $badgeClass }}">{{ $listing->ads_status }}</span>
                             </div>
 
-                            <div class="grid gap-2 text-sm text-slate-300 sm:grid-cols-2 xl:grid-cols-4">
-                                <p class="rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2">Price: <span class="font-semibold text-white">Ksh {{ number_format((float) $vehicle->price) }}</span></p>
+                                <div class="grid gap-2 text-sm text-slate-300 sm:grid-cols-2 xl:grid-cols-4">
+                                <p class="rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2">Price: <span class="font-semibold text-white">{{ format_currency($vehicle->price) }}</span></p>
                                 <p class="rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2">Views: <span class="font-semibold text-white">{{ number_format((int) $vehicle->views) }}</span></p>
                                 <p class="rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2">Fuel: <span class="font-semibold text-white">{{ $vehicle->fuel_type ?: 'N/A' }}</span></p>
                                 <p class="rounded-lg border border-slate-800 bg-slate-950/40 px-3 py-2">Mileage: <span class="font-semibold text-white">{{ number_format((int) $vehicle->mileage) }} km</span></p>

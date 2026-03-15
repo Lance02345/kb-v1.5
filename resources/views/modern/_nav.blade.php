@@ -18,11 +18,21 @@
                 <a href="{{ route('register') }}" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 hover:border-slate-500 hover:text-white">Sign Up</a>
                 <a href="{{ route('login') }}" class="rounded-lg bg-amber-300 px-3 py-2 text-xs font-semibold text-slate-900 hover:bg-amber-200">Login</a>
             @else
+                @php
+                    $userAvatar = Auth::user()->avatar ? asset('storage/photos/' . Auth::user()->avatar) : asset('images/default-avatar.png');
+                @endphp
+                <a href="{{ route('user.favourite_list') }}" class="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 hover:border-slate-500">
+                    <svg class="h-4 w-4 text-rose-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 20s-6-3.4-6-7a4 4 0 0 1 4-4c1.4 0 2.6.9 3 2.2A4 4 0 0 1 16 9a4 4 0 0 1 4 4c0 3.6-6 7-8 7z"></path>
+                    </svg>
+                    Favorites
+                </a>
                 <details class="group relative">
-                    <summary class="list-none cursor-pointer rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 hover:border-slate-500 hover:text-white">
-                        {{ \Illuminate\Support\Str::limit(Auth::user()->name, 14) }}
+                    <summary class="list-none flex cursor-pointer items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold text-slate-200 hover:border-slate-500 hover:text-white">
+                        <img src="{{ $userAvatar }}" alt="Profile avatar" loading="lazy" class="h-6 w-6 rounded-full object-cover">
+                        <span>{{ \Illuminate\Support\Str::limit(Auth::user()->name, 14) }}</span>
                     </summary>
-                    <div class="absolute right-0 mt-2 w-48 overflow-hidden rounded-xl border border-slate-700 bg-slate-900 shadow-2xl">
+                    <div class="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-slate-700 bg-slate-900 shadow-2xl">
                         <a href="{{ route('user.my_list') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">My List</a>
                         <a href="{{ route('user.myspareparts') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">Spare Parts</a>
                         <a href="{{ route('user.mygarages') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">Garages</a>

@@ -36,7 +36,7 @@
                             <td class="px-4 py-3 text-white">{{ $invoice->id }}</td>
                             <td class="px-4 py-3">{{ $invoice->generate_date }}</td>
                             <td class="px-4 py-3">{{ $invoice->due_date }}</td>
-                            <td class="px-4 py-3">Ksh {{ number_format((float) $invoice->total) }}</td>
+                        <td class="px-4 py-3">{{ format_currency($invoice->total) }}</td>
                             <td class="px-4 py-3">
                                 @php($status = strtoupper((string) $invoice->status))
                                 <span class="rounded-full px-2.5 py-1 text-xs font-semibold {{ $status === 'PAID' ? 'border border-emerald-300/30 bg-emerald-300/10 text-emerald-200' : 'border border-rose-300/30 bg-rose-300/10 text-rose-200' }}">{{ $status }}</span>

@@ -17,6 +17,8 @@ use App\Models\Vehicle_photo;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
 use phpDocumentor\Reflection\Types\Intersection;
 
 class PagesController extends Controller
@@ -33,14 +35,37 @@ public function marketplace()
     return view('marketplace.index')->with($arr);
 }
 
-private function marketplacePayload()
-{
-    $arr['cities'] = City::orderBy('city')->get();
-    $arr['makes'] = Carmake::orderBy('make')->get();
-    $arr['models'] = Carmodel::orderBy('model')->get();
-    $arr['carevents'] = Carevent::query()->with('user')->latest('id')->take(6)->get();
-    $arr['latestSpareParts'] = SparePart::query()->latest('id')->take(6)->get();
-    $arr['latestGarages'] = Garage::query()->with('user')->latest('id')->take(8)->get();
+    public function updateUserLocation(Request $request)
+    {
+        $validated = $request->validate([
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'label' => 'nullable|string',
+        ]);
+
+        session()->put('user_location', [
+            'lat' => (float) $validated['latitude'],
+            'lng' => (float) $validated['longitude'],
+            'label' => $validated['label'] ?? null,
+            'recorded_at' => now()->toDateTimeString(),
+        ]);
+
+        return response()->json(['status' => 'ok']);
+    }
+
+    private function marketplacePayload()
+    {
+        $nearbyHint = trim((string) (request('city') ?: request('location') ?: ''));
+        $userLocation = $this->normalizeUserLocation(session('user_location'));
+        $arr['nearbyCity'] = $this->resolveNearbyCityLabel($nearbyHint, (bool) $userLocation, $userLocation);
+        $arr['cities'] = City::orderBy('city')->get();
+        $arr['makes'] = Carmake::orderBy('make')->get();
+        $arr['models'] = Carmodel::orderBy('model')->get();
+        $arr['carevents'] = Carevent::query()->with('user')->latest('id')->take(6)->get();
+        $arr['latestSpareParts'] = SparePart::query()->latest('id')->take(6)->get();
+        $arr['latestGarages'] = Garage::query()->with('user')->latest('id')->take(8)->get();
+        $arr['nearbyGarages'] = $this->fetchNearbyItems(Garage::class, ['user'], $nearbyHint, $userLocation, 'garage_location');
+        $arr['nearbyParts'] = $this->fetchNearbyItems(SparePart::class, ['user'], $nearbyHint, $userLocation, 'location');
 
     $baseVehicleQuery = Vehicle::query()
         ->with(['carmodel.carmake', 'listing.category', 'listing.city', 'listing.package'])
@@ -64,6 +89,86 @@ private function marketplacePayload()
 
     return $arr;
 }
+
+    private function resolveNearbyCityLabel(string $hint, bool $hasCoords, ?array $location): string
+    {
+        if ($hint) {
+            return Str::title($hint);
+        }
+
+        if ($hasCoords) {
+            return $location['label'] ? Str::title($location['label']) : 'Your area';
+        }
+
+        return 'Kenya';
+    }
+
+    private function normalizeUserLocation($location): ?array
+    {
+        if (!is_array($location)) {
+            return null;
+        }
+
+        $lat = $location['lat'] ?? null;
+        $lng = $location['lng'] ?? null;
+
+        if ($lat === null || $lng === null) {
+            return null;
+        }
+
+        $lat = (float) $lat;
+        $lng = (float) $lng;
+
+        if ($lat === 0.0 && $lng === 0.0) {
+            return null;
+        }
+
+        return [
+            'lat' => $lat,
+            'lng' => $lng,
+            'label' => $location['label'] ?? null,
+        ];
+    }
+
+    private function fetchNearbyItems(string $modelClass, array $relations, string $hint, ?array $coords, string $locationColumn, int $limit = 4)
+    {
+        $query = $modelClass::query()->with($relations);
+        $nearby = $this->applyLocationOrdering(clone $query, $coords, $hint, $locationColumn)
+            ->limit($limit)
+            ->get();
+
+        if ($coords && $nearby->count() < $limit) {
+            $fallback = $query->whereNotIn('id', $nearby->pluck('id')->all())
+                ->when($hint, fn ($sub) => $sub->where($locationColumn, 'like', '%' . $hint . '%'))
+                ->orderBy('id', 'desc')
+                ->limit($limit - $nearby->count())
+                ->get();
+
+            $nearby = $nearby->concat($fallback);
+        }
+
+        return $nearby;
+    }
+
+    private function applyLocationOrdering(Builder $query, ?array $coords, string $hint, string $locationColumn): Builder
+    {
+        if ($coords) {
+            $lat = $coords['lat'];
+            $lng = $coords['lng'];
+            $distanceSql = '(6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude))))';
+
+            return $query->whereNotNull('latitude')
+                ->whereNotNull('longitude')
+                ->orderByRaw("{$distanceSql} asc", [$lat, $lng, $lat]);
+        }
+
+        if ($hint) {
+            return $query->where($locationColumn, 'like', '%' . $hint . '%')->orderBy('id', 'desc');
+        }
+
+        return $query->latest('id');
+    }
+
 public function carmodel(Request $request) {
     $data = Carmodel::select('model','id')->where('make_id',$request->id)->orderBy('model')->get();
     return response()->json($data);//then sent this data to aax success
@@ -205,15 +310,28 @@ Public function vehicles_list(){
     return view ('pages.vehicles_list')->with($arr);
     
 }
-public function vehicle(Listing $listing, Vehicle $vehicle){
-    $vehicle->increment('views');
-    $arr['listing'] = $listing;
-    $arr['vehicle'] = $vehicle;
-    $vehicle->save();
-    $arr['vehiclephotos'] = Vehicle_photo::all();
+    public function vehicle(Listing $listing, Vehicle $vehicle){
+        $vehicle->increment('views');
+        $vehicle->save();
+        $arr['listing'] = $listing;
+        $arr['vehicle'] = $vehicle;
+        $arr['vehiclephotos'] = Vehicle_photo::all();
 
-    return view ('pages.vehicle')->with($arr);
-}
+        $listingCityId = $listing->city_id;
+        $makeName = optional(optional($vehicle->carmodel)->carmake)->make;
+
+        $arr['similarVehicles'] = Vehicle::query()
+            ->with(['carmodel.carmake', 'listing.city'])
+            ->where('id', '!=', $vehicle->id)
+            ->whereHas('listing', fn ($query) => $query->where('category_id', 2))
+            ->when($makeName, fn ($query) => $query->whereHas('carmodel.carmake', fn ($sub) => $sub->where('make', $makeName)))
+            ->when($listingCityId, fn ($query) => $query->whereHas('listing', fn ($sub) => $sub->where('city_id', $listingCityId)))
+            ->latest('id')
+            ->take(4)
+            ->get();
+
+        return view ('pages.vehicle')->with($arr);
+    }
 Public function carhire(){
     $arr['cities'] = City::orderBy('city')->get();
     $arr['vehicles'] = Vehicle::all();

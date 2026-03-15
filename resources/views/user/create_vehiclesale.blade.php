@@ -377,6 +377,7 @@
 <fieldset data-step-panel class="border border-gary p-4 mb-5 sale-form-section">
   <h4 class="sale-section-title">Upload your vehicle images</h4>
   <h6 class="font-weight-bold pt-4 pb-1">First image must be the front of the vehicle, the rest can come in any order.</h6>
+  <p class="text-xs text-slate-400">Allowed formats: JPEG, PNG, WEBP, GIF, SVG, HEIC, HEIF. Maximum 20MB per photo.</p>
   <div class="row">
     <div class="space column">
       <div class="card">

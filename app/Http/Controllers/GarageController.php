@@ -30,6 +30,8 @@ class GarageController extends Controller
             'garage_title' => 'required|string|max:255',
             'garage_location' => 'required|string|max:255',
             'garage_description' => 'required|string',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'front_img' => 'required|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
             'back_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
             'right_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
@@ -53,6 +55,9 @@ class GarageController extends Controller
                     $garage->{$fieldName} = $this->storeGarageImage($request->file($fieldName), $fieldName);
                 }
             }
+
+            $garage->latitude = $request->input('latitude');
+            $garage->longitude = $request->input('longitude');
 
             $garage->save();
 

@@ -33,7 +33,7 @@
                     <div class="rounded-xl border border-slate-800 bg-slate-950 p-4 peer-checked:border-amber-300/70 peer-checked:bg-amber-300/10">
                         <p class="text-xs uppercase tracking-wide text-slate-400">Package</p>
                         <h2 class="mt-1 font-display text-2xl font-semibold text-white">{{ $package->package_name }}</h2>
-                        <p class="mt-2 text-2xl font-bold text-amber-300">Ksh {{ number_format((float) $package->package_amount) }}</p>
+                        <p class="mt-2 text-2xl font-bold text-amber-300">{{ format_currency($package->package_amount) }}</p>
                         <p class="mt-1 text-xs text-slate-400">{{ $package->package_duration }} day duration</p>
                         <p class="mt-4 text-sm text-slate-300">{{ $package->description }}</p>
                     </div>

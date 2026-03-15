@@ -9,16 +9,31 @@
   $href = $listing ? route('vehicle', [$listing->id, $vehicle->id]) : '#';
 @endphp
 
-<a href="{{ $href }}" class="group block overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
-  <div class="relative aspect-[4/3] overflow-hidden">
-    <img src="{{ $image }}" alt="{{ $make }} {{ $model }}" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+<article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 group">
+  <div class="relative overflow-hidden">
+    <a href="{{ $href }}" class="block">
+      <img src="{{ $image }}" alt="{{ $make }} {{ $model }}" loading="lazy" class="h-60 w-full object-cover transition duration-500 group-hover:scale-105">
+    </a>
     <span class="absolute left-3 top-3 rounded-full border border-emerald-300/30 bg-emerald-300/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-200">
       {{ $badge ?? 'Live' }}
     </span>
+    @auth
+        <form action="{{ route('addtofavourites') }}" method="POST" class="absolute right-3 top-3">
+            @csrf
+            <input type="hidden" name="vehicle_id" value="{{ $vehicle->id }}">
+            <button type="submit" class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-950/80 text-rose-400 transition hover:bg-rose-400/20" aria-label="Save {{ $make }} {{ $model }} to favorites">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 21s-6-3.4-6-7a4 4 0 0 1 4-4c1.4 0 2.6.9 3 2.2A4 4 0 0 1 16 9a4 4 0 0 1 4 4c0 3.6-6 7-8 7z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                </svg>
+            </button>
+        </form>
+    @endauth
   </div>
 
   <div class="space-y-3 p-4">
-    <h3 class="font-display truncate text-base font-semibold text-white">{{ trim($make . ' ' . $model . ' ' . $year) }}</h3>
+    <a href="{{ $href }}">
+      <h3 class="font-display truncate text-base font-semibold text-white">{{ trim($make . ' ' . $model . ' ' . $year) }}</h3>
+    </a>
 
     <div class="flex items-center gap-2 text-xs">
       <span class="rounded-full bg-slate-800 px-2 py-1 text-slate-300">{{ $category }}</span>
@@ -40,7 +55,7 @@
 
     <div class="flex items-center justify-between border-t border-slate-800 pt-3">
       <span class="text-xs text-slate-500">For Sale</span>
-      <span class="font-display text-lg font-bold text-amber-300">Ksh {{ number_format((float) $vehicle->price) }}</span>
+      <span class="font-display text-lg font-bold text-amber-300">{{ format_currency($vehicle->price) }}</span>
     </div>
   </div>
-</a>
+</article>

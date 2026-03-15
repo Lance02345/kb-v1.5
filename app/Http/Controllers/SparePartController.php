@@ -51,6 +51,8 @@ class SparePartController extends Controller
             'item_description' => 'required',
             'condition' => 'required|in:Used,New',
             'location' => 'required',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'price' => 'required|numeric',
             // Add validation rules for the photo uploads
             'front_img' => 'required|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff', // Example rules; customize as needed
@@ -72,6 +74,8 @@ class SparePartController extends Controller
                 'item_description' => $request->item_description,
                 'condition' => $request->condition,
                 'location' => $request->location,
+                'latitude' => $request->input('latitude'),
+                'longitude' => $request->input('longitude'),
                 'price' => $request->price,
                 'user_id' => auth()->id(),
             ]);
@@ -131,6 +135,8 @@ class SparePartController extends Controller
             'item_description' => 'required',
             'condition' => 'required|in:Used,New',
             'location' => 'required',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
             'price' => 'required|numeric',
             'front_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
             'back_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
@@ -150,6 +156,8 @@ class SparePartController extends Controller
         $sparePart->condition = $request->condition;
         $sparePart->location = $request->location;
         $sparePart->price = $request->price;
+        $sparePart->latitude = $request->input('latitude');
+        $sparePart->longitude = $request->input('longitude');
 
         foreach (self::IMAGE_FIELDS as $fieldName) {
             if ($request->hasFile($fieldName)) {
@@ -204,7 +212,29 @@ class SparePartController extends Controller
     {
         $sparePart = SparePart::with('user')->findOrFail($id);
         $userWhoPosted = $sparePart->user;
-        return view('modern.sparepart', compact('sparePart', 'userWhoPosted'));
+        $similarParts = SparePart::query()
+            ->where('id', '!=', $sparePart->id)
+            ->when($sparePart->make || $sparePart->category, function ($query) use ($sparePart) {
+                $query->where(function ($inner) use ($sparePart) {
+                    $started = false;
+                    if (!empty($sparePart->make)) {
+                        $inner->where('make', $sparePart->make);
+                        $started = true;
+                    }
+                    if (!empty($sparePart->category)) {
+                        if ($started) {
+                            $inner->orWhere('category', $sparePart->category);
+                        } else {
+                            $inner->where('category', $sparePart->category);
+                        }
+                    }
+                });
+            })
+            ->latest('id')
+            ->take(4)
+            ->get();
+
+        return view('modern.sparepart', compact('sparePart', 'userWhoPosted', 'similarParts'));
 
     }
 

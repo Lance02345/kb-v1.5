@@ -102,6 +102,7 @@ Route :: get ('post_ad_form',  [PagesController::class, 'post_ad_form'])->name('
 Route :: get ('single_blog',  [PagesController::class, 'single_blog'])->name('single_blog');
 Route :: get ('terms_condition',  [PagesController::class, 'terms_condition'])->name('terms_condition');
 Route::post('/add-to-favorites', [PagesController::class, 'addToFavorites'])->name('addtofavourites');
+Route::post('/location', [PagesController::class, 'updateUserLocation'])->name('location.set');
 Route :: get ('favourite_list',  [ListingController::class, 'showFavoriteVehicles'])->name('favourite_list');
 Route::get('/garages', [GarageController::class, 'index'])->name('garages.index');
 Route::get('/garage/{garage}', [GarageController::class, 'show'])->name('garage.show');

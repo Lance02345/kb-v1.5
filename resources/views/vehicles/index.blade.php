@@ -76,6 +76,10 @@
                 </a>
             </div>
         </form>
+        <div class="flex flex-wrap items-center justify-between gap-2 border-t border-gray-800 px-4 pb-4 text-xs text-gray-400">
+            <p>Showing {{ $vehicles->count() }} of {{ $vehicles->total() }} vehicles matching your filters.</p>
+            <p>{{ now()->format('d F Y') }}</p>
+        </div>
     </div>
 
     @if($vehicles->count())
