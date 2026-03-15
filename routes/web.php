@@ -25,6 +25,8 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\CareventController;
 use App\Http\Controllers\MpesaSTKPUSHController;
+use App\Http\Controllers\TumaPaymentController;
+use App\Http\Controllers\TumaWebhookController;
 use App\Models\Carevent;
 use Illuminate\Support\Facades\Auth;
 
@@ -198,6 +200,7 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
     Route :: post ('packageupdate/{listing}',  [ListingController::class, 'packageupdate'])->name('packageupdate');
     Route :: get ('checkout',  [ListingController::class, 'checkout'])->name('checkout');
     Route :: post ('post_invoice',  [ListingController::class, 'post_invoice'])->name('post_invoice');
+    Route::post('invoice/{invoice}/pay', [TumaPaymentController::class, 'store'])->name('invoice.pay');
     Route :: get ('carevent',  [CareventController::class, 'index'])->name('carevent');
     Route :: get ('index_carevent',  [ListingController::class, 'userevent'])->name('userevent');
     Route::get('/spareparts/create', [SparePartController::class, 'create'])->name('sparepartscreate');
@@ -240,3 +243,5 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
 
 Route::  get('user/export', [ListingController::class, 'export'])->name('export');
 Route::  get('user/exportpackage', [ListingController::class, 'exportpackage'])->name('exportpackage');
+
+Route::post('/webhook/tuma', TumaWebhookController::class);

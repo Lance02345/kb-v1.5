@@ -163,5 +163,6 @@
     @include('modern._footer')
 
     @livewireScripts
+    @stack('scripts')
 </body>
 </html>
