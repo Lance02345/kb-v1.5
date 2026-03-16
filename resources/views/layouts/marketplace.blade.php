@@ -21,5 +21,6 @@
 </head>
 <body class="bg-[#0c0f14] text-gray-100" style="font-family: Inter, sans-serif;">
     @yield('content')
+    @include('partials.geolocation-script')
 </body>
 </html>

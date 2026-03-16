@@ -89,6 +89,7 @@
             @yield('content')
         </main>
     </div>
+    @include('partials.geolocation-script')
     @livewireScripts
     @stack('scripts')
 </body>

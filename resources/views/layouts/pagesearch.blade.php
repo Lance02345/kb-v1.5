@@ -236,6 +236,7 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"></script>
   <script src="{{ asset('plugins/google-map/gmap.js')}}"></script>
   <script src="{{ asset('js/script.js')}}"></script>
+  @include('partials.geolocation-script')
   
   </body>
   

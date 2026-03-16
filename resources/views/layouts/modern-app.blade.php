@@ -162,6 +162,7 @@
     @yield('content')
     @include('modern._footer')
 
+    @include('partials.geolocation-script')
     @livewireScripts
     @stack('scripts')
 </body>

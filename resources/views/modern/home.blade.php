@@ -41,31 +41,38 @@
     <section class="space-y-4">
         <div class="flex items-end justify-between gap-3">
             <div>
-                <h2 class="font-display text-2xl font-semibold text-white">Garages near {{ $nearbyCity }}</h2>
-                <p class="text-xs text-slate-400">{{ $nearbyGarages->count() }} {{ \Illuminate\Support\Str::plural('garage', $nearbyGarages->count()) }} in your area</p>
+                <h2 class="font-display text-2xl font-semibold text-white">Cars near {{ $nearbyCity }}</h2>
+                <p class="text-xs text-slate-400">{{ $latestVehicles->count() }} live listings close to you</p>
             </div>
-            <a href="{{ route('garages.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">See all garages</a>
+            <a href="{{ route('marketplace.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">Browse all cars</a>
         </div>
 
-        @if($nearbyGarages->count())
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                @foreach($nearbyGarages as $garage)
+        @if(($latestVehicles ?? collect())->count())
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+                @foreach($latestVehicles->take(4) as $vehicle)
+                    @php
+                        $vehicleRoute = $vehicle->listing ? route('vehicle', [$vehicle->listing->id, $vehicle->id]) : '#';
+                    @endphp
                     <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
-                        <a href="{{ route('garage.show', $garage->id) }}" class="block relative">
-                            <img src="{{ !empty($garage->front_img) ? asset('storage/' . ltrim($garage->front_img, '/')) : asset('images/land1.jpg') }}" alt="{{ $garage->garage_title }}" loading="lazy" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
+                        <a href="{{ $vehicleRoute }}" class="block relative">
+                            <img src="{{ $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : asset('images/land1.jpg') }}" alt="{{ $vehicle->title ?? 'Vehicle photo' }}" loading="lazy" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
                         </a>
                         <div class="space-y-2 p-4">
-                            <h3 class="font-display truncate text-base font-semibold text-white">{{ $garage->garage_title }}</h3>
-                            <p class="text-xs text-slate-400">{{ $garage->garage_location }}</p>
-                            <p class="line-clamp-2 text-xs text-slate-400">{{ Str::limit(strip_tags($garage->garage_description), 120) }}</p>
-                            <a href="{{ route('garage.show', $garage->id) }}" class="inline-flex rounded-lg border border-amber-300/40 bg-amber-300/10 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-amber-200 hover:bg-amber-300/20">View Garage</a>
+                            <h3 class="font-display truncate text-base font-semibold text-white">
+                                {{ $vehicle->carmodel?->carmake?->make }} {{ $vehicle->carmodel?->model }} {{ $vehicle->year_of_build }}
+                            </h3>
+                            <p class="text-xs text-slate-400">{{ optional($vehicle->listing->city)->city ?: 'Kenya' }} · {{ $vehicle->ads_status }}</p>
+                            <div class="flex items-center gap-2 text-xs text-slate-400">
+                                <span class="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 font-semibold text-amber-200">{{ format_currency($vehicle->price) }}</span>
+                                <span>{{ number_format((int) ($vehicle->views ?? 0)) }} views</span>
+                            </div>
                         </div>
                     </article>
                 @endforeach
             </div>
         @else
             <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 text-sm text-slate-400">
-                No garages near {{ $nearbyCity }} yet. Explore the directory for more.
+                No nearby car listings yet. Browse the marketplace to discover more.
             </div>
         @endif
     </section>
@@ -283,58 +290,6 @@
 
         if (prevBtn) prevBtn.addEventListener('click', function () { move(-1); });
         if (nextBtn) nextBtn.addEventListener('click', function () { move(1); });
-    })();
-</script>
-<script>
-    (function () {
-        if (!('geolocation' in navigator)) {
-            return;
-        }
-
-        const storageKey = 'kb_nearby_location_sent';
-        if (sessionStorage.getItem(storageKey)) {
-            return;
-        }
-
-        const endpoint = @json(route('location.set'));
-        const csrfToken = @json(csrf_token());
-
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                if (!position?.coords) {
-                    return;
-                }
-
-                fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken,
-                    },
-                    body: JSON.stringify({
-                        latitude: position.coords.latitude,
-                        longitude: position.coords.longitude,
-                    }),
-                })
-                .then(function (response) {
-                    if (response.ok) {
-                        sessionStorage.setItem(storageKey, '1');
-                    }
-                })
-                .catch(function () {
-                    // Silent failure; we still want to avoid repeated prompts
-                    sessionStorage.setItem(storageKey, '1');
-                });
-            },
-            function () {
-                sessionStorage.setItem(storageKey, '1');
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 600000,
-            }
-        );
     })();
 </script>
 @endsection

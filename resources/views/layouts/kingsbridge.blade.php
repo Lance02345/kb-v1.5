@@ -107,6 +107,7 @@
                     {{ Auth::user()->name }}
                   </a>
                   <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{{ route('user.favourite_list') }}">Favorites</a>
                     <a class="dropdown-item" href="{{ route('user.my_list') }}">My List</a>
                     <a class="dropdown-item" href="{{ route('user.myspareparts') }}">Spare Parts</a>
                     <a class="dropdown-item" href="{{ route('user.mygarages') }}">Garages</a>
@@ -294,6 +295,7 @@
     });
   })();
 </script>
+@include('partials.geolocation-script')
 @stack('scripts')
 </body>
 </html>
