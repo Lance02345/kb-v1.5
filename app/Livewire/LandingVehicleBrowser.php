@@ -20,6 +20,7 @@ class LandingVehicleBrowser extends Component
     public $city = '';
     public $minPrice = '';
     public $maxPrice = '';
+    public $search = '';
 
     protected $queryString = [
         'make' => ['except' => ''],
@@ -27,6 +28,7 @@ class LandingVehicleBrowser extends Component
         'city' => ['except' => ''],
         'minPrice' => ['except' => ''],
         'maxPrice' => ['except' => ''],
+        'search' => ['except' => ''],
     ];
 
     public function updatedMake(): void
@@ -55,6 +57,11 @@ class LandingVehicleBrowser extends Component
         $this->resetPage();
     }
 
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
     public function clearFilters(): void
     {
         $this->make = '';
@@ -62,6 +69,7 @@ class LandingVehicleBrowser extends Component
         $this->city = '';
         $this->minPrice = '';
         $this->maxPrice = '';
+        $this->search = '';
         $this->resetPage();
     }
 
@@ -72,20 +80,41 @@ class LandingVehicleBrowser extends Component
             ->orderBy('model')
             ->get();
 
-        $vehicles = Vehicle::query()
-            ->with(['carmodel.carmake', 'listing.category', 'listing.city'])
-            ->whereHas('listing', function ($query) {
-                $query->whereIn('ads_status', ['Approved', 'Active']);
+        $preferredCityId = session('preferred_city_id');
 
-                if ($this->city !== '') {
-                    $query->where('city_id', $this->city);
-                }
-            })
+        $vehicles = Vehicle::query()
+            ->select('vehicles.*')
+            ->with(['carmodel.carmake', 'listing.category', 'listing.city', 'vehiclephotos'])
+            ->join('listings', 'listings.vehicle_id', '=', 'vehicles.id')
+            ->whereIn('listings.ads_status', ['Approved', 'Active'])
+            ->when($this->city !== '', fn ($q) => $q->where('listings.city_id', $this->city))
             ->when($this->make !== '', fn ($q) => $q->whereHas('carmodel', fn ($cq) => $cq->where('make_id', $this->make)))
             ->when($this->model !== '', fn ($q) => $q->where('model_id', $this->model))
             ->when($this->minPrice !== '', fn ($q) => $q->where('price', '>=', (float) $this->minPrice))
             ->when($this->maxPrice !== '', fn ($q) => $q->where('price', '<=', (float) $this->maxPrice))
-            ->latest('id')
+            ->when($this->search !== '', function ($q) {
+                $term = '%' . implode('%', preg_split('/\s+/', trim($this->search))) . '%';
+                $q->where(function ($inner) use ($term) {
+                    $inner->where('vehicles.title', 'like', $term)
+                        ->orWhere('vehicles.description', 'like', $term)
+                        ->orWhere('vehicles.color', 'like', $term)
+                        ->orWhereHas('carmodel', function ($modelQuery) use ($term) {
+                            $modelQuery->where('model', 'like', $term)
+                                ->orWhereHas('carmake', function ($makeQuery) use ($term) {
+                                    $makeQuery->where('make', 'like', $term);
+                                });
+                        })
+                        ->orWhereHas('listing', function ($listingQuery) use ($term) {
+                            $listingQuery->whereHas('city', function ($cityQuery) use ($term) {
+                                $cityQuery->where('city', 'like', $term);
+                            });
+                        });
+                });
+            })
+            ->when($preferredCityId, fn ($q) => $q->orderByRaw('CASE WHEN listings.city_id = ? THEN 1 ELSE 0 END DESC', [$preferredCityId]))
+            ->orderByRaw('COALESCE(listings.package_id, 0) DESC')
+            ->orderByRaw("CASE WHEN listings.ads_featured IN ('1','yes','YES') THEN 1 ELSE 0 END DESC")
+            ->orderByDesc('vehicles.id')
             ->paginate(9);
 
         return view('livewire.landing-vehicle-browser', [

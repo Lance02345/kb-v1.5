@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Request;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\SearchSuggestionController;
 use App\Http\Controllers\GarageController;
 use App\Http\Controllers\SparePartController;
+use App\Http\Controllers\SavedSearchController;
+use App\Http\Controllers\ComparisonController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PackageController;
@@ -105,6 +108,8 @@ Route :: get ('single_blog',  [PagesController::class, 'single_blog'])->name('si
 Route :: get ('terms_condition',  [PagesController::class, 'terms_condition'])->name('terms_condition');
 Route::post('/add-to-favorites', [PagesController::class, 'addToFavorites'])->name('addtofavourites');
 Route::post('/location', [PagesController::class, 'updateUserLocation'])->name('location.set');
+Route::get('/search/suggestions', SearchSuggestionController::class)->name('search.suggestions');
+Route::get('/compare', [ComparisonController::class, 'index'])->name('compare.index');
 Route :: get ('favourite_list',  [ListingController::class, 'showFavoriteVehicles'])->name('favourite_list');
 Route::get('/garages', [GarageController::class, 'index'])->name('garages.index');
 Route::get('/garage/{garage}', [GarageController::class, 'show'])->name('garage.show');
@@ -154,6 +159,9 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'admin', 'as' => 'admin.
 });
 
 Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.'], function () {
+    Route::get('saved-searches', [SavedSearchController::class, 'index'])->name('saved_searches.index');
+    Route::post('saved-searches', [SavedSearchController::class, 'store'])->name('saved_searches.store');
+    Route::delete('saved-searches/{savedSearch}', [SavedSearchController::class, 'destroy'])->name('saved_searches.destroy');
     Route :: get ('archived_list',  [ListingController::class, 'archived_list'])->name('archived_list');
     Route :: get ('favourite_list',  [ListingController::class, 'showFavoriteVehicles'])->name('favourite_list');
     Route :: get ('my_list',  [ListingController::class, 'my_list'])->name('my_list');

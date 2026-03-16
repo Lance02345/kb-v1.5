@@ -66,5 +66,9 @@
             </form>
         </section>
     </section>
+
+    <section>
+        @include('user.partials.saved-search-list', ['searches' => $savedSearches ?? collect()])
+    </section>
 </main>
 @endsection

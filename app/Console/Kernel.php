@@ -6,6 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\SendJourneyReminders;
 use App\Console\Commands\NormalizeLocations;
+use App\Console\Commands\CheckSavedSearches;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,6 +18,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         SendJourneyReminders::class,
         NormalizeLocations::class,
+        CheckSavedSearches::class,
     ];
 
     /**
@@ -28,6 +30,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('journey:send-reminders')->dailyAt('08:00');
+        $schedule->command('saved-searches:check')->hourly();
     }
 
     /**

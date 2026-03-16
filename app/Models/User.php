@@ -59,6 +59,11 @@ class User extends Authenticatable
         return $this->belongsTo(SparePart::class);
     }
 
+    public function savedSearches()
+    {
+        return $this->hasMany(SavedSearch::class);
+    }
+
 
 
    // Define the relationship with favorite vehicles

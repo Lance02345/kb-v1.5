@@ -16,9 +16,10 @@ class UserController extends Controller
    }
    Public function user_profile(User $user) {
     $user = User::where('id', Auth::id())->first();
-    return view('user.user_profile',compact('user'));
+    $savedSearches = $user->savedSearches()->latest('id')->get();
+    return view('user.user_profile',compact('user','savedSearches'));
+
   
-    
     }
    public function store_user() 
    {

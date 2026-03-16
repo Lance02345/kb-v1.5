@@ -28,6 +28,7 @@
                     </summary>
                     <div class="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-slate-700 bg-slate-900 shadow-2xl">
                         <a href="{{ route('user.favourite_list') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">Favorites</a>
+                        <a href="{{ route('user.saved_searches.index') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">Saved Searches</a>
                         <a href="{{ route('user.my_list') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">My List</a>
                         <a href="{{ route('user.myspareparts') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">Spare Parts</a>
                         <a href="{{ route('user.mygarages') }}" class="block px-4 py-2 text-xs text-slate-200 hover:bg-slate-800">Garages</a>
