@@ -137,14 +137,17 @@
             border-radius: 10px;
             display: inline-flex;
             gap: 8px;
+            min-width: 160px;
             max-width: 260px;
             padding: 6px 8px;
         }
         .listing-upload-item img {
             border-radius: 6px;
-            height: 38px;
+            height: 48px;
+            width: auto;
+            max-width: 96px;
+            aspect-ratio: 4 / 3;
             object-fit: cover;
-            width: 38px;
         }
         .listing-upload-item span {
             color: #cbd5e1;

@@ -180,6 +180,7 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
     Route :: delete ('delete_vehiclesale/{listing}/{vehicle}',  [ListingController::class, 'delete_vehiclesale'])->name('delete_vehiclesale');
     Route::post('listing/{listing}/quick-action', [ListingController::class, 'quickAction'])->name('listing.quick_action');
     Route::post('/add-to-favorites', [PagesController::class, 'addToFavorites'])->name('addtofavourites');
+    Route::post('favorites/remove', [PagesController::class, 'removeFromFavorites'])->name('favorites.remove');
 
 
 

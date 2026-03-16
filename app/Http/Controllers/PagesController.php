@@ -400,6 +400,22 @@ public function addToFavorites(Request $request)
     return back()->with('success', 'Vehicle added to favorites.');
 }
 
+public function removeFromFavorites(Request $request)
+{
+    $userId = Auth::id();
+    $vehicleId = $request->input('vehicle_id');
+    $favorite = Favourites::where('user_id', $userId)
+        ->where('vehicle_id', $vehicleId)
+        ->first();
+
+    if ($favorite) {
+        $favorite->delete();
+        return back()->with('success', 'Vehicle removed from favorites.');
+    }
+
+    return back()->with('info', 'Vehicle was not found in your favorites.');
+}
+
 
 
 

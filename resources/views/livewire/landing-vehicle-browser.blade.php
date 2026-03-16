@@ -220,6 +220,7 @@
         const drawerCount = document.getElementById('compare-drawer-count');
         const drawerButton = document.getElementById('compare-drawer-button');
         const drawerClose = document.getElementById('compare-drawer-close');
+        const drawerClear = document.getElementById('compare-drawer-clear');
         const comparisonKey = 'kb_compare_items';
 
         const getComparisonItems = () => {
@@ -245,6 +246,23 @@
             });
         };
 
+        const removeComparisonItem = (vehicleId) => {
+            const items = getComparisonItems();
+            const index = items.findIndex(item => item.id === vehicleId);
+            if (index === -1) {
+                return;
+            }
+
+            items.splice(index, 1);
+            setComparisonItems(items);
+            renderComparisonDrawer();
+        };
+
+        const clearComparisonItems = () => {
+            setComparisonItems([]);
+            renderComparisonDrawer();
+        };
+
         const renderComparisonDrawer = () => {
             if (!drawer || !drawerList || !drawerButton || !drawerCount) {
                 return;
@@ -259,6 +277,10 @@
                 drawerCount.textContent = '';
                 drawerButton.setAttribute('href', '#');
                 refreshCompareButtons();
+                if (drawerClear) {
+                    drawerClear.disabled = true;
+                    drawerClear.classList.add('opacity-40', 'cursor-not-allowed');
+                }
                 return;
             }
 
@@ -272,15 +294,29 @@
                 thumb.alt = item.label || 'Vehicle';
                 thumb.className = 'h-7 w-9 rounded-md object-cover';
                 const label = document.createElement('span');
-                label.className = 'truncate text-[11px] font-semibold';
+                label.className = 'flex-1 truncate text-[11px] font-semibold';
                 label.textContent = item.label || 'Vehicle';
                 listItem.appendChild(thumb);
                 listItem.appendChild(label);
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'ml-auto rounded-full border border-rose-400/40 bg-rose-500/10 px-2 py-0.5 text-[11px] font-semibold text-rose-300 transition hover:border-rose-300 hover:text-white';
+                removeBtn.textContent = '×';
+                removeBtn.setAttribute('aria-label', 'Remove from comparison');
+                removeBtn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    removeComparisonItem(item.id);
+                });
+                listItem.appendChild(removeBtn);
                 drawerList.appendChild(listItem);
             });
 
             drawerCount.textContent = `${items.length} selected`;
             drawerButton.setAttribute('href', `${compareRoute}?ids=${items.map(item => item.id).join(',')}`);
+            if (drawerClear) {
+                drawerClear.disabled = false;
+                drawerClear.classList.remove('opacity-40', 'cursor-not-allowed');
+            }
             refreshCompareButtons();
         };
 
@@ -318,6 +354,13 @@
             drawerClose.addEventListener('click', () => {
                 drawer?.classList.add('hidden');
                 drawer?.classList.add('pointer-events-none');
+            });
+        }
+
+        if (drawerClear) {
+            drawerClear.addEventListener('click', (event) => {
+                event.preventDefault();
+                clearComparisonItems();
             });
         }
 
