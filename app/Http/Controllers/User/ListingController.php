@@ -28,6 +28,7 @@ use Illuminate\Validation\Rule;
 use PhpParser\Node\Expr\List_;
 use App\Models\User;
 use App\Support\JourneyMailer;
+use App\Support\ListingBilling;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Log;
 
@@ -450,12 +451,19 @@ class ListingController extends Controller
             $vehicle->views = $default_view;
             $vehicle->save();
 
+            $billing = ListingBilling::applyFreePackageToListing($listing);
+
             DB::commit();
             Log::info('Vehicle saved successfully.', ['vehicle_id' => $vehicle->id]);
             $listing->load('user');
             JourneyMailer::sendVehicleListingSubmitted($listing, $vehicle);
 
-            return redirect()->route('user.packages', $currentId)->with('success', 'Added');
+            $billing['invoice']->load('user', 'package');
+            JourneyMailer::sendInvoiceGenerated($billing['invoice']);
+
+            return redirect()
+                ->route('user.index_vehiclesale')
+                ->with('success', 'Vehicle listing added successfully. Free package + invoice applied.');
         } catch (\Throwable $e) {
             DB::rollBack();
             Log::error('store_vehiclesale failed', [
