@@ -19,9 +19,11 @@
         <div class="space-y-4 p-4 sm:p-5">
             <div class="space-y-1 relative">
                 <input wire:model.live.debounce.400ms="search" id="vehicle-search-input" type="text" placeholder="Type make, model, city, or keyword" autocomplete="off" class="h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-amber-400 focus:outline-none">
-                <div id="vehicle-search-suggestions" class="absolute left-0 right-0 top-full z-20 mt-1 hidden translate-y-1 overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 text-sm shadow-2xl">
-                    <ul id="vehicle-search-suggestions-list" class="space-y-1 p-3 text-xs text-slate-300"></ul>
-                    <p class="border-t border-slate-800 px-3 py-2 text-[10px] uppercase tracking-wider text-slate-500">Tap a suggestion or keep typing to filter.</p>
+                <div wire:ignore>
+                    <div id="vehicle-search-suggestions" class="absolute left-0 right-0 top-full z-20 mt-1 hidden translate-y-1 overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 text-sm shadow-2xl">
+                        <ul id="vehicle-search-suggestions-list" class="space-y-1 p-3 text-xs text-slate-300"></ul>
+                        <p class="border-t border-slate-800 px-3 py-2 text-[10px] uppercase tracking-wider text-slate-500">Tap a suggestion or keep typing to filter.</p>
+                    </div>
                 </div>
                 <p class="text-xs text-slate-500">Typing will automatically trim the search string and look for the closest matches.</p>
             </div>
