@@ -34,7 +34,17 @@
                 @endphp
                 @continue(!$vehicle || !$listing)
 
-                <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+                <article class="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
+                    <form method="POST" action="{{ route('favorites.remove') }}" class="absolute right-4 top-4 z-20">
+                        @csrf
+                        <input type="hidden" name="vehicle_id" value="{{ $vehicle->id }}">
+                        <button type="submit" class="flex items-center gap-2 rounded-full border border-rose-400/60 bg-rose-500/10 px-3 py-1 text-[11px] font-semibold text-rose-300 transition hover:border-rose-300 hover:text-white">
+                            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Remove
+                        </button>
+                    </form>
                     <a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">
                         <img src="{{ $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : asset('images/land1.jpg') }}" alt="{{ $vehicle->title ?? 'Vehicle' }}" class="h-52 w-full object-cover">
                     </a>
