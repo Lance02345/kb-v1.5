@@ -24,7 +24,7 @@ class CheckSavedSearches extends Command
             $query = Vehicle::query()
                 ->select('vehicles.*')
                 ->with(['listing', 'listing.city'])
-                ->join('listings', 'listings.vehicle_id', '=', 'vehicles.id')
+            ->join('listings', 'listings.id', '=', 'vehicles.listing_id')
                 ->whereIn('listings.ads_status', ['Approved', 'Active']);
 
             if (!empty($filters['city'])) {

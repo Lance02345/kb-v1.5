@@ -22,7 +22,7 @@ class SearchSuggestionController extends Controller
         $vehicles = Vehicle::query()
             ->select('vehicles.*')
             ->with(['carmodel.carmake', 'listing.city'])
-            ->join('listings', 'listings.vehicle_id', '=', 'vehicles.id')
+            ->join('listings', 'listings.id', '=', 'vehicles.listing_id')
             ->whereIn('listings.ads_status', ['Approved', 'Active'])
             ->where(function ($query) use ($wildcard) {
                 $query->where('vehicles.title', 'like', $wildcard)

@@ -85,7 +85,7 @@ class LandingVehicleBrowser extends Component
         $vehicles = Vehicle::query()
             ->select('vehicles.*')
             ->with(['carmodel.carmake', 'listing.category', 'listing.city', 'vehiclephotos'])
-            ->join('listings', 'listings.vehicle_id', '=', 'vehicles.id')
+            ->join('listings', 'listings.id', '=', 'vehicles.listing_id')
             ->whereIn('listings.ads_status', ['Approved', 'Active'])
             ->when($this->city !== '', fn ($q) => $q->where('listings.city_id', $this->city))
             ->when($this->make !== '', fn ($q) => $q->whereHas('carmodel', fn ($cq) => $cq->where('make_id', $this->make)))
