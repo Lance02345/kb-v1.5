@@ -41,7 +41,7 @@ class TumaClient
                 [
                     'product_id' => (string) $invoice->id,
                     'quantity' => 1,
-                    'unit_price' => (int) round($invoice->total),
+                    'unit_price' => (int) round((float) $invoice->total),
                     'description' => $description ?? 'Invoice #' . $invoice->id,
                 ],
             ],
