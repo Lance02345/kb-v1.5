@@ -77,8 +77,8 @@
                         $isFeatured = optional($vehicle->listing)->package_id == 2 || in_array(optional($vehicle->listing)->ads_featured, ['1', 'yes', 'YES'], true);
                     @endphp
                     <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
-                        <a href="{{ $vehicleRoute }}" class="block relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-                            <img src="{{ $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : asset('images/land1.jpg') }}" alt="{{ $vehicle->title ?? 'Vehicle photo' }}" loading="lazy" class="aspect-[16/11] w-full object-contain p-2 transition duration-500 group-hover:scale-[1.02]">
+                        <a href="{{ $vehicleRoute }}" class="block relative">
+                            <img src="{{ $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : asset('images/land1.jpg') }}" alt="{{ $vehicle->title ?? 'Vehicle photo' }}" loading="lazy" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
                             @if($isFeatured)
                                 <span class="absolute left-3 top-3 rounded-full border border-amber-300/40 bg-amber-300/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-200">Golden</span>
                             @endif
@@ -113,18 +113,16 @@
         </div>
 
         @if($nearbyParts->count())
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 @foreach($nearbyParts as $part)
-                    <article class="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
-                        <a href="{{ route('sparepart', $part->id) }}" class="absolute inset-0 z-10 rounded-2xl" aria-label="Open {{ $part->make }} {{ $part->item_name }}"></a>
-                        <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-                            <img src="{{ $part->front_img ? asset('storage/photos/' . $part->front_img) : asset('images/land1.jpg') }}" loading="lazy" alt="{{ $part->item_name }}" class="aspect-[16/11] w-full object-contain p-3 transition duration-500 group-hover:scale-[1.02]">
-                        </div>
-                        <div class="relative z-20 space-y-2 p-4">
-                            <h3 class="line-clamp-2 font-display text-sm font-semibold text-white">{{ $part->make }} · {{ $part->item_name }}</h3>
-                            @if(!empty($part->category))
-                                <p class="text-xs text-amber-200">{{ $part->category }}</p>
-                            @endif
+                    <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
+                        <a href="{{ route('sparepart', $part->id) }}">
+                            <img src="{{ $part->front_img ? asset('storage/photos/' . $part->front_img) : asset('images/land1.jpg') }}" loading="lazy" alt="{{ $part->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
+                        </a>
+                        <div class="space-y-2 p-4">
+                            <h3 class="font-display text-base font-semibold text-white">
+                                <a href="{{ route('sparepart', $part->id) }}" class="hover:text-amber-200">{{ $part->make }} · {{ $part->item_name }}</a>
+                            </h3>
                             <p class="text-xs text-slate-400">{{ $part->condition }} · {{ $part->location }}</p>
                             <span class="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200">{{ format_currency($part->price) }}</span>
                         </div>
@@ -157,18 +155,16 @@
         <a href="{{ route('spareparts') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">See all parts</a>
         </div>
         @if(($latestSpareParts ?? collect())->count())
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 @foreach($latestSpareParts as $sparePart)
-                    <article class="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
-                        <a href="{{ route('sparepart', $sparePart->id) }}" class="absolute inset-0 z-10 rounded-2xl" aria-label="Open {{ $sparePart->make }} {{ $sparePart->item_name }}"></a>
-                        <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-                            <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[16/11] w-full object-contain p-3 transition duration-500 group-hover:scale-[1.02]">
-                        </div>
-                        <div class="relative z-20 space-y-2 p-4">
-                            <h3 class="line-clamp-2 font-display text-sm font-semibold text-white">{{ $sparePart->make }} - {{ $sparePart->item_name }}</h3>
-                            @if(!empty($sparePart->category))
-                                <p class="text-xs text-amber-200">{{ $sparePart->category }}</p>
-                            @endif
+                    <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
+                        <a href="{{ route('sparepart', $sparePart->id) }}">
+                            <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
+                        </a>
+                        <div class="space-y-2 p-4">
+                            <h3 class="font-display text-lg font-semibold text-white">
+                                <a href="{{ route('sparepart', $sparePart->id) }}" class="hover:text-amber-200">{{ $sparePart->make }} - {{ $sparePart->item_name }}</a>
+                            </h3>
                             <p class="text-xs text-slate-400">{{ $sparePart->condition }} · {{ $sparePart->location }}</p>
                             <span class="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200">Ksh {{ number_format((float) $sparePart->price) }}</span>
                         </div>

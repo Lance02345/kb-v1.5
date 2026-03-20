@@ -26,8 +26,8 @@
 <article class="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 group">
     <a href="{{ $href }}" class="absolute inset-0 z-10 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300" aria-label="Open {{ $compareLabel }} listing"></a>
 
-    <div class="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-        <img src="{{ $image }}" alt="{{ $make }} {{ $model }}" loading="lazy" class="h-60 w-full object-contain p-2 transition duration-500 group-hover:scale-[1.02]">
+    <div class="relative overflow-hidden">
+        <img src="{{ $image }}" alt="{{ $make }} {{ $model }}" loading="lazy" class="h-60 w-full object-cover transition duration-500 group-hover:scale-105">
         <span class="absolute left-3 top-3 rounded-full border border-emerald-300/30 bg-emerald-300/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-200">
             {{ $badge ?? 'Live' }}
         </span>
