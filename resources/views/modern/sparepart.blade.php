@@ -97,14 +97,19 @@
 
             <div class="space-y-2 rounded-2xl border border-slate-800 bg-slate-950/50 p-4">
                 <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Contact Seller</p>
-                @if($sellerPhone)
-                    <a href="tel:{{ $sellerPhone }}" class="inline-flex w-full justify-center rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Call Seller</a>
-                @endif
-                @if($sellerWhatsapp)
-                    <a href="https://wa.me/{{ $sellerWhatsapp }}?text={{ rawurlencode('Hi, I am interested in the ' . $sparePart->make . ' ' . $sparePart->item_name . ' listing on Kingsbridge Motors: ' . route('sparepart', $sparePart->id)) }}" target="_blank" rel="noopener" class="inline-flex w-full justify-center rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20">WhatsApp Seller</a>
-                @endif
-                @if(!$sellerPhone)
-                    <p class="text-sm text-slate-400">Seller contact details have not been added yet.</p>
+                @auth
+                    @if($sellerPhone)
+                        <a href="tel:{{ $sellerPhone }}" class="inline-flex w-full justify-center rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Call Seller</a>
+                    @endif
+                    @if($sellerWhatsapp)
+                        <a href="https://wa.me/{{ $sellerWhatsapp }}?text={{ rawurlencode('Hi, I am interested in the ' . $sparePart->make . ' ' . $sparePart->item_name . ' listing on Kingsbridge Motors: ' . route('sparepart', $sparePart->id)) }}" target="_blank" rel="noopener" class="inline-flex w-full justify-center rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20">WhatsApp Seller</a>
+                    @endif
+                    @if(!$sellerPhone)
+                        <p class="text-sm text-slate-400">Seller contact details have not been added yet.</p>
+                    @endif
+                @else
+                    <a href="{{ route('login') }}" class="inline-flex w-full justify-center rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Login to Contact Seller</a>
+                    <p class="text-sm text-slate-400">Contact details are only visible to logged-in users.</p>
                 @endif
             </div>
         </aside>

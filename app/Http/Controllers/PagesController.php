@@ -68,11 +68,11 @@ public function marketplace()
         $arr['nearbyParts'] = $this->fetchNearbyItems(SparePart::class, ['user'], $nearbyHint, $userLocation, 'location');
 
     $baseVehicleQuery = Vehicle::query()
-        ->with(['carmodel.carmake', 'listing.category', 'listing.city', 'listing.package'])
-        ->whereHas('listing', function ($query) {
-            $query->where('category_id', 2)
-                ->whereIn('ads_status', ['Approved', 'Active']);
-        });
+        ->select('vehicles.*')
+        ->with(['carmodel.carmake', 'listing.category', 'listing.city', 'listing.package', 'listing.user'])
+        ->join('listings', 'listings.id', '=', 'vehicles.listing_id')
+        ->where('listings.category_id', 2)
+        ->whereIn('listings.ads_status', ['Approved', 'Active']);
 
     $arr['featuredVehicles'] = (clone $baseVehicleQuery)
         ->whereHas('listing', function ($query) {
@@ -83,6 +83,8 @@ public function marketplace()
         ->get();
 
     $arr['latestVehicles'] = (clone $baseVehicleQuery)
+        ->orderByRaw('COALESCE(listings.package_id, 0) DESC')
+        ->orderByRaw("CASE WHEN listings.ads_featured IN ('1','yes','YES') THEN 1 ELSE 0 END DESC")
         ->latest('id')
         ->take(12)
         ->get();

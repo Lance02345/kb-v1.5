@@ -64,9 +64,11 @@
                 @endphp
                 <article class="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
                     <a href="{{ route('sparepart', $sparePart->id) }}" class="absolute inset-0 z-10 rounded-2xl" aria-label="Open {{ $sparePart->make }} {{ $sparePart->item_name }} listing"></a>
-                    <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
+                    <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+                        <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[16/11] w-full object-contain p-3 transition duration-500 group-hover:scale-[1.02]">
+                    </div>
                     <div class="relative z-20 space-y-2 p-4">
-                        <h3 class="font-display truncate text-base font-semibold text-white">{{ $sparePart->make }} - {{ $sparePart->item_name }}</h3>
+                        <h3 class="line-clamp-2 font-display text-base font-semibold text-white">{{ $sparePart->make }} - {{ $sparePart->item_name }}</h3>
                         @if(!empty($sparePart->category))
                             <p class="text-xs text-amber-200">{{ $sparePart->category }}</p>
                         @endif

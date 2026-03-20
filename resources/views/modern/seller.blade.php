@@ -24,12 +24,16 @@
             </div>
 
             <div class="flex flex-wrap gap-2">
-                @if($sellerPhone)
-                    <a href="tel:{{ $sellerPhone }}" class="inline-flex rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Call Seller</a>
-                @endif
-                @if($sellerWhatsapp)
-                    <a href="https://wa.me/{{ $sellerWhatsapp }}?text={{ rawurlencode('Hi, I am interested in your listings on Kingsbridge Motors.') }}" target="_blank" rel="noopener" class="inline-flex rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20">WhatsApp Seller</a>
-                @endif
+                @auth
+                    @if($sellerPhone)
+                        <a href="tel:{{ $sellerPhone }}" class="inline-flex rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Call Seller</a>
+                    @endif
+                    @if($sellerWhatsapp)
+                        <a href="https://wa.me/{{ $sellerWhatsapp }}?text={{ rawurlencode('Hi, I am interested in your listings on Kingsbridge Motors.') }}" target="_blank" rel="noopener" class="inline-flex rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20">WhatsApp Seller</a>
+                    @endif
+                @else
+                    <a href="{{ route('login') }}" class="inline-flex rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Login to Contact</a>
+                @endauth
             </div>
         </div>
 

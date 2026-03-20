@@ -38,11 +38,33 @@
         </div>
     </section>
 
+    <section class="grid gap-4 sm:grid-cols-3">
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Live Listings</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($latestVehicles ?? collect())->count() }}</p></article>
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Featured Cars</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($featuredVehicles ?? collect())->count() }}</p></article>
+        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Upcoming Events</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($carevents ?? collect())->count() }}</p></article>
+    </section>
+
+    <section class="space-y-4">
+        <div class="flex items-center justify-between">
+            <h2 class="font-display text-2xl font-semibold text-white">Trending Ads</h2>
+            <a href="{{ route('marketplace.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">View all</a>
+        </div>
+        @if(($featuredVehicles ?? collect())->count())
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                @foreach($featuredVehicles->take(6) as $vehicle)
+                    @include('livewire.partials.marketplace-card', ['vehicle' => $vehicle, 'badge' => 'Featured'])
+                @endforeach
+            </div>
+        @else
+            <div class="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-sm text-slate-400">No featured listings yet.</div>
+        @endif
+    </section>
+
     <section class="space-y-4">
         <div class="flex items-end justify-between gap-3">
             <div>
                 <h2 class="font-display text-2xl font-semibold text-white">Cars near {{ $nearbyCity }}</h2>
-                <p class="text-xs text-slate-400">{{ $latestVehicles->count() }} live listings close to you</p>
+                <p class="text-xs text-slate-400">Golden package and featured listings are prioritized first.</p>
             </div>
             <a href="{{ route('marketplace.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">Browse all cars</a>
         </div>
@@ -52,16 +74,20 @@
                 @foreach($latestVehicles->take(4) as $vehicle)
                     @php
                         $vehicleRoute = $vehicle->listing ? route('vehicle', [$vehicle->listing->id, $vehicle->id]) : '#';
+                        $isFeatured = optional($vehicle->listing)->package_id == 2 || in_array(optional($vehicle->listing)->ads_featured, ['1', 'yes', 'YES'], true);
                     @endphp
                     <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
-                        <a href="{{ $vehicleRoute }}" class="block relative">
-                            <img src="{{ $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : asset('images/land1.jpg') }}" alt="{{ $vehicle->title ?? 'Vehicle photo' }}" loading="lazy" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
+                        <a href="{{ $vehicleRoute }}" class="block relative bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+                            <img src="{{ $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : asset('images/land1.jpg') }}" alt="{{ $vehicle->title ?? 'Vehicle photo' }}" loading="lazy" class="aspect-[16/11] w-full object-contain p-2 transition duration-500 group-hover:scale-[1.02]">
+                            @if($isFeatured)
+                                <span class="absolute left-3 top-3 rounded-full border border-amber-300/40 bg-amber-300/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-200">Golden</span>
+                            @endif
                         </a>
                         <div class="space-y-2 p-4">
                             <h3 class="font-display truncate text-base font-semibold text-white">
                                 {{ $vehicle->carmodel?->carmake?->make }} {{ $vehicle->carmodel?->model }} {{ $vehicle->year_of_build }}
                             </h3>
-                            <p class="text-xs text-slate-400">{{ optional($vehicle->listing->city)->city ?: 'Kenya' }} · {{ $vehicle->ads_status }}</p>
+                            <p class="text-xs text-slate-400">{{ optional($vehicle->listing->city)->city ?: 'Kenya' }}</p>
                             <div class="flex items-center gap-2 text-xs text-slate-400">
                                 <span class="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 font-semibold text-amber-200">{{ format_currency($vehicle->price) }}</span>
                                 <span>{{ number_format((int) ($vehicle->views ?? 0)) }} views</span>
@@ -87,16 +113,18 @@
         </div>
 
         @if($nearbyParts->count())
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 @foreach($nearbyParts as $part)
-                    <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
-                        <a href="{{ route('sparepart', $part->id) }}">
-                            <img src="{{ $part->front_img ? asset('storage/photos/' . $part->front_img) : asset('images/land1.jpg') }}" loading="lazy" alt="{{ $part->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
-                        </a>
-                        <div class="space-y-2 p-4">
-                            <h3 class="font-display text-base font-semibold text-white">
-                                <a href="{{ route('sparepart', $part->id) }}" class="hover:text-amber-200">{{ $part->make }} · {{ $part->item_name }}</a>
-                            </h3>
+                    <article class="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
+                        <a href="{{ route('sparepart', $part->id) }}" class="absolute inset-0 z-10 rounded-2xl" aria-label="Open {{ $part->make }} {{ $part->item_name }}"></a>
+                        <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+                            <img src="{{ $part->front_img ? asset('storage/photos/' . $part->front_img) : asset('images/land1.jpg') }}" loading="lazy" alt="{{ $part->item_name }}" class="aspect-[16/11] w-full object-contain p-3 transition duration-500 group-hover:scale-[1.02]">
+                        </div>
+                        <div class="relative z-20 space-y-2 p-4">
+                            <h3 class="line-clamp-2 font-display text-sm font-semibold text-white">{{ $part->make }} · {{ $part->item_name }}</h3>
+                            @if(!empty($part->category))
+                                <p class="text-xs text-amber-200">{{ $part->category }}</p>
+                            @endif
                             <p class="text-xs text-slate-400">{{ $part->condition }} · {{ $part->location }}</p>
                             <span class="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200">{{ format_currency($part->price) }}</span>
                         </div>
@@ -107,28 +135,6 @@
             <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 text-sm text-slate-400">
                 No nearby parts detected yet. Expand your search to access more inventory.
             </div>
-        @endif
-    </section>
-
-    <section class="grid gap-4 sm:grid-cols-3">
-        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Live Listings</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($latestVehicles ?? collect())->count() }}</p></article>
-        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Featured Cars</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($featuredVehicles ?? collect())->count() }}</p></article>
-        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5"><p class="text-xs uppercase tracking-[0.2em] text-slate-400">Upcoming Events</p><p class="mt-2 font-display text-3xl font-bold text-white">{{ ($carevents ?? collect())->count() }}</p></article>
-    </section>
-
-    <section class="space-y-4">
-        <div class="flex items-center justify-between">
-            <h2 class="font-display text-2xl font-semibold text-white">Trending Ads</h2>
-            <a href="{{ route('marketplace.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">View all</a>
-        </div>
-        @if(($featuredVehicles ?? collect())->count())
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                @foreach($featuredVehicles->take(6) as $vehicle)
-                    @include('livewire.partials.marketplace-card', ['vehicle' => $vehicle, 'badge' => 'Featured'])
-                @endforeach
-            </div>
-        @else
-            <div class="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-sm text-slate-400">No featured listings yet.</div>
         @endif
     </section>
 
@@ -147,20 +153,22 @@
 
     <section class="space-y-4">
         <div class="flex items-center justify-between">
-            <h2 class="font-display text-2xl font-semibold text-white">Spare Parts</h2>
-            <a href="{{ route('spareparts') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">See all parts</a>
+        <h2 class="font-display text-2xl font-semibold text-white">Spare Parts</h2>
+        <a href="{{ route('spareparts') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">See all parts</a>
         </div>
         @if(($latestSpareParts ?? collect())->count())
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 @foreach($latestSpareParts as $sparePart)
-                    <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
-                        <a href="{{ route('sparepart', $sparePart->id) }}">
-                            <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
-                        </a>
-                        <div class="space-y-2 p-4">
-                            <h3 class="font-display text-lg font-semibold text-white">
-                                <a href="{{ route('sparepart', $sparePart->id) }}" class="hover:text-amber-200">{{ $sparePart->make }} - {{ $sparePart->item_name }}</a>
-                            </h3>
+                    <article class="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
+                        <a href="{{ route('sparepart', $sparePart->id) }}" class="absolute inset-0 z-10 rounded-2xl" aria-label="Open {{ $sparePart->make }} {{ $sparePart->item_name }}"></a>
+                        <div class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+                            <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[16/11] w-full object-contain p-3 transition duration-500 group-hover:scale-[1.02]">
+                        </div>
+                        <div class="relative z-20 space-y-2 p-4">
+                            <h3 class="line-clamp-2 font-display text-sm font-semibold text-white">{{ $sparePart->make }} - {{ $sparePart->item_name }}</h3>
+                            @if(!empty($sparePart->category))
+                                <p class="text-xs text-amber-200">{{ $sparePart->category }}</p>
+                            @endif
                             <p class="text-xs text-slate-400">{{ $sparePart->condition }} · {{ $sparePart->location }}</p>
                             <span class="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-2.5 py-1 text-xs font-semibold text-amber-200">Ksh {{ number_format((float) $sparePart->price) }}</span>
                         </div>
