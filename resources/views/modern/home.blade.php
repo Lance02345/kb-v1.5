@@ -50,7 +50,7 @@
             <a href="{{ route('marketplace.index') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">View all</a>
         </div>
         @if(($featuredVehicles ?? collect())->count())
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 @foreach($featuredVehicles->take(6) as $vehicle)
                     @include('livewire.partials.marketplace-card', ['vehicle' => $vehicle, 'badge' => 'Featured'])
                 @endforeach
@@ -113,7 +113,7 @@
         </div>
 
         @if($nearbyParts->count())
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 @foreach($nearbyParts as $part)
                     <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/10 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
                         <a href="{{ route('sparepart', $part->id) }}">
@@ -139,7 +139,7 @@
     <section class="space-y-4">
         <h2 class="font-display text-2xl font-semibold text-white">Latest Arrivals</h2>
         @if(($latestVehicles ?? collect())->count())
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 @foreach($latestVehicles->take(6) as $vehicle)
                     @include('livewire.partials.marketplace-card', ['vehicle' => $vehicle, 'badge' => 'Live'])
                 @endforeach
@@ -213,7 +213,7 @@
             <a href="{{ route('carevent') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">See all events</a>
         </div>
         @if(($carevents ?? collect())->count())
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 @foreach($carevents as $event)
                     <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15">
                         <a href="{{ route('events.show', ['id' => $event->id]) }}" class="block">

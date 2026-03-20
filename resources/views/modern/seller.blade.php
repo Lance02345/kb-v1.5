@@ -78,7 +78,7 @@
         </div>
 
         @if($sellerVehicleListings->count())
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 @foreach($sellerVehicleListings as $vehicle)
                     @php
                         $listing = $vehicle->listing;
