@@ -87,10 +87,10 @@
             <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-950/60 p-3">
                 <div>
                     <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Mobile Layout</p>
-                    <p class="mt-1 text-xs text-slate-500">Switch between 1, 2, or 3 cars per row on smaller screens.</p>
+                    <p class="mt-1 text-xs text-slate-500">Switch between 1 or 2 cars per row on smaller screens.</p>
                 </div>
                 <div class="inline-flex rounded-full border border-slate-700 bg-slate-900 p-1">
-                    @foreach([1, 2, 3] as $columns)
+                    @foreach([1, 2] as $columns)
                         <button
                             type="button"
                             wire:click="setMobileColumns({{ $columns }})"

@@ -141,7 +141,7 @@ class LandingVehicleBrowser extends Component
     {
         $columns = (int) $columns;
 
-        if (!in_array($columns, [1, 2, 3], true)) {
+        if (!in_array($columns, [1, 2], true)) {
             return 2;
         }
 
