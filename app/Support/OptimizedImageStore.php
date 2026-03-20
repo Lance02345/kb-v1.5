@@ -31,6 +31,19 @@ class OptimizedImageStore
 
         Storage::disk('public')->makeDirectory($directory);
 
+        $inputPath = $image->getRealPath() ?: $image->path();
+        $memoryGuard = $this->canSafelyDecode($inputPath);
+
+        if (!$memoryGuard['allowed']) {
+            $originalExtension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
+            $fallbackFileName = $baseName . '.' . $originalExtension;
+            $fallbackRelativePath = $this->joinPath($directory, $fallbackFileName);
+
+            $image->storeAs($directory, $fallbackFileName, 'public');
+
+            return $fallbackRelativePath;
+        }
+
         try {
             $img = Image::make($image)->orientate();
             $img->resize(self::MAX_DIMENSION, self::MAX_DIMENSION, function ($constraint) {
@@ -79,6 +92,16 @@ class OptimizedImageStore
 
         if (!in_array($extension, self::SUPPORTED_EXISTING_EXTENSIONS, true)) {
             return ['status' => 'skipped', 'reason' => 'unsupported_extension'];
+        }
+
+        $memoryGuard = $this->canSafelyDecode($absolutePath);
+        if (!$memoryGuard['allowed']) {
+            return [
+                'status' => 'skipped',
+                'reason' => 'memory_guard',
+                'required_bytes' => $memoryGuard['required_bytes'] ?? null,
+                'available_bytes' => $memoryGuard['available_bytes'] ?? null,
+            ];
         }
 
         $originalSize = @filesize($absolutePath) ?: 0;
@@ -157,5 +180,72 @@ class OptimizedImageStore
     private function joinPath(string $directory, string $fileName): string
     {
         return $directory === '' ? $fileName : $directory . '/' . $fileName;
+    }
+
+    private function canSafelyDecode(?string $path): array
+    {
+        if (!$path || !is_file($path)) {
+            return ['allowed' => false, 'reason' => 'file_not_found'];
+        }
+
+        $info = @getimagesize($path);
+        if ($info === false) {
+            return ['allowed' => false, 'reason' => 'unreadable_image'];
+        }
+
+        $width = (int) ($info[0] ?? 0);
+        $height = (int) ($info[1] ?? 0);
+        $bits = (int) ($info['bits'] ?? 8);
+        $channels = (int) ($info['channels'] ?? 4);
+
+        if ($width <= 0 || $height <= 0) {
+            return ['allowed' => false, 'reason' => 'invalid_dimensions'];
+        }
+
+        // Conservative estimate for GD decode + resize overhead.
+        $requiredBytes = (int) ceil(($width * $height * max($bits, 8) * max($channels, 3) / 8) * 5);
+        $memoryLimit = $this->parseIniBytes((string) ini_get('memory_limit'));
+        $currentUsage = memory_get_usage(true);
+
+        if ($memoryLimit > 0) {
+            $availableBytes = max(0, $memoryLimit - $currentUsage);
+            // Keep a safety buffer so shared hosting does not hit the ceiling.
+            $safeBudget = (int) floor($availableBytes * 0.7);
+
+            if ($requiredBytes > $safeBudget) {
+                return [
+                    'allowed' => false,
+                    'reason' => 'memory_guard',
+                    'required_bytes' => $requiredBytes,
+                    'available_bytes' => $safeBudget,
+                ];
+            }
+
+            return [
+                'allowed' => true,
+                'required_bytes' => $requiredBytes,
+                'available_bytes' => $safeBudget,
+            ];
+        }
+
+        return ['allowed' => true, 'required_bytes' => $requiredBytes, 'available_bytes' => null];
+    }
+
+    private function parseIniBytes(string $value): int
+    {
+        $value = trim($value);
+        if ($value === '' || $value === '-1') {
+            return -1;
+        }
+
+        $unit = strtolower(substr($value, -1));
+        $number = (float) $value;
+
+        return match ($unit) {
+            'g' => (int) round($number * 1024 * 1024 * 1024),
+            'm' => (int) round($number * 1024 * 1024),
+            'k' => (int) round($number * 1024),
+            default => (int) round($number),
+        };
     }
 }
