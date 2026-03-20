@@ -155,7 +155,7 @@
         <a href="{{ route('spareparts') }}" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">See all parts</a>
         </div>
         @if(($latestSpareParts ?? collect())->count())
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 @foreach($latestSpareParts as $sparePart)
                     <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
                         <a href="{{ route('sparepart', $sparePart->id) }}">
