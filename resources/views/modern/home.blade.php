@@ -183,10 +183,10 @@
         </div>
         @if(($latestGarages ?? collect())->count())
             <div class="relative">
-                <button type="button" data-garage-carousel-prev class="absolute left-0 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-slate-600 bg-slate-950/80 px-3 py-2 text-xs font-semibold text-white shadow-lg backdrop-blur md:block">&larr;</button>
+                <button type="button" data-garage-carousel-prev class="absolute left-2 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-slate-600 bg-slate-950/80 px-3 py-2 text-xs font-semibold text-white shadow-lg backdrop-blur md:block">&larr;</button>
                 <div id="home-garage-carousel" class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                     @foreach($latestGarages as $garage)
-                        <article class="group min-w-[280px] snap-start overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40 sm:min-w-[320px]">
+                        <article class="group w-[280px] flex-none snap-start overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40 sm:w-[320px]">
                             <a href="{{ route('garage.show', $garage->id) }}" class="block">
                                 <img src="{{ !empty($garage->front_img) ? asset('storage/' . ltrim($garage->front_img, '/')) : asset('images/land1.jpg') }}" alt="{{ $garage->garage_title }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
                             </a>
@@ -200,7 +200,7 @@
                         </article>
                     @endforeach
                 </div>
-                <button type="button" data-garage-carousel-next class="absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-slate-600 bg-slate-950/80 px-3 py-2 text-xs font-semibold text-white shadow-lg backdrop-blur md:block">&rarr;</button>
+                <button type="button" data-garage-carousel-next class="absolute right-2 top-1/2 z-10 hidden -translate-y-1/2 rounded-full border border-slate-600 bg-slate-950/80 px-3 py-2 text-xs font-semibold text-white shadow-lg backdrop-blur md:block">&rarr;</button>
             </div>
         @else
             <div class="rounded-2xl border border-slate-800 bg-slate-900 p-8 text-sm text-slate-400">No garages yet.</div>
