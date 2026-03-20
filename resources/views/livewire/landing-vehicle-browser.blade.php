@@ -1,4 +1,22 @@
 <div class="space-y-6">
+    <style>
+        .kb-mobile-grid {
+            grid-template-columns: repeat(var(--kb-mobile-columns, 1), minmax(0, 1fr));
+        }
+
+        @media (min-width: 640px) {
+            .kb-mobile-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .kb-mobile-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+    </style>
+
     <section class="rounded-2xl border border-slate-800/80 bg-slate-900/80 shadow-2xl shadow-black/20 backdrop-blur">
         <div class="flex flex-col gap-4 border-b border-slate-800 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
             <div class="flex items-start gap-3">
@@ -65,6 +83,25 @@
                 </button>
                 <span wire:loading.inline-flex class="text-xs text-slate-400">Updating results...</span>
             </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-950/60 p-3">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Mobile Layout</p>
+                    <p class="mt-1 text-xs text-slate-500">Switch between 1, 2, or 3 cars per row on smaller screens.</p>
+                </div>
+                <div class="inline-flex rounded-full border border-slate-700 bg-slate-900 p-1">
+                    @foreach([1, 2, 3] as $columns)
+                        <button
+                            type="button"
+                            wire:click="setMobileColumns({{ $columns }})"
+                            class="rounded-full px-3 py-1.5 text-xs font-semibold transition {{ $mobileColumns === $columns ? 'bg-amber-300 text-slate-950' : 'text-slate-300 hover:text-white' }}"
+                            aria-pressed="{{ $mobileColumns === $columns ? 'true' : 'false' }}"
+                        >
+                            {{ $columns }} {{ $columns === 1 ? 'card' : 'cards' }}
+                        </button>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </section>
 
@@ -72,7 +109,7 @@
 
     <section wire:loading.remove>
         @if($vehicles->count())
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div class="kb-mobile-grid grid gap-4" style="--kb-mobile-columns: {{ $mobileColumns }};">
                 @foreach($vehicles as $vehicle)
                     @include('livewire.partials.marketplace-card', ['vehicle' => $vehicle, 'badge' => 'Live'])
                 @endforeach
@@ -86,7 +123,7 @@
     </section>
 
     <section wire:loading>
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div class="kb-mobile-grid grid gap-4" style="--kb-mobile-columns: {{ $mobileColumns }};">
             @for($i = 0; $i < 6; $i++)
                 <div class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
                     <div class="aspect-[4/3] animate-pulse bg-slate-800"></div>

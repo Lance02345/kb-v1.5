@@ -116,6 +116,7 @@ Route::get('/garage/{garage}', [GarageController::class, 'show'])->name('garage.
 Route::get('/sparepartssearch', [SparePartController::class, 'spare_parts_search'])->name('spare_parts_search');
 Route::get('/spareparts', [SparePartController::class, 'showspareparts'])->name('spareparts');
 Route::get('/sparepart/{id}', [SparePartController::class, 'sparepart'])->name('sparepart');
+Route::get('/seller/{user}', [PagesController::class, 'seller'])->name('seller.show');
 
 
 

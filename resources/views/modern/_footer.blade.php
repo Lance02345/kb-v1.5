@@ -13,7 +13,6 @@
                 <li><a href="{{ route('marketplace.index') }}" class="hover:text-white">Browse Vehicles</a></li>
                 <li><a href="{{ route('spareparts') }}" class="hover:text-white">Vehicle Parts</a></li>
                 <li><a href="{{ route('carevent') }}" class="hover:text-white">Car Events</a></li>
-                <li><a href="{{ route('carhirelist') }}" class="hover:text-white">Car Hire</a></li>
             </ul>
         </div>
 

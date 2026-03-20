@@ -313,6 +313,7 @@ Public function vehicles_list(){
     public function vehicle(Listing $listing, Vehicle $vehicle){
         $vehicle->increment('views');
         $vehicle->save();
+        $listing->loadMissing('user');
         $arr['listing'] = $listing;
         $arr['vehicle'] = $vehicle;
         $arr['vehiclephotos'] = Vehicle_photo::all();
@@ -332,31 +333,40 @@ Public function vehicles_list(){
 
         return view ('pages.vehicle')->with($arr);
     }
+
+    public function seller(User $user)
+    {
+        $sellerVehicleListings = Vehicle::query()
+            ->with(['carmodel.carmake', 'listing.city', 'listing.category', 'listing.user'])
+            ->whereHas('listing', function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->where('category_id', 2)
+                    ->whereIn('ads_status', ['Approved', 'Active']);
+            })
+            ->latest('id')
+            ->get();
+
+        $sellerSpareParts = SparePart::query()
+            ->with('user')
+            ->where('user_id', $user->id)
+            ->latest('id')
+            ->get();
+
+        return view('modern.seller', [
+            'seller' => $user,
+            'sellerVehicleListings' => $sellerVehicleListings,
+            'sellerSpareParts' => $sellerSpareParts,
+        ]);
+    }
+
 Public function carhire(){
-    $arr['cities'] = City::orderBy('city')->get();
-    $arr['vehicles'] = Vehicle::all();
-    $arr['makes'] = Carmake::orderBy('make')->get();
-    $arr['models'] = Carmodel::orderBy('model')->get();
-    $arr['listings'] = Listing::where('category_id',4)->take(20)->get(); 
-    return view ('pages.carhire')->with($arr);
+    return redirect()->route('marketplace.index')->with('info', 'Car hire is temporarily unavailable.');
 }
 Public function carhirelist() {
-    $arr['cities'] = City::orderBy('city')->get();
-    $arr['vehicles'] = Vehicle::all();
-    $arr['makes'] = Carmake::orderBy('make')->get();
-    $arr['models'] = Carmodel::orderBy('model')->get();
-    $arr['listings'] = Listing::where('category_id',4)->take(20)->get(); 
-    return view ('pages.carhirelist')->with($arr);
+    return redirect()->route('marketplace.index')->with('info', 'Car hire is temporarily unavailable.');
 }
 Public function showcarhire(Listing $listing, Vehicle $vehicle) {
-    $arr['categories'] = Category::all();
-    $arr['cities'] = City::orderBy('city')->get();
-    $arr['makes'] = Carmake::orderBy('make')->get();
-    $arr['models'] = Carmodel::orderBy('model')->get();
-    $arr['listing'] = $listing;
-    $arr['vehicle'] = $vehicle;
-
-    return view('pages.showcarhire')->with($arr);
+    return redirect()->route('marketplace.index')->with('info', 'Car hire is temporarily unavailable.');
 }
 
 Public function post_ad_form(){

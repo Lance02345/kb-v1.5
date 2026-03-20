@@ -191,6 +191,7 @@ class SparePartController extends Controller
     public function showspareparts(SparePart $spareParts, Listing $listing)
     {
         $spareParts = SparePart::query()
+            ->with('user')
             ->latest('id')
             ->paginate(12);
 
@@ -213,6 +214,7 @@ class SparePartController extends Controller
         $sparePart = SparePart::with('user')->findOrFail($id);
         $userWhoPosted = $sparePart->user;
         $similarParts = SparePart::query()
+            ->with('user')
             ->where('id', '!=', $sparePart->id)
             ->when($sparePart->make || $sparePart->category, function ($query) use ($sparePart) {
                 $query->where(function ($inner) use ($sparePart) {
@@ -285,7 +287,7 @@ class SparePartController extends Controller
             $query->where('price', '<=', $request->input('max_price'));
         }
 
-        $spareParts = $query->latest('id')->paginate(12)->withQueryString();
+        $spareParts = $query->with('user')->latest('id')->paginate(12)->withQueryString();
         $categories = SparePart::CATEGORIES;
         $categoryCounts = SparePart::query()
             ->selectRaw('category, COUNT(*) as total')

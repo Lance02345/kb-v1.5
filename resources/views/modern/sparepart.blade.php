@@ -18,6 +18,9 @@
         $sparePart->opt_img2 ?? null,
         $sparePart->opt_img3 ?? null,
     ]));
+    $sellerPhone = $userWhoPosted->phone_number ?? null;
+    $sellerWhatsapp = $sellerPhone ? preg_replace('/\D+/', '', $sellerPhone) : null;
+    $sellerProfileUrl = $userWhoPosted ? route('seller.show', $userWhoPosted->id) : null;
 @endphp
 
 <main class="w-full space-y-6 px-4 py-8 sm:px-6 lg:px-10">
@@ -88,10 +91,22 @@
                 </div>
             </div>
 
-            @if($userWhoPosted && $userWhoPosted->phone_number)
-                <a href="tel:{{ $userWhoPosted->phone_number }}" class="inline-flex w-full justify-center rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Call Seller</a>
-                <a href="https://wa.me/{{ $userWhoPosted->phone_number }}" class="inline-flex w-full justify-center rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20">WhatsApp</a>
+            @if($sellerProfileUrl)
+                <a href="{{ $sellerProfileUrl }}" class="inline-flex w-full justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-slate-500 hover:text-white">View Seller Profile</a>
             @endif
+
+            <div class="space-y-2 rounded-2xl border border-slate-800 bg-slate-950/50 p-4">
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Contact Seller</p>
+                @if($sellerPhone)
+                    <a href="tel:{{ $sellerPhone }}" class="inline-flex w-full justify-center rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Call Seller</a>
+                @endif
+                @if($sellerWhatsapp)
+                    <a href="https://wa.me/{{ $sellerWhatsapp }}?text={{ rawurlencode('Hi, I am interested in the ' . $sparePart->make . ' ' . $sparePart->item_name . ' listing on Kingsbridge Motors: ' . route('sparepart', $sparePart->id)) }}" target="_blank" rel="noopener" class="inline-flex w-full justify-center rounded-lg border border-emerald-400/40 bg-emerald-500/10 px-4 py-2 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20">WhatsApp Seller</a>
+                @endif
+                @if(!$sellerPhone)
+                    <p class="text-sm text-slate-400">Seller contact details have not been added yet.</p>
+                @endif
+            </div>
         </aside>
     </section>
     <section class="space-y-4 px-4 py-6 sm:px-6 lg:px-10">

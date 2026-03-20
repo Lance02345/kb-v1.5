@@ -20,17 +20,11 @@
         </div>
     </section>
 
-    <section class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+    <section class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
             <h2 class="font-display text-xl font-semibold text-white">Vehicle Sale</h2>
             <p class="mt-2 text-sm text-slate-300">Post a car for sale with photos, specs, and pricing.</p>
             <a href="{{ route('user.create_vehiclesale') }}" class="mt-4 inline-flex rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Choose</a>
-        </article>
-
-        <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
-            <h2 class="font-display text-xl font-semibold text-white">Car Hire</h2>
-            <p class="mt-2 text-sm text-slate-300">List vehicles available for short-term or long-term hire.</p>
-            <a href="{{ route('user.create_carhire') }}" class="mt-4 inline-flex rounded-lg bg-amber-300 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-slate-900 hover:bg-amber-200">Choose</a>
         </article>
 
         <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">

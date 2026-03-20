@@ -58,17 +58,28 @@
     @if($spareParts->count())
         <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             @foreach($spareParts as $sparePart)
-                <article class="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
-                    <a href="{{ route('sparepart', $sparePart->id) }}">
-                        <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
-                    </a>
-                    <div class="space-y-2 p-4">
+                @php
+                    $seller = $sparePart->user;
+                    $sellerProfileUrl = $seller ? route('seller.show', $seller->id) : null;
+                @endphp
+                <article class="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-amber-300/40">
+                    <a href="{{ route('sparepart', $sparePart->id) }}" class="absolute inset-0 z-10 rounded-2xl" aria-label="Open {{ $sparePart->make }} {{ $sparePart->item_name }} listing"></a>
+                    <img src="{{ $sparePart->front_img ? asset('storage/photos/' . $sparePart->front_img) : asset('images/land1.jpg') }}" alt="{{ $sparePart->item_name }}" class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105">
+                    <div class="relative z-20 space-y-2 p-4">
                         <h3 class="font-display truncate text-base font-semibold text-white">{{ $sparePart->make }} - {{ $sparePart->item_name }}</h3>
                         @if(!empty($sparePart->category))
                             <p class="text-xs text-amber-200">{{ $sparePart->category }}</p>
                         @endif
                         <p class="text-xs text-slate-400">{{ $sparePart->location }}</p>
                         <p class="text-xs text-slate-400">Condition: {{ $sparePart->condition }}</p>
+                        @if($sellerProfileUrl)
+                            <p class="text-xs text-slate-400">
+                                Seller:
+                                <a href="{{ $sellerProfileUrl }}" class="font-medium text-slate-200 hover:text-amber-200">
+                                    {{ $seller->name ?? 'Seller' }}
+                                </a>
+                            </p>
+                        @endif
                         <div class="pt-1">
                             <span class="font-display text-lg font-bold text-amber-300">Ksh {{ number_format((float) $sparePart->price) }}</span>
                         </div>

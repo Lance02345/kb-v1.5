@@ -21,6 +21,10 @@
     ]));
 
     $title = trim(($vehicle->carmodel?->carmake?->make ?? '') . ' ' . ($vehicle->carmodel?->model ?? '') . ' ' . ($vehicle->year_of_build ?? ''));
+    $seller = $listing->user;
+    $sellerPhone = $seller->phone_number ?? null;
+    $sellerWhatsapp = $sellerPhone ? preg_replace('/\D+/', '', $sellerPhone) : null;
+    $sellerProfileUrl = $seller ? route('seller.show', $seller->id) : null;
 @endphp
 
 <main class="w-full space-y-8 px-4 py-8 sm:px-6 lg:px-10">
@@ -137,17 +141,30 @@
             <article class="rounded-2xl border border-slate-800 bg-slate-900 p-5">
                 <h2 class="font-display text-xl font-semibold text-white">Seller Info</h2>
                 <div class="mt-4 flex items-center gap-3">
-                    <img src="{{ $listing->user && $listing->user->avatar ? asset('storage/photos/' . $listing->user->avatar) : asset('images/default-avatar.png') }}" alt="Seller avatar" class="h-12 w-12 rounded-full object-cover">
+                    <img src="{{ $seller && $seller->avatar ? asset('storage/photos/' . $seller->avatar) : asset('images/default-avatar.png') }}" alt="Seller avatar" class="h-12 w-12 rounded-full object-cover">
                     <div>
-                        <p class="text-sm font-semibold text-white">{{ $listing->user->name ?? 'Seller' }}</p>
-                        <p class="text-xs text-slate-400">Member {{ optional($listing->user->created_at)->diffForHumans() }}</p>
+                        <p class="text-sm font-semibold text-white">{{ $seller->name ?? 'Seller' }}</p>
+                        <p class="text-xs text-slate-400">Member {{ optional($seller->created_at)->diffForHumans() }}</p>
                     </div>
                 </div>
 
+                @if($sellerProfileUrl)
+                    <a href="{{ $sellerProfileUrl }}" class="mt-4 inline-flex w-full justify-center rounded-lg border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-slate-500 hover:text-white">
+                        View Seller Profile
+                    </a>
+                @endif
+
                 <div class="mt-4 space-y-2">
                     @auth
-                        <a href="tel:{{ $listing->user->phone_number ?? '' }}" class="inline-flex w-full justify-center rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Call Seller</a>
-                        <a href="https://wa.me/{{ $listing->user->phone_number ?? '' }}?text={{ rawurlencode('Hi, I am interested in ' . $title . ' ' . route('vehicle', [$listing->id, $vehicle->id])) }}" target="_blank" class="inline-flex w-full justify-center rounded-lg border border-slate-600 px-4 py-2 text-sm font-semibold text-white hover:border-slate-400">WhatsApp Seller</a>
+                        @if($sellerPhone)
+                            <a href="tel:{{ $sellerPhone }}" class="inline-flex w-full justify-center rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Call Seller</a>
+                        @endif
+                        @if($sellerWhatsapp)
+                            <a href="https://wa.me/{{ $sellerWhatsapp }}?text={{ rawurlencode('Hi, I am interested in ' . $title . ' ' . route('vehicle', [$listing->id, $vehicle->id])) }}" target="_blank" rel="noopener" class="inline-flex w-full justify-center rounded-lg border border-slate-600 px-4 py-2 text-sm font-semibold text-white hover:border-slate-400">WhatsApp Seller</a>
+                        @endif
+                        @if(!$sellerPhone)
+                            <p class="rounded-lg border border-slate-800 bg-slate-950/60 px-4 py-3 text-center text-xs text-slate-400">Seller contact details have not been added yet.</p>
+                        @endif
                     @else
                         <a href="{{ route('login') }}" class="inline-flex w-full justify-center rounded-lg bg-amber-300 px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-amber-200">Login to Contact</a>
                     @endauth

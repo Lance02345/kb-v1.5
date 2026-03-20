@@ -21,6 +21,7 @@ class LandingVehicleBrowser extends Component
     public $minPrice = '';
     public $maxPrice = '';
     public $search = '';
+    public int $mobileColumns = 2;
 
     protected $queryString = [
         'make' => ['except' => ''],
@@ -29,7 +30,13 @@ class LandingVehicleBrowser extends Component
         'minPrice' => ['except' => ''],
         'maxPrice' => ['except' => ''],
         'search' => ['except' => ''],
+        'mobileColumns' => ['except' => 2],
     ];
+
+    public function mount(): void
+    {
+        $this->mobileColumns = $this->normalizeMobileColumns($this->mobileColumns);
+    }
 
     public function updatedMake(): void
     {
@@ -73,6 +80,11 @@ class LandingVehicleBrowser extends Component
         $this->resetPage();
     }
 
+    public function setMobileColumns(int $columns): void
+    {
+        $this->mobileColumns = $this->normalizeMobileColumns($columns);
+    }
+
     public function render()
     {
         $models = Carmodel::query()
@@ -84,7 +96,7 @@ class LandingVehicleBrowser extends Component
 
         $vehicles = Vehicle::query()
             ->select('vehicles.*')
-            ->with(['carmodel.carmake', 'listing.category', 'listing.city', 'vehiclephotos'])
+            ->with(['carmodel.carmake', 'listing.category', 'listing.city', 'listing.user', 'vehiclephotos'])
             ->join('listings', 'listings.id', '=', 'vehicles.listing_id')
             ->whereIn('listings.ads_status', ['Approved', 'Active'])
             ->when($this->city !== '', fn ($q) => $q->where('listings.city_id', $this->city))
@@ -123,5 +135,16 @@ class LandingVehicleBrowser extends Component
             'cities' => City::query()->orderBy('city')->get(),
             'models' => $models,
         ]);
+    }
+
+    private function normalizeMobileColumns(int|string $columns): int
+    {
+        $columns = (int) $columns;
+
+        if (!in_array($columns, [1, 2, 3], true)) {
+            return 2;
+        }
+
+        return $columns;
     }
 }

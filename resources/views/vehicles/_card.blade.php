@@ -6,9 +6,11 @@
     $category = optional(optional($vehicle->listing)->category)->category_name ?? ($vehicle->vehicle_type ?: 'Vehicle');
     $badge = optional($vehicle->listing)->ads_featured ? 'Featured' : 'Live';
     $image = $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=800&h=600&fit=crop';
+    $href = $vehicle->listing ? route('vehicle', [$vehicle->listing->id, $vehicle->id]) : '#';
 @endphp
 
-<div class="group rounded-lg overflow-hidden bg-[#161a22] shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-800">
+<div class="group relative rounded-lg overflow-hidden bg-[#161a22] shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-800">
+    <a href="{{ $href }}" class="absolute inset-0 z-10 rounded-lg" aria-label="Open {{ $make }} {{ $model }} {{ $year }} listing"></a>
     <div class="relative overflow-hidden aspect-[4/3]">
         <img src="{{ $image }}" alt="{{ $make }} {{ $model }}"
              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
@@ -16,7 +18,7 @@
             {{ $badge }}
         </span>
     </div>
-    <div class="p-4 space-y-3">
+    <div class="relative z-20 p-4 space-y-3">
         <h3 class="font-semibold text-gray-100 text-base leading-tight truncate" style="font-family: 'Space Grotesk', sans-serif;">
             {{ $make }} {{ $model }} {{ $year }}
         </h3>

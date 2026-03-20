@@ -183,7 +183,6 @@
             <li><a href="{{ route('spareparts') }}">Spare Parts</a></li>
             <li><a href="{{ route('garages.index') }}">Garages</a></li>
             <li><a href="{{ route('carevent') }}">Car Events</a></li>
-            <li><a href="{{ route('carhirelist') }}">Car Hire</a></li>
             <li><a href="{{ route('index') }}">Home</a></li>
           </ul>
         </div>

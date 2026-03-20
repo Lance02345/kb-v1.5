@@ -675,253 +675,33 @@ class ListingController extends Controller
     /* This where Carehire Logic is handled */
     public function index_carhire()
     {
-        $arr['listings'] = Listing::where('user_id', Auth::id())->where('category_id', 4)->get();
-        $arr['vehicles'] = Vehicle::all();
-        return view('user.index_carhire')->with($arr);
+        return redirect()->route('user.new_listing')->with('info', 'Car hire is temporarily unavailable.');
     }
 
     public function create_carhire()
     {
-        $arr['categories'] = Category::all();
-        $arr['cities'] = City::orderBy('city')->get();
-        $arr['makes'] = Carmake::orderBy('make')->get();
-        $arr['models'] = Carmodel::orderBy('model')->get();
-        $arr['packages'] = Package::where('package_featured', null)->orderBy('id', 'desc')->get();
-        return view('user.create_carhire')->with($arr);
+        return redirect()->route('user.new_listing')->with('info', 'Car hire is temporarily unavailable.');
     }
 
     public function store_carhire(Request $request, Listing $listing, Vehicle $vehicle)
     {
-        DB::beginTransaction();
-
-        try {
-            $this->validate($request, [
-                'category_id' => 'required',
-                'city_id' => 'required',
-                'model_id' => 'required',
-                'year_of_build' => 'required',
-                'condition' => 'required',
-                'mileage' => 'required',
-                'transmission' => 'required',
-                'fuel_type' => 'required',
-                'exchange' => 'required',
-                'description' => 'required',
-                'body_type' => 'required',
-                'package_id' => 'required',
-                'vehicle_type' => 'required',
-                'color' => 'required',
-                'front_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'back_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'right_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'left_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'interiorf_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'interiorb_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'opt_img1' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'opt_img2' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'opt_img3' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'pickup_date' => 'nullable|required|date',
-                'return_date' => 'nullable|required|date|after:pickup_date',
-            ]);
-
-            $listing->fill($request->only([
-                'category_id',
-                'city_id',
-                'package_id',
-                'user_id',
-                'ads_status'
-            ]))->save();
-
-            $currentId = $listing->id;
-            $imageFields = ['front_img', 'back_img', 'right_img', 'left_img', 'interiorf_img', 'interiorb_img', 'opt_img1', 'opt_img2', 'opt_img3'];
-
-            foreach ($imageFields as $field) {
-                if ($request->hasFile($field)) {
-                    $vehicle->{$field} = $this->storeProcessedVehicleImage($request->file($field), $field);
-                }
-            }
-
-            $vehicle->fill($request->only([
-                'model_id',
-                'year_of_build',
-                'condition',
-                'mileage',
-                'transmission',
-                'fuel_type',
-                'exchange',
-                'description',
-                'body_type',
-                'interior_type',
-                'engine_size',
-                'vehicle_type',
-                'color',
-                'rent_days',
-                'price_per_day',
-                'pickup_date',
-                'return_date'
-            ]));
-
-            $vehicle->listing_id = $currentId;
-            $vehicle->save();
-            DB::commit();
-            $listing->load('user');
-            JourneyMailer::sendCarHireSubmitted($listing, $vehicle);
-
-            return redirect()->route('user.invoice', [$listing->id, $vehicle->id])->with('success', 'Added');
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            Log::error('store_carhire failed', [
-                'message' => $e->getMessage(),
-                'line' => $e->getLine(),
-                'file' => $e->getFile(),
-                'user_id' => Auth::id(),
-                'ip' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-            ]);
-
-            return back()
-                ->withInput()
-                ->withErrors(['submit' => 'We could not submit your listing. Please try again or use JPG/PNG if the issue persists.']);
-        }
+        return redirect()->route('user.new_listing')->with('info', 'Car hire is temporarily unavailable.');
     }
 
 
     public function edit_carhire(Listing $listing, Vehicle $vehicle)
     {
-        $selectedMakeId = optional($vehicle->carmodel)->make_id;
-
-        $arr['categories'] = Category::all();
-        $arr['cities'] = City::orderBy('city')->get();
-        $arr['makes'] = Carmake::orderBy('make')->get();
-        $arr['models'] = Carmodel::query()
-            ->when($selectedMakeId, fn ($query) => $query->where('make_id', $selectedMakeId))
-            ->orderBy('model')
-            ->get();
-        $arr['listing'] = $listing;
-        $arr['packages'] = Package::all();
-        $arr['vehicle'] = $vehicle;
-
-        return view('user.edit_carhire')->with($arr);
+        return redirect()->route('user.new_listing')->with('info', 'Car hire is temporarily unavailable.');
     }
 
     public function update_carhire(Request $request, Listing $listing, Vehicle $vehicle)
     {
-
-
-        $listing->city_id = $request->city;
-        $listing->update();
-
-        $currentId = $listing->id;
-
-
-        // Handle file uploads with orientation fix and watermark fallback.
-        if ($request->hasFile('front_img')) {
-            $front_imgStore = $this->storeProcessedVehicleImage($request->file('front_img'), 'front_img');
-        }
-
-        if ($request->hasFile('back_img')) {
-            $back_imgStore = $this->storeProcessedVehicleImage($request->file('back_img'), 'back_img');
-        }
-
-        if ($request->hasFile('right_img')) {
-            $right_imgStore = $this->storeProcessedVehicleImage($request->file('right_img'), 'right_img');
-        }
-
-        if ($request->hasFile('left_img')) {
-            $left_imgStore = $this->storeProcessedVehicleImage($request->file('left_img'), 'left_img');
-        }
-
-        if ($request->hasFile('interiorf_img')) {
-            $interiorf_imgStore = $this->storeProcessedVehicleImage($request->file('interiorf_img'), 'interiorf_img');
-        }
-        // interior back image upload code
-        if ($request->hasFile('interiorb_img')) {
-            $interiorb_imgStore = $this->storeProcessedVehicleImage($request->file('interiorb_img'), 'interiorb_img');
-        }
-
-        if ($request->hasFile('opt_img1')) {
-            $opt_img1Store = $this->storeProcessedVehicleImage($request->file('opt_img1'), 'opt_img1');
-        } else {
-            $opt_img1Store = '';
-        }
-
-        if ($request->hasFile('opt_img2')) {
-            $opt_img2Store = $this->storeProcessedVehicleImage($request->file('opt_img2'), 'opt_img2');
-        } else {
-            $opt_img2Store = '';
-        }
-
-        if ($request->hasFile('opt_img3')) {
-            $opt_img3Store = $this->storeProcessedVehicleImage($request->file('opt_img3'), 'opt_img3');
-        } else {
-            $opt_img3Store = '';
-        }
-
-        $vehicle->listing_id = $currentId;
-        $vehicle->model_id = $request->model_id;
-        $vehicle->year_of_build = $request->year_of_build;
-        $vehicle->condition = $request->condition;
-        $vehicle->mileage = $request->mileage;
-        $vehicle->transmission = $request->transmission;
-        $vehicle->fuel_type = $request->fuel_type;
-        $vehicle->exchange = $request->exchange;
-        $vehicle->description = $request->description;
-        $vehicle->body_type = $request->body_type;
-        $vehicle->interior_type = $request->interior_type;
-        $vehicle->engine_size = $request->engine_size;
-        $vehicle->vehicle_type = $request->vehicle_type;
-        $vehicle->color = $request->color;
-        $vehicle->rent_days = $request->rent_days;
-        $vehicle->price_per_day = $request->price_per_day;
-        $vehicle->pickup_date = $request->pickup_date;
-        $vehicle->return_date = $request->return_date;
-
-
-        if ($request->hasFile('front_img')) {
-            $vehicle->front_img = $front_imgStore;
-        }
-        if ($request->hasFile('back_img')) {
-            $vehicle->back_img = $back_imgStore;
-        }
-        if ($request->hasFile('right_img')) {
-            $vehicle->right_img = $right_imgStore;
-        }
-        if ($request->hasFile('left_img')) {
-            $vehicle->left_img = $left_imgStore;
-        }
-        if ($request->hasFile('interiorf_img')) {
-            $vehicle->interiorf_img = $interiorf_imgStore;
-        }
-        if ($request->hasFile('interiorb_img')) {
-            $vehicle->interiorb_img = $interiorb_imgStore;
-        }
-        if ($request->hasFile('opt_img1')) {
-            $vehicle->opt_img1 = $opt_img1Store;
-        }
-        if ($request->hasFile('opt_img2')) {
-            $vehicle->opt_img2 = $opt_img2Store;
-        }
-        if ($request->hasFile('opt_img3')) {
-            $vehicle->opt_img3 = $opt_img3Store;
-        }
-
-        $vehicle->update();
-        $listing->load('user');
-        JourneyMailer::sendListingEdited($listing, $vehicle, 'car hire');
-
-        return redirect()->route('user.edit_carhire', [$listing->id, $vehicle->id])->with('success', 'Updated');
+        return redirect()->route('user.new_listing')->with('info', 'Car hire is temporarily unavailable.');
     }
 
     public function show_carhire(Listing $listing, Vehicle $vehicle)
     {
-        $arr['categories'] = Category::all();
-        $arr['cities'] = City::all();
-        $arr['makes'] = Carmake::all();
-        $arr['models'] = Carmodel::all();
-        $arr['listing'] = $listing;
-        $arr['vehicle'] = $vehicle;
-        $arr['vehiclephotos'] = Vehicle_photo::all();
-
-        return view('user.show_carhire')->with($arr);
+        return redirect()->route('user.new_listing')->with('info', 'Car hire is temporarily unavailable.');
     }
 
     // public function delete_carhire($listing, $vehicle)

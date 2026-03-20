@@ -8,6 +8,7 @@
     $image = $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : 'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=900&h=700&fit=crop';
     $href = $listing ? route('vehicle', [$listing->id, $vehicle->id]) : '#';
     $seller = optional($listing)->user;
+    $sellerProfileUrl = $seller ? route('seller.show', $seller->id) : null;
     $trustBadges = [];
     if ($seller?->isVerified) {
         $trustBadges[] = 'Verified seller';
@@ -23,17 +24,17 @@
 @endphp
 
 <article class="relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-lg shadow-black/15 group">
+    <a href="{{ $href }}" class="absolute inset-0 z-10 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300" aria-label="Open {{ $compareLabel }} listing"></a>
+
     <div class="relative overflow-hidden">
-        <a href="{{ $href }}" class="block">
-            <img src="{{ $image }}" alt="{{ $make }} {{ $model }}" loading="lazy" class="h-60 w-full object-cover transition duration-500 group-hover:scale-105">
-        </a>
+        <img src="{{ $image }}" alt="{{ $make }} {{ $model }}" loading="lazy" class="h-60 w-full object-cover transition duration-500 group-hover:scale-105">
         <span class="absolute left-3 top-3 rounded-full border border-emerald-300/30 bg-emerald-300/15 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-emerald-200">
             {{ $badge ?? 'Live' }}
         </span>
         <div class="absolute inset-0 pointer-events-none">
             <div class="absolute right-3 top-3 flex gap-2">
                 @auth
-                    <form action="{{ route('addtofavourites') }}" method="POST" class="pointer-events-auto">
+                    <form action="{{ route('addtofavourites') }}" method="POST" class="pointer-events-auto relative z-20">
                         @csrf
                         <input type="hidden" name="vehicle_id" value="{{ $vehicle->id }}">
                         <button type="submit" class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-950/80 text-rose-400 transition hover:bg-rose-400/20" aria-label="Save {{ $make }} {{ $model }} to favorites">
@@ -48,7 +49,7 @@
                         data-vehicle-label="{{ e($compareLabel) }}"
                         data-vehicle-url="{{ $href }}"
                         data-vehicle-image="{{ $image }}"
-                        class="pointer-events-auto rounded-full border border-slate-700 bg-slate-950/80 px-3 py-1.5 text-[11px] font-semibold text-slate-200 transition hover:border-amber-300 hover:text-white" aria-pressed="false">
+                        class="pointer-events-auto relative z-20 rounded-full border border-slate-700 bg-slate-950/80 px-3 py-1.5 text-[11px] font-semibold text-slate-200 transition hover:border-amber-300 hover:text-white" aria-pressed="false">
                     Compare
                 </button>
             </div>
@@ -63,11 +64,11 @@
         </div>
     @endif
 
-    <div class="space-y-3 p-4">
+    <div class="relative z-20 space-y-3 p-4">
         <div class="flex items-start justify-between gap-3">
-            <a href="{{ $href }}" class="flex-1">
+            <div class="flex-1">
                 <h3 class="font-display truncate text-base font-semibold text-white">{{ trim($make . ' ' . $model . ' ' . $year) }}</h3>
-            </a>
+            </div>
         </div>
 
         <div class="flex items-center gap-2 text-xs">
@@ -86,6 +87,15 @@
                 @foreach($trustBadges as $trust)
                     <span class="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-1 text-emerald-200">{{ $trust }}</span>
                 @endforeach
+            </div>
+        @endif
+
+        @if($sellerProfileUrl)
+            <div class="text-xs text-slate-400">
+                Seller:
+                <a href="{{ $sellerProfileUrl }}" class="font-medium text-slate-200 hover:text-amber-200">
+                    {{ $seller->name ?? 'Seller' }}
+                </a>
             </div>
         @endif
 

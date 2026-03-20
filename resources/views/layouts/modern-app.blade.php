@@ -162,6 +162,28 @@
     @livewireStyles
 </head>
 <body class="min-h-screen bg-[#0b1020] text-slate-100 antialiased {{ request()->boolean('legacy_ui') ? 'kb-modern' : '' }}">
+    @if(session('success') || session('info') || session('error') || session('warning') || $errors->any())
+        <div class="fixed inset-x-4 top-4 z-[70] space-y-2 sm:left-auto sm:right-4 sm:w-full sm:max-w-md">
+            @if(session('success'))
+                <div class="rounded-2xl border border-emerald-400/30 bg-emerald-500/15 px-4 py-3 text-sm text-emerald-100 shadow-2xl">{{ session('success') }}</div>
+            @endif
+            @if(session('info'))
+                <div class="rounded-2xl border border-sky-400/30 bg-sky-500/15 px-4 py-3 text-sm text-sky-100 shadow-2xl">{{ session('info') }}</div>
+            @endif
+            @if(session('warning'))
+                <div class="rounded-2xl border border-amber-400/30 bg-amber-500/15 px-4 py-3 text-sm text-amber-100 shadow-2xl">{{ session('warning') }}</div>
+            @endif
+            @if(session('error'))
+                <div class="rounded-2xl border border-rose-400/30 bg-rose-500/15 px-4 py-3 text-sm text-rose-100 shadow-2xl">{{ session('error') }}</div>
+            @endif
+            @if($errors->any())
+                <div class="rounded-2xl border border-rose-400/30 bg-rose-500/15 px-4 py-3 text-sm text-rose-100 shadow-2xl">
+                    {{ $errors->first() }}
+                </div>
+            @endif
+        </div>
+    @endif
+
     @yield('content')
     @include('modern._footer')
 
