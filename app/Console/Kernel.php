@@ -7,6 +7,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\SendJourneyReminders;
 use App\Console\Commands\NormalizeLocations;
 use App\Console\Commands\CheckSavedSearches;
+use App\Console\Commands\OptimizeStoredImages;
 
 class Kernel extends ConsoleKernel
 {
@@ -19,6 +20,7 @@ class Kernel extends ConsoleKernel
         SendJourneyReminders::class,
         NormalizeLocations::class,
         CheckSavedSearches::class,
+        OptimizeStoredImages::class,
     ];
 
     /**

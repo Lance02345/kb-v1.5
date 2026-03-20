@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Garage;
 use App\Support\JourneyMailer;
 use App\Support\ListingBilling;
+use App\Support\OptimizedImageStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
@@ -12,6 +13,10 @@ use Illuminate\Support\Facades\DB;
 
 class GarageController extends Controller
 {
+    public function __construct(private OptimizedImageStore $optimizedImageStore)
+    {
+    }
+
     public function index()
     {
         $garages = Garage::with('user')->latest('id')->paginate(12);
@@ -87,9 +92,6 @@ class GarageController extends Controller
 
     private function storeGarageImage(UploadedFile $image, string $fieldPrefix): string
     {
-        $extension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
-        $imageName = $fieldPrefix . '_' . time() . '_' . uniqid() . '.' . $extension;
-        $image->storeAs('garages', $imageName, 'public');
-        return 'garages/' . $imageName;
+        return $this->optimizedImageStore->storePublicImage($image, 'garages', $fieldPrefix);
     }
 }

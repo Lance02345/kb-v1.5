@@ -29,12 +29,17 @@ use PhpParser\Node\Expr\List_;
 use App\Models\User;
 use App\Support\JourneyMailer;
 use App\Support\ListingBilling;
+use App\Support\OptimizedImageStore;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Log;
 
 
 class ListingController extends Controller
 {
+    public function __construct(private OptimizedImageStore $optimizedImageStore)
+    {
+    }
+
     public function model(Request $request)
     {
         $data = Carmodel::select('model', 'id')
@@ -729,33 +734,12 @@ class ListingController extends Controller
 
     private function storeProcessedVehicleImage(UploadedFile $image, string $fieldPrefix): string
     {
-        $extension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
-        $imageName = $fieldPrefix . '_' . time() . '_' . uniqid() . '.' . $extension;
-
-        try {
-            // Respect phone EXIF orientation before watermark/save to avoid sideways photos.
-            $img = Image::make($image)->orientate();
-            $watermark = Image::make(public_path('watermark/KINGSBRIDGE.png'));
-
-            $maxWatermarkWidth = max(80, (int) round($img->width() * 0.2));
-            $maxWatermarkHeight = max(40, (int) round($img->height() * 0.2));
-            $watermark->resize($maxWatermarkWidth, $maxWatermarkHeight, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-
-            $img->insert($watermark, 'bottom-right', 16, 16);
-            $img->save(public_path('storage/photos/' . $imageName));
-        } catch (\Throwable $e) {
-            $image->storeAs('public/photos', $imageName);
-            Log::warning('Image processing failed during update, stored original image instead.', [
-                'field' => $fieldPrefix,
-                'message' => $e->getMessage(),
-                'filename' => $imageName,
-            ]);
-        }
-
-        return $imageName;
+        return basename($this->optimizedImageStore->storePublicImage(
+            $image,
+            'photos',
+            $fieldPrefix,
+            public_path('watermark/KINGSBRIDGE.png')
+        ));
     }
 
     public function invoice(Listing $listing, Vehicle $vehicle)

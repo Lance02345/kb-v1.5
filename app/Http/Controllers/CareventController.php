@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Carevent;
 use App\Support\JourneyMailer;
 use App\Support\ListingBilling;
+use App\Support\OptimizedImageStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -12,6 +13,10 @@ use Illuminate\Support\Facades\Storage;
 
 class CareventController extends Controller
 {
+    public function __construct(private OptimizedImageStore $optimizedImageStore)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -54,15 +59,12 @@ class CareventController extends Controller
             'event_image' => ' required|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heic,heif',
         ]);
 
-        if($request->hasFile('event_image')){
-            $imagenamewithExt = $request->file('event_image')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('event_image')->getClientOriginalExtension();
-            $event_imageStore = $imagename.'_'.time().'.'.$extension;
-            $path = $request->file('event_image')->storeAs('public/photos', $event_imageStore);
-        } 
+        $eventImageStore = null;
+        if ($request->hasFile('event_image')) {
+            $eventImageStore = $this->storeProcessedEventImage($request->file('event_image'));
+        }
 
-        DB::transaction(function () use ($request, $carevent, $event_imageStore) {
+        DB::transaction(function () use ($request, $carevent, $eventImageStore) {
             $carevent->event_title = $request->event_title;
             $carevent->event_description = $request->event_description;
             $carevent->event_location = $request->event_location;
@@ -73,7 +75,7 @@ class CareventController extends Controller
             $carevent->event_duration = $request->event_duration;
             $carevent->user_id = $request->user_id;
         
-            if($request->hasFile('event_image')) { $carevent->event_image = $event_imageStore; }
+            if ($eventImageStore) { $carevent->event_image = $eventImageStore; }
 
             $carevent->save();
 
@@ -132,13 +134,10 @@ class CareventController extends Controller
 
         ]);
 
-        if($request->hasFile('event_image')){
-            $imagenamewithExt = $request->file('event_image')->getClientOriginalName();
-            $imagename = pathinfo($imagenamewithExt, PATHINFO_FILENAME);
-            $extension = $request->file('event_image')->getClientOriginalExtension();
-            $event_imageStore = $imagename.'_'.time().'.'.$extension;
-            $path = $request->file('event_image')->storeAs('public/photos', $event_imageStore);
-        } 
+        $eventImageStore = null;
+        if ($request->hasFile('event_image')) {
+            $eventImageStore = $this->storeProcessedEventImage($request->file('event_image'));
+        }
 
         $carevent->event_title = $request->event_title;
         $carevent->event_description = $request->event_description;
@@ -150,7 +149,7 @@ class CareventController extends Controller
         $carevent->event_duration = $request->event_duration;
         $carevent->user_id = $request->user_id;
     
-        if($request->hasFile('event_image')) { $carevent->event_image = $event_imageStore; }
+        if ($eventImageStore) { $carevent->event_image = $eventImageStore; }
 
         $carevent->update();
         return redirect() -> route('user.edit_carevent',$carevent->id)->with('success','Updated Successfully');
@@ -173,5 +172,10 @@ class CareventController extends Controller
     $carevent->delete();
     return redirect()->route('user.carevent')->with('success','removed successfully');
 
+    }
+
+    private function storeProcessedEventImage($image): string
+    {
+        return basename($this->optimizedImageStore->storePublicImage($image, 'photos', 'event_image'));
     }
 }

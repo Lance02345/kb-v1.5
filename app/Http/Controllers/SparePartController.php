@@ -13,6 +13,7 @@ use App\Models\SparePart;
 use App\Models\User;
 use App\Support\JourneyMailer;
 use App\Support\ListingBilling;
+use App\Support\OptimizedImageStore;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,10 @@ use Intervention\Image\Facades\Image;
 
 class SparePartController extends Controller
 {
+    public function __construct(private OptimizedImageStore $optimizedImageStore)
+    {
+    }
+
     private const IMAGE_FIELDS = [
         'front_img',
         'back_img',
@@ -302,27 +307,12 @@ class SparePartController extends Controller
 
     private function storeProcessedSparePartImage(UploadedFile $image, string $fieldPrefix): string
     {
-        $extension = strtolower($image->getClientOriginalExtension() ?: 'jpg');
-        $imageName = $fieldPrefix . '_' . time() . '_' . uniqid() . '.' . $extension;
-
-        try {
-            $img = Image::make($image)->orientate();
-            $watermark = Image::make(public_path('watermark/KINGSBRIDGE.png'));
-
-            $maxWatermarkWidth = max(80, (int) round($img->width() * 0.2));
-            $maxWatermarkHeight = max(40, (int) round($img->height() * 0.2));
-            $watermark->resize($maxWatermarkWidth, $maxWatermarkHeight, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
-
-            $img->insert($watermark, 'bottom-right', 16, 16);
-            $img->save(public_path('storage/photos/' . $imageName));
-        } catch (\Throwable $e) {
-            $image->storeAs('public/photos', $imageName);
-        }
-
-        return $imageName;
+        return basename($this->optimizedImageStore->storePublicImage(
+            $image,
+            'photos',
+            $fieldPrefix,
+            public_path('watermark/KINGSBRIDGE.png')
+        ));
     }
 
 }
