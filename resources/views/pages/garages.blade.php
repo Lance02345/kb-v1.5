@@ -42,7 +42,7 @@
                         <div class="price">Garage</div>
                         <a href="">
                             <!-- Display event image -->
-                            <img class="card-img-top category-img-fluid" src="/storage/app/{{ $garage->front_img }}" alt="Garage Image" style="max-height: 400px;">
+                            <img class="card-img-top category-img-fluid" src="/storage/app/{{ $garage->front_img }}" alt="Garage Image" style="max-height: 400px;" loading="lazy">
                         </a>
                     </div>
                     <div class="card-body">

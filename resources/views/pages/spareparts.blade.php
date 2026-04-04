@@ -124,7 +124,7 @@
 									<div class="card">
 										<div class="thumb-content">
 											<a href="{{ route('sparepart', $sparePart->id)}}">
-												<img class="card-img-top category-img-fluid" src="/storage/photos/{{ $sparePart->front_img }}" alt="image description" style="max-height: 200px;">
+												<img class="card-img-top category-img-fluid" src="/storage/photos/{{ $sparePart->front_img }}" alt="image description" style="max-height: 200px;" loading="lazy">
 											</a>
 											<div class="img-count">
 												<svg style="color:#d4af37;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">

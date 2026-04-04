@@ -50,7 +50,7 @@
                     <div class="grid grid-cols-3 gap-2 sm:grid-cols-5">
                         @foreach($images as $image)
                             <button type="button" class="photo-thumb overflow-hidden rounded-lg border border-slate-700 transition hover:border-amber-300" data-src="{{ asset('storage/photos/' . $image) }}">
-                                <img src="{{ asset('storage/photos/' . $image) }}" alt="Vehicle photo" class="h-20 w-full object-cover">
+                                <img src="{{ asset('storage/photos/' . $image) }}" alt="Vehicle photo" loading="lazy" class="h-20 w-full object-cover">
                             </button>
                         @endforeach
                     </div>

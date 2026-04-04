@@ -26,7 +26,7 @@
             @foreach($carevents as $carevent)
                 <article class="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900">
                     <a href="{{ route('events.show', ['id' => $carevent->id]) }}" class="block">
-                        <img src="{{ $carevent->event_image ? asset('storage/photos/' . $carevent->event_image) : asset('images/land1.jpg') }}" alt="{{ $carevent->event_title }}" class="h-52 w-full object-cover">
+                        <img src="{{ $carevent->event_image ? asset('storage/photos/' . $carevent->event_image) : asset('images/land1.jpg') }}" alt="{{ $carevent->event_title }}" loading="lazy" class="h-52 w-full object-cover">
                     </a>
                     <div class="space-y-3 p-4">
                         <h2 class="font-display text-xl font-semibold text-white"><a href="{{ route('events.show', ['id' => $carevent->id]) }}" class="hover:text-amber-200">{{ $carevent->event_title }}</a></h2>

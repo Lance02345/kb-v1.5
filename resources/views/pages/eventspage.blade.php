@@ -45,7 +45,7 @@
                         <div class="price">Event</div>
                         <a href="{{ route('events.show', ['id' => $carevent->id]) }}">
                             <!-- Display event image -->
-                            <img class="card-img-top category-img-fluid" src="/storage/photos/{{ $carevent->event_image }}" alt="Event Image" style="max-height: 400px;">
+                            <img class="card-img-top category-img-fluid" src="/storage/photos/{{ $carevent->event_image }}" alt="Event Image" style="max-height: 400px;" loading="lazy">
                         </a>
                     </div>
                     <div class="card-body">

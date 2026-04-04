@@ -127,7 +127,7 @@
 										<div class="price"> {{ $listing->package->package_name}}</div>
 										<a href="{{ route('showcarhire', [$listing->id, $vehicle->id])}}">
 											
-											<img class="card-img-top category-img-fluid" src="/storage/photos/{{ $vehicle->front_img }}" alt=""style="max-height: 400px;">
+											<img class="card-img-top category-img-fluid" src="/storage/photos/{{ $vehicle->front_img }}" alt="" style="max-height: 400px;" loading="lazy">
 											
 										</a>
 									<div class="img-count">

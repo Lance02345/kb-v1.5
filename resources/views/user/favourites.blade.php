@@ -46,7 +46,7 @@
                         </button>
                     </form>
                     <a href="{{ route('vehicle', [$listing->id, $vehicle->id]) }}">
-                        <img src="{{ $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : asset('images/land1.jpg') }}" alt="{{ $vehicle->title ?? 'Vehicle' }}" class="h-52 w-full object-cover">
+                        <img src="{{ $vehicle->front_img ? asset('storage/photos/' . $vehicle->front_img) : asset('images/land1.jpg') }}" alt="{{ $vehicle->title ?? 'Vehicle' }}" loading="lazy" class="h-52 w-full object-cover">
                     </a>
                     <div class="space-y-3 p-4">
                         <h2 class="font-display text-lg font-semibold text-white">{{ $vehicle->carmodel?->carmake?->make }} {{ $vehicle->carmodel?->model }} {{ $vehicle->year_of_build }}</h2>

@@ -37,7 +37,7 @@
                 <div class="grid grid-cols-3 gap-2 sm:grid-cols-5">
                     @foreach($images as $image)
                         <button type="button" class="photo-thumb overflow-hidden rounded-lg border border-slate-700 hover:border-amber-300" data-src="{{ asset('storage/photos/' . $image) }}">
-                            <img src="{{ asset('storage/photos/' . $image) }}" class="h-20 w-full object-cover" alt="thumb">
+                            <img src="{{ asset('storage/photos/' . $image) }}" class="h-20 w-full object-cover" loading="lazy" alt="thumb">
                         </button>
                     @endforeach
                 </div>
