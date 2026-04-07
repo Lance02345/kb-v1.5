@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Http\Exceptions\PostTooLargeException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -42,6 +43,15 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
+        if ($e instanceof TokenMismatchException) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Session expired. Please log in again.'], 419);
+            }
+
+            return redirect()->route('login')
+                ->with('error', 'Your session has expired. Please log in again.');
+        }
+
         if ($e instanceof PostTooLargeException) {
             $message = 'Upload too large. Please use smaller photos or fewer files, then try again.';
 

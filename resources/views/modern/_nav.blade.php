@@ -1,7 +1,8 @@
 <header class="sticky top-0 z-50 border-b border-slate-800/80 bg-[#050812]/90 backdrop-blur">
     <div class="flex h-16 w-full items-center justify-between px-4 sm:px-6 lg:px-10">
-        <a href="{{ route('index') }}" class="font-display text-lg font-semibold tracking-wide text-white">
-            <span class="text-amber-300">KINGS</span>BRIDGE MOTORS
+        <a href="{{ route('index') }}" class="flex items-center gap-2 font-display text-lg font-bold tracking-widest text-white uppercase" style="letter-spacing:.08em;">
+            <img src="{{ asset('images/favicon.png') }}" alt="" class="h-8 w-8 object-contain" style="filter:drop-shadow(0 0 4px rgba(251,191,36,.5));">
+            <span><span class="text-amber-300">KINGS</span>BRIDGE</span>
         </a>
 
         <nav class="hidden items-center gap-6 text-sm md:flex">

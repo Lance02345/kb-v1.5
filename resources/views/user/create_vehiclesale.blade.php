@@ -378,96 +378,122 @@
   <h4 class="sale-section-title">Upload your vehicle images</h4>
   <h6 class="font-weight-bold pt-4 pb-1">First image must be the front of the vehicle, the rest can come in any order.</h6>
   <p class="text-xs text-slate-400">Allowed formats: JPEG, PNG, WEBP, GIF, SVG, HEIC, HEIF. Maximum 20MB per photo.</p>
-  <div class="row">
-    <div class="space column">
-      <div class="card">
-        <h3>Front-image</h3>
-        <input type="file" id="files"  name="front_img"/>
-      </div>
-      @error('front_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-  
-    <div class="space column">
-      <div class="card">
-        <h3>Back-image</h3>
-        <input type="file" id="back" name="back_img" />
-      </div>
-      @error('back_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-    
-    <div class="space column">
-      <div class="card">
-        <h3>Right side-image</h3>
-        <input type="file" id="right_img" name="right_img"/>
-      </div>
-      @error('right_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-    
-    <div class="space column">
-      <div class="card">
-        <h3>Left side-image</h3>
-        <input type="file" id="left_img" name="left_img" />
-      </div>
-      @error('left_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-    <div class="space column">
-      <div class="card">
-        <h3>Interior front</h3>
-        <input type="file" id="interior_front" name="interiorf_img"  />
-      </div>
-      @error('interiorf_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-    <div class="space column">
-      <div class="card">
-        <h3>Interior back</h3>
-        <input type="file" id="interior_back" name="interiorb_img"  />
-      </div>
-      @error('interiorb_img')
-            <span class="invalid"  role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-      @enderror
-    </div>
-    <div class="space column">
-      <div class="card">
-        <h3>Optional 1</h3>
-        <input type="file" id="optional_1" name="opt_img1" />
-      </div>
-    </div>
-    <div class="space column">
-      <div class="card">
-        <h3>Optional 2</h3>
-        <input type="file" id="optional_2" name="opt_img2" />
-      </div>
-    </div>
-    <div class="space column">
-      <div class="card">
-        <h3>Optional 3</h3>
-        <input type="file" id="optional_3" name="opt_img3" />
-      </div>
+
+  {{-- progress bar --}}
+  <div class="d-flex align-items-center gap-2 mb-3">
+    <span class="text-xs text-slate-400">Photos added:</span>
+    <span id="img-count" class="text-xs font-bold text-amber-400">0 / 9</span>
+    <div class="flex-grow-1 rounded" style="height:4px;background:#1e293b;">
+      <div id="img-progress-bar" class="rounded" style="height:4px;width:0%;background:#f59e0b;transition:width .3s;"></div>
     </div>
   </div>
+
+  <div id="img-upload-grid" class="row">
+
+    @php
+      $imgSlots = [
+        ['id' => 'files',          'name' => 'front_img',    'label' => 'Front',          'required' => true],
+        ['id' => 'back',           'name' => 'back_img',     'label' => 'Back',            'required' => false],
+        ['id' => 'right_img',      'name' => 'right_img',    'label' => 'Right side',      'required' => false],
+        ['id' => 'left_img',       'name' => 'left_img',     'label' => 'Left side',       'required' => false],
+        ['id' => 'interior_front', 'name' => 'interiorf_img','label' => 'Interior front',  'required' => false],
+        ['id' => 'interior_back',  'name' => 'interiorb_img','label' => 'Interior back',   'required' => false],
+        ['id' => 'engine_img',     'name' => 'engine_img',   'label' => 'Engine',          'required' => false],
+        ['id' => 'optional_1',     'name' => 'opt_img1',     'label' => 'Optional 1',      'required' => false],
+        ['id' => 'optional_2',     'name' => 'opt_img2',     'label' => 'Optional 2',      'required' => false],
+        ['id' => 'optional_3',     'name' => 'opt_img3',     'label' => 'Optional 3',      'required' => false],
+      ];
+    @endphp
+
+    @foreach($imgSlots as $slot)
+    <div class="col-6 col-md-4 mb-3 img-slot-wrapper" data-slot-index="{{ $loop->index }}">
+      <label class="img-upload-slot d-flex flex-column align-items-center justify-content-center rounded border border-secondary p-2 position-relative"
+             for="{{ $slot['id'] }}"
+             style="cursor:pointer;min-height:110px;background:#0f172a;transition:border-color .2s;">
+
+        {{-- preview --}}
+        <img id="preview_{{ $slot['id'] }}"
+             src=""
+             alt=""
+             class="img-slot-preview d-none rounded"
+             style="width:100%;height:90px;object-fit:cover;border-radius:6px;">
+
+        {{-- placeholder icon + label --}}
+        <div id="placeholder_{{ $slot['id'] }}" class="text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="text-slate-500 mx-auto mb-1">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 16.5V19a1 1 0 001 1h16a1 1 0 001-1v-2.5M16 10l-4-4m0 0L8 10m4-4v12"/>
+          </svg>
+          <span class="d-block text-xs text-slate-400">{{ $slot['label'] }}</span>
+          @if($slot['required'])
+            <span class="badge badge-warning text-xs" style="font-size:10px;">Required</span>
+          @endif
+        </div>
+
+        {{-- checkmark shown after selection --}}
+        <span id="check_{{ $slot['id'] }}" class="d-none position-absolute" style="top:6px;right:8px;color:#22c55e;font-size:18px;">&#10003;</span>
+
+        <input type="file"
+               id="{{ $slot['id'] }}"
+               name="{{ $slot['name'] }}"
+               accept="image/*"
+               class="img-slot-input"
+               style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer;">
+      </label>
+
+      @error($slot['name'])
+        <span class="invalid" role="alert"><strong>{{ $message }}</strong></span>
+      @enderror
+    </div>
+    @endforeach
+
+  </div>
 </fieldset>
+
+<script>
+(function () {
+  var inputs = document.querySelectorAll('.img-slot-input');
+  var total  = inputs.length;
+
+  function updateProgress() {
+    var filled = Array.from(inputs).filter(function(i){ return i.files && i.files.length > 0; }).length;
+    document.getElementById('img-count').textContent = filled + ' / ' + total;
+    document.getElementById('img-progress-bar').style.width = Math.round((filled / total) * 100) + '%';
+  }
+
+  inputs.forEach(function (input, idx) {
+    input.addEventListener('change', function () {
+      if (!this.files || !this.files[0]) return;
+
+      var file    = this.files[0];
+      var id      = this.id;
+      var preview = document.getElementById('preview_' + id);
+      var holder  = document.getElementById('placeholder_' + id);
+      var check   = document.getElementById('check_' + id);
+      var label   = this.closest('label');
+
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.classList.remove('d-none');
+        holder.classList.add('d-none');
+        check.classList.remove('d-none');
+        label.style.borderColor = '#22c55e';
+      };
+      reader.readAsDataURL(file);
+
+      updateProgress();
+
+      // scroll to next empty slot
+      var nextEmpty = Array.from(inputs).slice(idx + 1).find(function(i){ return !i.files || i.files.length === 0; });
+      if (nextEmpty) {
+        setTimeout(function () {
+          nextEmpty.closest('.img-slot-wrapper').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+      }
+    });
+  });
+})();
+</script>
 @include('user.partials.listing-stepper-controls', ['submitText' => 'Continue to Package Selection'])
 </form>
 
