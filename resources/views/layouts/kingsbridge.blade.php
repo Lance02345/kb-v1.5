@@ -58,7 +58,7 @@
       <div class="col-md-12">
         <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar ftco-navbar-light" id="ftco-navbar" aria-label="Main navigation">
           <a class="navbar-brand d-flex align-items-center" href="{{ route('index') }}" style="gap:8px;">
-            <img src="{{ asset('watermark/KINGSBRIDGE.png') }}" alt="" style="width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 5px rgba(212,175,55,.6));">
+            <img src="{{ asset('images/king2.png') }}" alt="" style="width:36px;height:36px;object-fit:contain;filter:drop-shadow(0 0 5px rgba(212,175,55,.6));">
             <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;letter-spacing:.07em;font-size:1.05rem;line-height:1;">
               <span style="color:#d4af37;">KINGS</span><span style="color:#fff;">BRIDGE</span>
             </span>
