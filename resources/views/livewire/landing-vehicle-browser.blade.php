@@ -1,4 +1,14 @@
 <div class="space-y-6">
+    @php
+        $activeFilterCount = count(array_filter([
+            $make ?? '',
+            $model ?? '',
+            $city ?? '',
+            $minPrice ?? '',
+            $maxPrice ?? '',
+            trim((string) ($search ?? '')),
+        ], fn ($value) => $value !== null && $value !== ''));
+    @endphp
     <style>
         .kb-mobile-grid {
             grid-template-columns: repeat(var(--kb-mobile-columns, 1), minmax(0, 1fr));
@@ -51,37 +61,54 @@
                     <button type="button" id="save-search-btn" class="rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-emerald-200 transition hover:border-emerald-300 hover:text-emerald-100">Save this search & alert me</button>
                 </div>
             @endauth
-            <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
-                <select wire:model.live="make" class="h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 focus:border-amber-400 focus:outline-none">
-                    <option value="">Choose a Make</option>
-                    @foreach($makes as $makeOption)
-                        <option value="{{ $makeOption->id }}">{{ $makeOption->make }}</option>
-                    @endforeach
-                </select>
-
-                <select wire:model.live="model" class="h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 focus:border-amber-400 focus:outline-none" {{ $make === '' ? 'disabled' : '' }}>
-                    <option value="">Choose a Model</option>
-                    @foreach($models as $modelOption)
-                        <option value="{{ $modelOption->id }}">{{ $modelOption->model }}</option>
-                    @endforeach
-                </select>
-
-                <select wire:model.live="city" class="h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 focus:border-amber-400 focus:outline-none">
-                    <option value="">Select City</option>
-                    @foreach($cities as $cityOption)
-                        <option value="{{ $cityOption->id }}">{{ $cityOption->city }}</option>
-                    @endforeach
-                </select>
-
-                <input wire:model.live.debounce.400ms="minPrice" type="number" min="0" placeholder="Min Budget" class="h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-amber-400 focus:outline-none">
-                <input wire:model.live.debounce.400ms="maxPrice" type="number" min="0" placeholder="Max Budget" class="h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-amber-400 focus:outline-none">
+            <div class="md:hidden">
+                <button
+                    type="button"
+                    data-mobile-filter-toggle
+                    aria-expanded="false"
+                    class="flex w-full items-center justify-between rounded-2xl border border-slate-800 bg-slate-950/60 px-4 py-3 text-left"
+                >
+                    <div>
+                        <p class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">Filters</p>
+                        <p class="mt-1 text-sm text-slate-300">{{ $activeFilterCount ? $activeFilterCount . ' active' : 'Tap to refine make, city, and budget' }}</p>
+                    </div>
+                    <span data-mobile-filter-icon class="text-lg font-semibold text-amber-300">+</span>
+                </button>
             </div>
 
-            <div class="flex items-center gap-4">
-                <button type="button" wire:click="clearFilters" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">
-                    Reset filters
-                </button>
-                <span wire:loading.inline-flex class="text-xs text-slate-400">Updating results...</span>
+            <div data-mobile-filter-panel class="hidden space-y-4 md:block">
+                <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
+                    <select wire:model.live="make" class="h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 focus:border-amber-400 focus:outline-none">
+                        <option value="">Choose a Make</option>
+                        @foreach($makes as $makeOption)
+                            <option value="{{ $makeOption->id }}">{{ $makeOption->make }}</option>
+                        @endforeach
+                    </select>
+
+                    <select wire:model.live="model" class="h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 focus:border-amber-400 focus:outline-none" {{ $make === '' ? 'disabled' : '' }}>
+                        <option value="">Choose a Model</option>
+                        @foreach($models as $modelOption)
+                            <option value="{{ $modelOption->id }}">{{ $modelOption->model }}</option>
+                        @endforeach
+                    </select>
+
+                    <select wire:model.live="city" class="h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 focus:border-amber-400 focus:outline-none">
+                        <option value="">Select City</option>
+                        @foreach($cities as $cityOption)
+                            <option value="{{ $cityOption->id }}">{{ $cityOption->city }}</option>
+                        @endforeach
+                    </select>
+
+                    <input wire:model.live.debounce.400ms="minPrice" type="number" min="0" placeholder="Min Budget" class="h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-amber-400 focus:outline-none">
+                    <input wire:model.live.debounce.400ms="maxPrice" type="number" min="0" placeholder="Max Budget" class="h-11 w-full rounded-xl border border-slate-700 bg-slate-950 px-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-amber-400 focus:outline-none">
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button type="button" wire:click="clearFilters" class="text-xs font-semibold uppercase tracking-wide text-amber-300 hover:text-amber-200">
+                        Reset filters
+                    </button>
+                    <span wire:loading.inline-flex class="text-xs text-slate-400">Updating results...</span>
+                </div>
             </div>
 
             <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-950/60 p-3">
@@ -138,7 +165,7 @@
     </section>
 
     <section wire:loading.remove class="pt-2">
-        {{ $vehicles->links() }}
+        {{ $vehicles->links('vehicles._pagination') }}
     </section>
 </div>
 
@@ -250,6 +277,39 @@
                 hidePanel();
             });
         }
+
+        const syncMobileFilters = () => {
+            const toggle = document.querySelector('[data-mobile-filter-toggle]');
+            const panel = document.querySelector('[data-mobile-filter-panel]');
+            const icon = document.querySelector('[data-mobile-filter-icon]');
+
+            if (!toggle || !panel || window.innerWidth >= 768) {
+                if (panel && window.innerWidth >= 768) {
+                    panel.classList.remove('hidden');
+                }
+                return;
+            }
+
+            const expanded = toggle.getAttribute('aria-expanded') === 'true';
+            panel.classList.toggle('hidden', !expanded);
+            if (icon) {
+                icon.textContent = expanded ? '−' : '+';
+            }
+        };
+
+        document.addEventListener('click', (event) => {
+            const toggle = event.target.closest('[data-mobile-filter-toggle]');
+            if (!toggle) {
+                return;
+            }
+
+            const expanded = toggle.getAttribute('aria-expanded') === 'true';
+            toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+            syncMobileFilters();
+        });
+
+        window.addEventListener('resize', syncMobileFilters);
+        syncMobileFilters();
 
         const compareRoute = @json(route('compare.index'));
         const drawer = document.getElementById('compare-drawer');
