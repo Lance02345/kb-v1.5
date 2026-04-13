@@ -115,21 +115,30 @@ class TumaClient
 
     protected function headers(): array
     {
-        return [
-            'Authorization' => 'Bearer ' . $this->token(),
+        $headers = [
             'X-API-Key' => $this->apiKey,
             'Accept' => 'application/json',
         ];
+
+        if ($token = $this->token()) {
+            $headers['Authorization'] = 'Bearer ' . $token;
+        }
+
+        return $headers;
     }
 
-    protected function token(): string
+    protected function token(): ?string
     {
         if ($bearer = config('tuma.bearer_token')) {
             return $bearer;
         }
 
-        if (empty($this->authEmail) || empty($this->apiKey)) {
-            throw new TumaPaymentException('Tuma credentials are missing.');
+        if (empty($this->authEmail)) {
+            return null;
+        }
+
+        if (empty($this->apiKey)) {
+            throw new TumaPaymentException('Tuma API key is missing.');
         }
 
         $cacheKey = sprintf('tuma_bearer_%s_%s', md5($this->authEmail), md5($this->apiKey));
