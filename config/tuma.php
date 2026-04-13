@@ -6,6 +6,7 @@ return [
     'auth_email' => env('TUMA_AUTH_EMAIL'),
     'bearer_token' => env('TUMA_BEARER_TOKEN'),
     'callback_url' => env('TUMA_CALLBACK_URL', env('APP_URL') . '/webhook/tuma'),
+    'product_id' => env('TUMA_PRODUCT_ID'),
     'token_endpoint' => env('TUMA_TOKEN_ENDPOINT', '/api/auth/token'),
     'sale_endpoint' => env('TUMA_SALE_ENDPOINT', '/api/pos/sales'),
     'payment_status_endpoint' => env('TUMA_PAYMENT_STATUS_ENDPOINT', '/api/pos/orders/{order_id}/payment-status'),

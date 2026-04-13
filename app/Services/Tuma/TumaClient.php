@@ -17,6 +17,7 @@ class TumaClient
     protected string $tokenEndpoint;
     protected string $saleEndpoint;
     protected string $paymentStatusEndpoint;
+    protected ?string $productId;
     protected int $tokenCacheTtl;
 
     public function __construct()
@@ -27,11 +28,16 @@ class TumaClient
         $this->tokenEndpoint = config('tuma.token_endpoint');
         $this->saleEndpoint = config('tuma.sale_endpoint');
         $this->paymentStatusEndpoint = config('tuma.payment_status_endpoint');
+        $this->productId = config('tuma.product_id');
         $this->tokenCacheTtl = config('tuma.token_cache_ttl', 600);
     }
 
     public function initiateSale(Invoice $invoice, string $phone, ?string $description = null): array
     {
+        if (empty($this->productId)) {
+            throw new TumaPaymentException('Tuma product ID is missing. Set TUMA_PRODUCT_ID to a valid product on the tenant.');
+        }
+
         $payload = [
             'customer_name' => $invoice->user?->name ?? 'Kingsbridge customer',
             'customer_phone' => $this->normalizePhone($phone),
@@ -39,7 +45,7 @@ class TumaClient
             'callback_url' => $this->callbackUrl(),
             'items' => [
                 [
-                    'product_id' => (string) $invoice->id,
+                    'product_id' => (string) $this->productId,
                     'quantity' => 1,
                     'unit_price' => (int) round((float) $invoice->total),
                     'description' => $description ?? 'Invoice #' . $invoice->id,
