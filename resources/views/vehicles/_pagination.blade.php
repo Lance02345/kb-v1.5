@@ -5,7 +5,24 @@
             &nbsp;&middot;&nbsp;
             {{ $paginator->total() }} {{ Str::plural('result', $paginator->total()) }}
         </span>
-        <div class="flex items-center gap-1">
+        <div class="flex w-full items-center justify-between gap-2 md:hidden">
+            @if ($paginator->onFirstPage())
+                <span class="inline-flex min-w-[88px] items-center justify-center rounded-md border border-gray-800 bg-[#161a22] px-3 py-2 text-sm text-gray-500 opacity-40">Previous</span>
+            @else
+                <a href="{{ $paginator->previousPageUrl() }}" class="inline-flex min-w-[88px] items-center justify-center rounded-md border border-gray-800 bg-[#161a22] px-3 py-2 text-sm text-gray-200 hover:bg-gray-800 transition-colors">Previous</a>
+            @endif
+
+            <span class="inline-flex min-w-[96px] items-center justify-center rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm font-semibold text-amber-300">
+                {{ $paginator->currentPage() }} / {{ $paginator->lastPage() }}
+            </span>
+
+            @if ($paginator->hasMorePages())
+                <a href="{{ $paginator->nextPageUrl() }}" class="inline-flex min-w-[88px] items-center justify-center rounded-md border border-gray-800 bg-[#161a22] px-3 py-2 text-sm text-gray-200 hover:bg-gray-800 transition-colors">Next</a>
+            @else
+                <span class="inline-flex min-w-[88px] items-center justify-center rounded-md border border-gray-800 bg-[#161a22] px-3 py-2 text-sm text-gray-500 opacity-40">Next</span>
+            @endif
+        </div>
+        <div class="hidden items-center gap-1 md:flex">
             @if ($paginator->onFirstPage())
                 <span class="p-2 rounded-md bg-[#161a22] border border-gray-800 opacity-40 cursor-not-allowed">‹</span>
             @else

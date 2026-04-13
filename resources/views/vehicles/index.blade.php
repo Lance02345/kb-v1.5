@@ -32,7 +32,34 @@
             </div>
             <span class="text-xs font-medium text-gray-500">{{ $vehicles->total() }} listings</span>
         </div>
-        <form method="GET" action="{{ route('marketplace.index') }}" class="p-4 space-y-3">
+        @php
+            $activeFilters = array_filter([
+                request('make'),
+                request('model'),
+                request('city'),
+                request('min_price') ? 'Min ' . number_format((int) request('min_price')) : null,
+                request('max_price') ? 'Max ' . number_format((int) request('max_price')) : null,
+            ]);
+        @endphp
+        <div class="p-4 border-b border-gray-800 md:hidden">
+            <button type="button"
+                data-filter-toggle
+                class="flex w-full items-center justify-between rounded-md border border-gray-700 bg-[#11151c] px-3 py-2 text-left text-sm text-gray-100">
+                <span class="flex items-center gap-2">
+                    <span class="font-medium">Filters</span>
+                    <span class="text-xs text-gray-500">{{ count($activeFilters) ? count($activeFilters) . ' active' : 'None active' }}</span>
+                </span>
+                <span class="text-amber-400" data-filter-toggle-icon>+</span>
+            </button>
+            @if(count($activeFilters))
+                <div class="mt-3 flex flex-wrap gap-2">
+                    @foreach($activeFilters as $filter)
+                        <span class="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-[11px] text-amber-300">{{ $filter }}</span>
+                    @endforeach
+                </div>
+            @endif
+        </div>
+        <form method="GET" action="{{ route('marketplace.index') }}" class="p-4 space-y-3 hidden md:block" data-marketplace-filters>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                 <select name="make" onchange="this.form.submit()"
                     class="w-full h-10 px-3 rounded-md bg-[#161a22] border border-gray-700 text-sm text-gray-100 focus:outline-none focus:ring-2 focus:ring-amber-500 appearance-none cursor-pointer">
@@ -104,4 +131,19 @@
         </div>
     @endif
 </main>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var toggle = document.querySelector('[data-filter-toggle]');
+    var form = document.querySelector('[data-marketplace-filters]');
+    var icon = document.querySelector('[data-filter-toggle-icon]');
+
+    if (!toggle || !form) return;
+
+    toggle.addEventListener('click', function () {
+        var isHidden = form.classList.contains('hidden');
+        form.classList.toggle('hidden', !isHidden);
+        icon.textContent = isHidden ? '−' : '+';
+    });
+});
+</script>
 @endsection

@@ -436,6 +436,7 @@
                id="{{ $slot['id'] }}"
                name="{{ $slot['name'] }}"
                accept="image/*"
+               {{ $loop->first ? 'multiple' : '' }}
                class="img-slot-input"
                style="position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer;">
       </label>
@@ -460,36 +461,98 @@
     document.getElementById('img-progress-bar').style.width = Math.round((filled / total) * 100) + '%';
   }
 
+  function renderSlot(input, file) {
+    var id = input.id;
+    var preview = document.getElementById('preview_' + id);
+    var holder = document.getElementById('placeholder_' + id);
+    var check = document.getElementById('check_' + id);
+    var label = input.closest('label');
+
+    if (!preview || !holder || !check || !label) return;
+
+    if (!file) {
+      preview.src = '';
+      preview.classList.add('d-none');
+      holder.classList.remove('d-none');
+      check.classList.add('d-none');
+      label.style.borderColor = '';
+      return;
+    }
+
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      preview.src = e.target.result;
+      preview.classList.remove('d-none');
+      holder.classList.add('d-none');
+      check.classList.remove('d-none');
+      label.style.borderColor = '#22c55e';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function setInputFile(input, file) {
+    var transfer = new DataTransfer();
+    if (file) {
+      transfer.items.add(file);
+    }
+    input.files = transfer.files;
+    renderSlot(input, file || null);
+  }
+
+  function distributeFiles(startIndex, files) {
+    Array.from(files).forEach(function (file, offset) {
+      var target = inputs[startIndex + offset];
+      if (!target) return;
+      setInputFile(target, file);
+    });
+
+    for (var clearIndex = startIndex + files.length; clearIndex < inputs.length; clearIndex++) {
+      if (inputs[clearIndex].dataset.autofilled !== '1') continue;
+      setInputFile(inputs[clearIndex], null);
+      inputs[clearIndex].dataset.autofilled = '0';
+    }
+
+    var nextEmpty = Array.from(inputs).slice(startIndex + files.length).find(function (candidate) {
+      return !candidate.files || candidate.files.length === 0;
+    });
+
+    updateProgress();
+
+    if (nextEmpty) {
+      setTimeout(function () {
+        nextEmpty.closest('.img-slot-wrapper').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 250);
+    }
+  }
+
   inputs.forEach(function (input, idx) {
     input.addEventListener('change', function () {
-      if (!this.files || !this.files[0]) return;
-
-      var file    = this.files[0];
-      var id      = this.id;
-      var preview = document.getElementById('preview_' + id);
-      var holder  = document.getElementById('placeholder_' + id);
-      var check   = document.getElementById('check_' + id);
-      var label   = this.closest('label');
-
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        preview.src = e.target.result;
-        preview.classList.remove('d-none');
-        holder.classList.add('d-none');
-        check.classList.remove('d-none');
-        label.style.borderColor = '#22c55e';
-      };
-      reader.readAsDataURL(file);
-
-      updateProgress();
-
-      // scroll to next empty slot
-      var nextEmpty = Array.from(inputs).slice(idx + 1).find(function(i){ return !i.files || i.files.length === 0; });
-      if (nextEmpty) {
-        setTimeout(function () {
-          nextEmpty.closest('.img-slot-wrapper').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 300);
+      if (!this.files || !this.files.length) {
+        renderSlot(this, null);
+        updateProgress();
+        return;
       }
+
+      var selectedFiles = Array.from(this.files);
+
+      if (selectedFiles.length > 1) {
+        var remainingSlots = total - idx;
+        var filesToUse = selectedFiles.slice(0, remainingSlots);
+
+        filesToUse.forEach(function (_, offset) {
+          var target = inputs[idx + offset];
+          if (target) {
+            target.dataset.autofilled = offset === 0 ? '0' : '1';
+          }
+        });
+
+        distributeFiles(idx, filesToUse);
+        return;
+      }
+
+      this.dataset.autofilled = '0';
+      renderSlot(this, selectedFiles[0]);
+      updateProgress();
     });
   });
 })();
@@ -748,269 +811,7 @@ $(document).ready(function(){
         });
 
 });
-
-$(document).ready(function() {
-    if (window.File && window.FileList && window.FileReader) {
-      $("#files").on("change", function(e) {
-        var files = e.target.files,
-          filesLength = files.length;
-        for (var i = 0; i < filesLength; i++) {
-          var f = files[i]
-          var fileReader = new FileReader();
-          fileReader.onload = (function(e) {
-            var file = e.target;
-            $("<span class=\"pip\">" +
-              "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-              "<br/><span class=\"remove\">Remove image</span>" +
-              "</span>").insertAfter("#files");
-            $(".remove").click(function(){
-              $(this).parent(".pip").remove();
-            });
-            
-            // Old code here
-            /*$("<img></img>", {
-              class: "imageThumb",
-              src: e.target.result,
-              title: file.name + " | Click to remove"
-            }).insertAfter("#files").click(function(){$(this).remove();});*/
-            
-          });
-          fileReader.readAsDataURL(f);
-        }
-      });
-    } else {
-      alert("Your browser doesn't support to File API")
-    }
-  });
-
-
-
-
-$(document).ready(function() {
-    if (window.File && window.FileList && window.FileReader) {
-      $("#back").on("change", function(e) {
-        var files = e.target.files,
-          filesLength = files.length;
-        for (var i = 0; i < filesLength; i++) {
-          var f = files[i]
-          var fileReader = new FileReader();
-          fileReader.onload = (function(e) {
-            var file = e.target;
-            $("<span class=\"pip\">" +
-              "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-              "<br/><span class=\"remove\">Remove image</span>" +
-              "</span>").insertAfter("#back");
-            $(".remove").click(function(){
-              $(this).parent(".pip").remove();
-            });
-            
-            // Old code here
-            /*$("<img></img>", {
-              class: "imageThumb",
-              src: e.target.result,
-              title: file.name + " | Click to remove"
-            }).insertAfter("#files").click(function(){$(this).remove();});*/
-            
-          });
-          fileReader.readAsDataURL(f);
-        }
-      });
-    } else {
-      alert("Your browser doesn't support to File API")
-    }
-  });
-  </script>
-<script>
-  $(document).ready(function() {
-    if (window.File && window.FileList && window.FileReader) {
-      $("#right_img").on("change", function(e) {
-        var files = e.target.files,
-          filesLength = files.length;
-        for (var i = 0; i < filesLength; i++) {
-          var f = files[i]
-          var fileReader = new FileReader();
-          fileReader.onload = (function(e) {
-            var file = e.target;
-            $("<span class=\"pip\">" +
-              "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-              "<br/><span class=\"remove\">Remove image</span>" +
-              "</span>").insertAfter("#right_img");
-            $(".remove").click(function(){
-              $(this).parent(".pip").remove();
-            });
-          });
-          fileReader.readAsDataURL(f);
-        }
-      });
-    } else {
-      alert("Your browser doesn't support to File API")
-    }
-  });
-  </script>
-
-<script>
-$(document).ready(function() {
-  if (window.File && window.FileList && window.FileReader) {
-    $("#left_img").on("change", function(e) {
-      var files = e.target.files,
-        filesLength = files.length;
-      for (var i = 0; i < filesLength; i++) {
-        var f = files[i]
-        var fileReader = new FileReader();
-        fileReader.onload = (function(e) {
-          var file = e.target;
-          $("<span class=\"pip\">" +
-            "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-            "<br/><span class=\"remove\">Remove image</span>" +
-            "</span>").insertAfter("#left_img");
-          $(".remove").click(function(){
-            $(this).parent(".pip").remove();
-          });
-        });
-        fileReader.readAsDataURL(f);
-      }
-    });
-  } else {
-    alert("Your browser doesn't support to File API")
-  }
-});
 </script>
-<script>
-  $(document).ready(function() {
-    if (window.File && window.FileList && window.FileReader) {
-      $("#interior_front").on("change", function(e) {
-        var files = e.target.files,
-          filesLength = files.length;
-        for (var i = 0; i < filesLength; i++) {
-          var f = files[i]
-          var fileReader = new FileReader();
-          fileReader.onload = (function(e) {
-            var file = e.target;
-            $("<span class=\"pip\">" +
-              "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-              "<br/><span class=\"remove\">Remove image</span>" +
-              "</span>").insertAfter("#interior_front");
-            $(".remove").click(function(){
-              $(this).parent(".pip").remove();
-            });
-          });
-          fileReader.readAsDataURL(f);
-        }
-      });
-    } else {
-      alert("Your browser doesn't support to File API")
-    }
-  });
-  </script>
-  <script>
-    $(document).ready(function() {
-      if (window.File && window.FileList && window.FileReader) {
-        $("#interior_back").on("change", function(e) {
-          var files = e.target.files,
-            filesLength = files.length;
-          for (var i = 0; i < filesLength; i++) {
-            var f = files[i]
-            var fileReader = new FileReader();
-            fileReader.onload = (function(e) {
-              var file = e.target;
-              $("<span class=\"pip\">" +
-                "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-                "<br/><span class=\"remove\">Remove image</span>" +
-                "</span>").insertAfter("#interior_back");
-              $(".remove").click(function(){
-                $(this).parent(".pip").remove();
-              });
-            });
-            fileReader.readAsDataURL(f);
-          }
-        });
-      } else {
-        alert("Your browser doesn't support to File API")
-      }
-    });
-    </script>
-
-<script>
-  $(document).ready(function() {
-    if (window.File && window.FileList && window.FileReader) {
-      $("#optional_1").on("change", function(e) {
-        var files = e.target.files,
-          filesLength = files.length;
-        for (var i = 0; i < filesLength; i++) {
-          var f = files[i]
-          var fileReader = new FileReader();
-          fileReader.onload = (function(e) {
-            var file = e.target;
-            $("<span class=\"pip\">" +
-              "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-              "<br/><span class=\"remove\">Remove image</span>" +
-              "</span>").insertAfter("#optional_1");
-            $(".remove").click(function(){
-              $(this).parent(".pip").remove();
-            });
-          });
-          fileReader.readAsDataURL(f);
-        }
-      });
-    } else {
-      alert("Your browser doesn't support to File API")
-    }
-  });
-  </script>
-  <script>
-    $(document).ready(function() {
-      if (window.File && window.FileList && window.FileReader) {
-        $("#optional_2").on("change", function(e) {
-          var files = e.target.files,
-            filesLength = files.length;
-          for (var i = 0; i < filesLength; i++) {
-            var f = files[i]
-            var fileReader = new FileReader();
-            fileReader.onload = (function(e) {
-              var file = e.target;
-              $("<span class=\"pip\">" +
-                "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-                "<br/><span class=\"remove\">Remove image</span>" +
-                "</span>").insertAfter("#optional_2");
-              $(".remove").click(function(){
-                $(this).parent(".pip").remove();
-              });
-            });
-            fileReader.readAsDataURL(f);
-          }
-        });
-      } else {
-        alert("Your browser doesn't support to File API")
-      }
-    });
-    </script>
-    <script>
-      $(document).ready(function() {
-        if (window.File && window.FileList && window.FileReader) {
-          $("#optional_3").on("change", function(e) {
-            var files = e.target.files,
-              filesLength = files.length;
-            for (var i = 0; i < filesLength; i++) {
-              var f = files[i]
-              var fileReader = new FileReader();
-              fileReader.onload = (function(e) {
-                var file = e.target;
-                $("<span class=\"pip\">" +
-                  "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-                  "<br/><span class=\"remove\">Remove image</span>" +
-                  "</span>").insertAfter("#optional_3");
-                $(".remove").click(function(){
-                  $(this).parent(".pip").remove();
-                });
-              });
-              fileReader.readAsDataURL(f);
-            }
-          });
-        } else {
-          alert("Your browser doesn't support to File API")
-        }
-      });
-      </script>
 
   <!-- The script for Car Make -->
   <script>
