@@ -36,7 +36,7 @@ class TumaClient
             'customer_name' => $invoice->user?->name ?? 'Kingsbridge customer',
             'customer_phone' => $this->normalizePhone($phone),
             'payment_method' => 'mpesa',
-            'callback_url' => config('tuma.callback_url'),
+            'callback_url' => $this->callbackUrl(),
             'items' => [
                 [
                     'product_id' => (string) $invoice->id,
@@ -76,6 +76,35 @@ class TumaClient
             return $digits;
         }
         return $digits;
+    }
+
+    public function callbackUrl(): string
+    {
+        $callbackUrl = config('tuma.callback_url') ?: url('/webhook/tuma');
+
+        if (empty($this->apiKey)) {
+            return $callbackUrl;
+        }
+
+        $parts = parse_url($callbackUrl);
+        $query = [];
+
+        if (!empty($parts['query'])) {
+            parse_str($parts['query'], $query);
+        }
+
+        $query['api_key'] = $query['api_key'] ?? $this->apiKey;
+
+        $scheme = isset($parts['scheme']) ? $parts['scheme'] . '://' : '';
+        $host = $parts['host'] ?? '';
+        $port = isset($parts['port']) ? ':' . $parts['port'] : '';
+        $user = $parts['user'] ?? '';
+        $pass = isset($parts['pass']) ? ':' . $parts['pass'] : '';
+        $auth = $user !== '' ? $user . $pass . '@' : '';
+        $path = $parts['path'] ?? '';
+        $fragment = isset($parts['fragment']) ? '#' . $parts['fragment'] : '';
+
+        return $scheme . $auth . $host . $port . $path . '?' . http_build_query($query) . $fragment;
     }
 
     protected function buildUrl(string $endpoint): string

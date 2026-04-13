@@ -85,6 +85,7 @@
 
             <form id="tuma-payment-form" action="{{ route('user.invoice.pay', $invoice) }}" method="POST" class="mt-6 space-y-4">
                 @csrf
+                <input type="hidden" id="tuma-payment-status-url" value="{{ route('user.invoice.payment_status', $invoice) }}">
                 <div>
                     <label for="phone" class="block text-sm font-semibold text-white">Phone Number</label>
                     <input type="text" name="phone" id="phone" value="{{ old('phone', auth()->user()->phone_number) }}" class="mt-1 w-full rounded-xl border border-amber-300/30 bg-slate-950/30 px-4 py-2 text-white placeholder:text-slate-500 focus:border-amber-300 focus:outline-none" required>
@@ -109,14 +110,72 @@
                 const form = document.getElementById('tuma-payment-form');
                 const messageEl = document.getElementById('tuma-payment-message');
                 const submit = document.getElementById('tuma-payment-submit');
+                const statusUrl = document.getElementById('tuma-payment-status-url')?.value;
+                let pollTimer = null;
 
                 if (!form) {
                     return;
                 }
 
+                function setMessage(text, tone) {
+                    messageEl.textContent = text;
+                    messageEl.classList.remove('text-amber-100', 'text-emerald-200', 'text-rose-200');
+                    if (tone) {
+                        messageEl.classList.add(tone);
+                    }
+                }
+
+                async function pollStatus(attempt = 0) {
+                    if (!statusUrl) {
+                        return;
+                    }
+
+                    try {
+                        const response = await fetch(statusUrl, {
+                            headers: {
+                                'Accept': 'application/json',
+                            },
+                        });
+
+                        const payload = await response.json();
+
+                        if (response.ok && payload.paid) {
+                            setMessage(payload.message || 'Payment confirmed.', 'text-emerald-200');
+                            window.setTimeout(function () {
+                                window.location.reload();
+                            }, 1200);
+                            return;
+                        }
+
+                        if (response.status === 404) {
+                            setMessage(payload.message || 'No payment request found yet.', 'text-rose-200');
+                            return;
+                        }
+
+                        if (response.ok) {
+                            setMessage(payload.message || 'Waiting for payment confirmation.', 'text-amber-100');
+                        } else {
+                            setMessage(payload.message || 'Unable to confirm payment status yet.', 'text-rose-200');
+                        }
+                    } catch (error) {
+                        setMessage('Network error while checking payment status.', 'text-rose-200');
+                    }
+
+                    if (attempt < 11) {
+                        pollTimer = window.setTimeout(function () {
+                            pollStatus(attempt + 1);
+                        }, 5000);
+                    } else {
+                        setMessage('STK sent. If you completed payment, refresh this page in a few moments.', 'text-amber-100');
+                    }
+                }
+
                 form.addEventListener('submit', async function (event) {
                     event.preventDefault();
-                    messageEl.textContent = '';
+                    if (pollTimer) {
+                        window.clearTimeout(pollTimer);
+                    }
+                    setMessage('', null);
                     submit.disabled = true;
                     submit.textContent = 'Sending...';
 
@@ -136,16 +195,13 @@
                         const payload = await response.json();
 
                         if (!response.ok) {
-                            messageEl.textContent = payload.message || 'Unable to send STK request.';
-                            messageEl.classList.add('text-rose-200');
+                            setMessage(payload.message || 'Unable to send STK request.', 'text-rose-200');
                         } else {
-                            messageEl.textContent = payload.message || 'STK prompt sent – accept the request on your phone.';
-                            messageEl.classList.remove('text-rose-200');
-                            messageEl.classList.add('text-amber-100');
+                            setMessage(payload.message || 'STK prompt sent - accept the request on your phone.', 'text-amber-100');
+                            pollStatus();
                         }
                     } catch (error) {
-                        messageEl.textContent = 'Network error. Please try again.';
-                        messageEl.classList.add('text-rose-200');
+                        setMessage('Network error. Please try again.', 'text-rose-200');
                     } finally {
                         submit.disabled = false;
                         submit.textContent = 'Send STK';

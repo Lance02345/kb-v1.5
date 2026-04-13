@@ -211,6 +211,7 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'user', 'as' => 'user.']
     Route :: get ('checkout',  [ListingController::class, 'checkout'])->name('checkout');
     Route :: post ('post_invoice',  [ListingController::class, 'post_invoice'])->name('post_invoice');
     Route::post('invoice/{invoice}/pay', [TumaPaymentController::class, 'store'])->name('invoice.pay');
+    Route::get('invoice/{invoice}/payment-status', [TumaPaymentController::class, 'status'])->name('invoice.payment_status');
     Route :: get ('carevent',  [CareventController::class, 'index'])->name('carevent');
     Route :: get ('index_carevent',  [ListingController::class, 'userevent'])->name('userevent');
     Route::get('/spareparts/create', [SparePartController::class, 'create'])->name('sparepartscreate');

@@ -6,11 +6,15 @@ use App\Exceptions\TumaPaymentException;
 use App\Models\Invoice;
 use App\Models\MpesaSTK;
 use App\Services\Tuma\TumaClient;
+use App\Services\Tuma\TumaPaymentSync;
 use Illuminate\Http\Request;
 
 class TumaPaymentController extends Controller
 {
-    public function __construct(protected TumaClient $tuma)
+    public function __construct(
+        protected TumaClient $tuma,
+        protected TumaPaymentSync $sync
+    )
     {
     }
 
@@ -50,6 +54,48 @@ class TumaPaymentController extends Controller
         return response()->json([
             'message' => 'STK prompt sent. Complete the payment on your phone.',
             'order_id' => data_get($result, 'order_id'),
+        ]);
+    }
+
+    public function status(Invoice $invoice)
+    {
+        abort_if((int) $invoice->user_id !== (int) auth()->id(), 403);
+
+        $payment = MpesaSTK::where('invoice_id', $invoice->id)->latest()->first();
+
+        if (!$payment) {
+            return response()->json([
+                'status' => strtolower((string) $invoice->status),
+                'invoice_status' => strtoupper((string) $invoice->status),
+                'paid' => strtoupper((string) $invoice->status) === 'PAID',
+                'message' => 'No payment request has been initiated for this invoice.',
+            ], 404);
+        }
+
+        $syncError = null;
+
+        if (!empty($payment->order_id) && strtoupper((string) $invoice->status) !== 'PAID') {
+            try {
+                $remote = $this->tuma->paymentStatus($payment->order_id);
+                $payment = $this->sync->sync($payment, $remote);
+                $invoice->refresh();
+            } catch (TumaPaymentException $exception) {
+                $syncError = $exception->getMessage();
+                $payment->refresh();
+            }
+        }
+
+        return response()->json([
+            'status' => strtolower((string) ($payment->status ?? $invoice->status)),
+            'invoice_status' => strtoupper((string) $invoice->status),
+            'paid' => strtoupper((string) $invoice->status) === 'PAID',
+            'order_id' => $payment->order_id,
+            'payment_id' => $payment->payment_id,
+            'checkout_request_id' => $payment->checkout_request_id,
+            'mpesa_receipt_number' => $payment->mpesa_receipt_number,
+            'message' => strtoupper((string) $invoice->status) === 'PAID'
+                ? 'Payment confirmed.'
+                : ($syncError ?: 'Waiting for payment confirmation.'),
         ]);
     }
 }
