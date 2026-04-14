@@ -60,15 +60,15 @@ class SparePartController extends Controller
             'longitude' => 'nullable|numeric',
             'price' => 'required|numeric',
             // Add validation rules for the photo uploads
-            'front_img' => 'required|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff', // Example rules; customize as needed
-            'back_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'right_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'left_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'interiorf_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'interiorb_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'opt_img1' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'opt_img2' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'opt_img3' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'front_img' => 'required|file|max:2048|mimetypes:image/*',
+            'back_img' => 'nullable|file|max:2048|mimetypes:image/*',
+            'right_img' => 'nullable|file|max:2048|mimetypes:image/*',
+            'left_img' => 'nullable|file|max:2048|mimetypes:image/*',
+            'interiorf_img' => 'nullable|file|max:2048|mimetypes:image/*',
+            'interiorb_img' => 'nullable|file|max:2048|mimetypes:image/*',
+            'opt_img1' => 'nullable|file|max:2048|mimetypes:image/*',
+            'opt_img2' => 'nullable|file|max:2048|mimetypes:image/*',
+            'opt_img3' => 'nullable|file|max:2048|mimetypes:image/*',
         ]);
 
         $sparePart = DB::transaction(function () use ($request) {
@@ -143,15 +143,15 @@ class SparePartController extends Controller
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
             'price' => 'required|numeric',
-            'front_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'back_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'right_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'left_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'interiorf_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'interiorb_img' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'opt_img1' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'opt_img2' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
-            'opt_img3' => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heif,heic,webp,bmp,tiff',
+            'front_img' => 'nullable|file|max:2048|mimetypes:image/*',
+            'back_img' => 'nullable|file|max:2048|mimetypes:image/*',
+            'right_img' => 'nullable|file|max:2048|mimetypes:image/*',
+            'left_img' => 'nullable|file|max:2048|mimetypes:image/*',
+            'interiorf_img' => 'nullable|file|max:2048|mimetypes:image/*',
+            'interiorb_img' => 'nullable|file|max:2048|mimetypes:image/*',
+            'opt_img1' => 'nullable|file|max:2048|mimetypes:image/*',
+            'opt_img2' => 'nullable|file|max:2048|mimetypes:image/*',
+            'opt_img3' => 'nullable|file|max:2048|mimetypes:image/*',
         ]);
 
         $sparePart->category = $request->category;

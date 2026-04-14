@@ -96,7 +96,7 @@
                 ] as $field => $label)
                     <label class="rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm text-slate-200">
                         <span class="mb-2 block font-semibold text-white">{{ $label }}</span>
-                        <input type="file" name="{{ $field }}" {{ $field === 'front_img' ? 'required' : '' }} class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
+                        <input type="file" name="{{ $field }}" accept="image/*" {{ $field === 'front_img' ? 'required' : '' }} class="w-full rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
                         @error($field)<span class="mt-2 block text-xs font-medium text-rose-300">{{ $message }}</span>@enderror
                     </label>
                 @endforeach

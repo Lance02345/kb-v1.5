@@ -405,15 +405,15 @@ class ListingController extends Controller
                 'duty_type' => 'required',
                 'interior_type' => 'required',
                 'engine_size' => 'required',
-                'front_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'back_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'right_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'left_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'interiorf_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'interiorb_img' => 'required|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'opt_img1' => '|file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'opt_img2' => 'file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
-                'opt_img3' => 'file|max:20480|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+                'front_img' => 'required|file|max:20480|mimetypes:image/*',
+                'back_img' => 'required|file|max:20480|mimetypes:image/*',
+                'right_img' => 'required|file|max:20480|mimetypes:image/*',
+                'left_img' => 'required|file|max:20480|mimetypes:image/*',
+                'interiorf_img' => 'required|file|max:20480|mimetypes:image/*',
+                'interiorb_img' => 'required|file|max:20480|mimetypes:image/*',
+                'opt_img1' => 'nullable|file|max:20480|mimetypes:image/*',
+                'opt_img2' => 'nullable|file|max:20480|mimetypes:image/*',
+                'opt_img3' => 'nullable|file|max:20480|mimetypes:image/*',
                 'vehicle_type' => 'required',
                 'color' => 'required',
             ]);
@@ -518,7 +518,18 @@ class ListingController extends Controller
     }
     public function update_vehiclesale(Request $request, Listing $listing, Vehicle $vehicle)
     {
-
+        $this->validate($request, [
+            'front_img' => 'nullable|file|max:20480|mimetypes:image/*',
+            'back_img' => 'nullable|file|max:20480|mimetypes:image/*',
+            'right_img' => 'nullable|file|max:20480|mimetypes:image/*',
+            'left_img' => 'nullable|file|max:20480|mimetypes:image/*',
+            'interiorf_img' => 'nullable|file|max:20480|mimetypes:image/*',
+            'interiorb_img' => 'nullable|file|max:20480|mimetypes:image/*',
+            'engine_img' => 'nullable|file|max:20480|mimetypes:image/*',
+            'opt_img1' => 'nullable|file|max:20480|mimetypes:image/*',
+            'opt_img2' => 'nullable|file|max:20480|mimetypes:image/*',
+            'opt_img3' => 'nullable|file|max:20480|mimetypes:image/*',
+        ]);
 
 
         $listing->city_id = $request->city;

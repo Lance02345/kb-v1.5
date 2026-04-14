@@ -56,7 +56,7 @@ class CareventController extends Controller
             'event_duration' => 'required',
             'user_id' => 'required', 
 
-            'event_image' => ' required|file|max:2048|mimes:jpeg,png,jpg,gif,svg,heic,heif',
+            'event_image' => 'required|file|max:2048|mimetypes:image/*',
         ]);
 
         $eventImageStore = null;
@@ -131,6 +131,7 @@ class CareventController extends Controller
             'organizer' => 'required',
             'event_duration' => 'required',
             'user_id' => 'required', 
+            'event_image' => 'nullable|file|max:2048|mimetypes:image/*',
 
         ]);
 

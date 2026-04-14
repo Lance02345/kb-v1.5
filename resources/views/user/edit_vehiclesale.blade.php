@@ -264,7 +264,7 @@
         @if($vehicle->front_img)
            <img class="mt-2 mb-2" src="/storage/photos/{{ $vehicle->front_img}}" style="width: auto; height:120px;" > 
         @endif
-        <input type="file" id="files"  name="front_img"/>
+        <input type="file" id="files"  name="front_img" accept="image/*"/>
       </div>
       @error('front_img')
             <span class="invalid"  role="alert">
@@ -279,7 +279,7 @@
         @if($vehicle->back_img)
            <img class="mt-2 mb-2" src="/storage/photos/{{ $vehicle->back_img}}" style="width: auto; height:120px;" > 
         @endif
-        <input type="file" id="back" name="back_img" />
+        <input type="file" id="back" name="back_img" accept="image/*" />
       </div>
       @error('back_img')
             <span class="invalid"  role="alert">
@@ -294,7 +294,7 @@
         @if($vehicle->right_img)
            <img class="mt-2 mb-2" src="/storage/photos/{{ $vehicle->right_img}}" style="width: auto; height:120px;" > 
         @endif
-        <input type="file" id="right" name="right_img"/>
+        <input type="file" id="right" name="right_img" accept="image/*"/>
       </div>
       @error('right_img')
             <span class="invalid"  role="alert">
@@ -309,7 +309,7 @@
         @if($vehicle->left_img)
            <img class="mt-2 mb-2" src="/storage/photos/{{ $vehicle->left_img}}" style="width: auto; height:120px;" > 
         @endif
-        <input type="file" id="files" name="left_img" />
+        <input type="file" id="files" name="left_img" accept="image/*" />
       </div>
       @error('left_img')
             <span class="invalid"  role="alert">
@@ -323,7 +323,7 @@
         @if($vehicle->interiorf_img)
            <img class="mt-2 mb-2" src="/storage/photos/{{ $vehicle->interiorf_img}}" style="width: auto; height:120px;" > 
         @endif
-        <input type="file" id="files" name="interiorf_img"  />
+        <input type="file" id="files" name="interiorf_img" accept="image/*"  />
       </div>
       @error('interiorf_img')
             <span class="invalid"  role="alert">
@@ -337,7 +337,7 @@
         @if($vehicle->interiorb_img)
            <img class="mt-2 mb-2" src="/storage/photos/{{ $vehicle->interiorb_img}}" style="width: auto; height:120px;" > 
         @endif
-        <input type="file" id="files" name="interiorb_img"  />
+        <input type="file" id="files" name="interiorb_img" accept="image/*"  />
       </div>
       @error('interiorb_img')
             <span class="invalid"  role="alert">
@@ -351,7 +351,7 @@
         @if($vehicle->engine_img)
            <img class="mt-2 mb-2" src="/storage/photos/{{ $vehicle->engine_img}}" style="width: auto; height:120px;" > 
         @endif
-        <input type="file" id="files" name="engine_img" />
+        <input type="file" id="files" name="engine_img" accept="image/*" />
       </div>
       @error('engine_img')
             <span class="invalid"  role="alert">
@@ -365,7 +365,7 @@
         @if($vehicle->opt_img1)
            <img class="mt-2 mb-2" src="/storage/photos/{{ $vehicle->opt_img1}}" style="width: auto; height:120px;" > 
         @endif
-        <input type="file" id="files" name="opt_img1" />
+        <input type="file" id="files" name="opt_img1" accept="image/*" />
       </div>
     </div>
     <div class="space column">
@@ -374,7 +374,7 @@
         @if($vehicle->opt_img2)
            <img class="mt-2 mb-2" src="/storage/photos/{{ $vehicle->opt_img2}}" style="width: auto; height:120px;" > 
         @endif
-        <input type="file" id="files" name="opt_img2" />
+        <input type="file" id="files" name="opt_img2" accept="image/*" />
       </div>
     </div>
     <div class="space column">
@@ -383,7 +383,7 @@
         @if($vehicle->opt_img3)
            <img class="mt-2 mb-2" src="/storage/photos/{{ $vehicle->opt_img3}}" style="width: auto; height:120px;" > 
         @endif
-        <input type="file" id="files" name="opt_img3" />
+        <input type="file" id="files" name="opt_img3" accept="image/*" />
       </div>
     </div>
   </div>

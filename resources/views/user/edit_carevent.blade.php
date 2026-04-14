@@ -73,7 +73,7 @@
 
                 <div>
                     <label class="mb-2 block text-sm font-semibold text-slate-200">Poster Image</label>
-                    <input type="file" name="event_image" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
+                    <input type="file" name="event_image" accept="image/*" class="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-300 file:px-3 file:py-1.5 file:font-semibold file:text-slate-900 hover:file:bg-amber-200">
                     @error('event_image')<p class="mt-1 text-xs text-rose-300">{{ $message }}</p>@enderror
                 </div>
 
