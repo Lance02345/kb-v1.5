@@ -34,24 +34,12 @@ class TumaClient
 
     public function initiateSale(Invoice $invoice, string $phone, ?string $description = null): array
     {
-        $item = array_filter([
-            'product_id' => $this->productId ? (string) $this->productId : null,
-            'quantity' => 1,
-            'unit_price' => (int) round((float) $invoice->total),
-            'description' => $description ?? 'Invoice #' . $invoice->id,
-        ]);
-
-        $payload = [
-            'customer_name' => $invoice->user?->name ?? 'Kingsbridge customer',
-            'customer_phone' => $this->normalizePhone($phone),
-            'payment_method' => 'mpesa',
-            'callback_url' => $this->callbackUrl(),
-            'items' => [$item],
-        ];
+        $normalizedPhone = $this->normalizePhone($phone);
+        $payload = $this->salePayload($invoice, $normalizedPhone, $description);
 
         $response = Http::withHeaders($this->headers())->post($this->buildUrl($this->saleEndpoint), $payload);
 
-        return $this->handleResponse($response);
+        return $this->normalizeSaleResponse($this->handleResponse($response));
     }
 
     public function paymentStatus(string $orderId): array
@@ -175,5 +163,59 @@ class TumaClient
         }
 
         return $response->json();
+    }
+
+    protected function salePayload(Invoice $invoice, string $normalizedPhone, ?string $description = null): array
+    {
+        $amount = (int) round((float) $invoice->total);
+        $description = $description ?? 'Invoice #' . $invoice->id;
+        $isStkPushEndpoint = Str::contains($this->saleEndpoint, 'stk-push');
+
+        if ($isStkPushEndpoint) {
+            return [
+                'amount' => $amount,
+                'phone' => $normalizedPhone,
+                'description' => $description,
+                'callback_url' => $this->callbackUrl(),
+            ];
+        }
+
+        $item = array_filter([
+            'product_id' => $this->productId ? (string) $this->productId : null,
+            'quantity' => 1,
+            'unit_price' => $amount,
+            'description' => $description,
+        ]);
+
+        return [
+            'customer_name' => $invoice->user?->name ?? 'Kingsbridge customer',
+            'customer_phone' => $normalizedPhone,
+            'payment_method' => 'mpesa',
+            'callback_url' => $this->callbackUrl(),
+            'items' => [$item],
+        ];
+    }
+
+    protected function normalizeSaleResponse(array $response): array
+    {
+        $normalized = $response;
+
+        $normalized['merchant_request_id'] = data_get($response, 'merchant_request_id')
+            ?? data_get($response, 'data.merchant_request_id')
+            ?? data_get($response, 'response.data.merchant_request_id');
+
+        $normalized['checkout_request_id'] = data_get($response, 'checkout_request_id')
+            ?? data_get($response, 'data.checkout_request_id')
+            ?? data_get($response, 'response.data.checkout_request_id');
+
+        $normalized['order_id'] = data_get($response, 'order_id')
+            ?? data_get($response, 'data.order_id')
+            ?? data_get($response, 'response.data.order_id');
+
+        $normalized['payment_id'] = data_get($response, 'payment_id')
+            ?? data_get($response, 'data.payment_id')
+            ?? data_get($response, 'response.data.payment_id');
+
+        return $normalized;
     }
 }
