@@ -34,23 +34,19 @@ class TumaClient
 
     public function initiateSale(Invoice $invoice, string $phone, ?string $description = null): array
     {
-        if (empty($this->productId)) {
-            throw new TumaPaymentException('Tuma product ID is missing. Set TUMA_PRODUCT_ID to a valid product on the tenant.');
-        }
+        $item = array_filter([
+            'product_id' => $this->productId ? (string) $this->productId : null,
+            'quantity' => 1,
+            'unit_price' => (int) round((float) $invoice->total),
+            'description' => $description ?? 'Invoice #' . $invoice->id,
+        ]);
 
         $payload = [
             'customer_name' => $invoice->user?->name ?? 'Kingsbridge customer',
             'customer_phone' => $this->normalizePhone($phone),
             'payment_method' => 'mpesa',
             'callback_url' => $this->callbackUrl(),
-            'items' => [
-                [
-                    'product_id' => (string) $this->productId,
-                    'quantity' => 1,
-                    'unit_price' => (int) round((float) $invoice->total),
-                    'description' => $description ?? 'Invoice #' . $invoice->id,
-                ],
-            ],
+            'items' => [$item],
         ];
 
         $response = Http::withHeaders($this->headers())->post($this->buildUrl($this->saleEndpoint), $payload);
