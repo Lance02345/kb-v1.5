@@ -4,6 +4,7 @@ namespace App\Services\Tuma;
 
 use App\Models\MpesaSTK;
 use App\Support\JourneyMailer;
+use Illuminate\Support\Facades\Log;
 
 class TumaPaymentSync
 {
@@ -48,6 +49,14 @@ class TumaPaymentSync
         $invoice->status = 'PAID';
         $invoice->paid = max((float) $invoice->paid, (float) ($mpesa->amount ?? $invoice->total));
         $invoice->save();
+
+        Log::info('Invoice status transitioned to PAID.', [
+            'invoice_id' => $invoice->id,
+            'previous_status' => $previousStatus,
+            'mpesa_receipt_number' => $mpesa->mpesa_receipt_number,
+            'amount' => $mpesa->amount ?? $invoice->total,
+            'user_id' => $invoice->user_id,
+        ]);
 
         if ($previousStatus !== 'PAID') {
             JourneyMailer::sendInvoiceStatusUpdated($invoice, $previousStatus ?: null);
