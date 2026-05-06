@@ -8,6 +8,7 @@ use App\Models\MpesaSTK;
 use App\Services\Tuma\TumaClient;
 use App\Services\Tuma\TumaPaymentSync;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TumaPaymentController extends Controller
 {
@@ -80,7 +81,12 @@ class TumaPaymentController extends Controller
                 $payment = $this->sync->sync($payment, $remote);
                 $invoice->refresh();
             } catch (TumaPaymentException $exception) {
-                $syncError = $exception->getMessage();
+                Log::warning('Tuma payment status sync failed.', [
+                    'invoice_id' => $invoice->id,
+                    'order_id' => $payment->order_id,
+                    'error' => $exception->getMessage(),
+                ]);
+                $syncError = 'Payment request sent. Waiting for confirmation from M-Pesa.';
                 $payment->refresh();
             }
         }

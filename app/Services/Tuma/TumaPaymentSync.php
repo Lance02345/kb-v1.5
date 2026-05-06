@@ -9,13 +9,20 @@ class TumaPaymentSync
 {
     public function sync(MpesaSTK $mpesa, array $payload): MpesaSTK
     {
+        $status = $this->extract($payload, [
+            'status',
+            'data.status',
+            'response.data.status',
+            'Body.stkCallback.ResultDesc',
+        ], $mpesa->status);
+
         $mpesa->fill([
-            'status' => data_get($payload, 'status', $mpesa->status),
-            'payment_id' => data_get($payload, 'payment_id', $mpesa->payment_id),
-            'amount' => data_get($payload, 'amount', $mpesa->amount),
-            'mpesa_receipt_number' => data_get($payload, 'mpesa_receipt_number', $mpesa->mpesa_receipt_number),
-            'transaction_date' => data_get($payload, 'transaction_date', $mpesa->transaction_date),
-            'phonenumber' => data_get($payload, 'phone_number', $mpesa->phonenumber),
+            'status' => $status,
+            'payment_id' => $this->extract($payload, ['payment_id', 'data.payment_id', 'response.data.payment_id'], $mpesa->payment_id),
+            'amount' => $this->extract($payload, ['amount', 'data.amount', 'response.data.amount'], $this->callbackMetadataValue($payload, ['Amount']) ?? $mpesa->amount),
+            'mpesa_receipt_number' => $this->extract($payload, ['mpesa_receipt_number', 'data.mpesa_receipt_number', 'response.data.mpesa_receipt_number'], $this->callbackMetadataValue($payload, ['MpesaReceiptNumber']) ?? $mpesa->mpesa_receipt_number),
+            'transaction_date' => $this->extract($payload, ['transaction_date', 'data.transaction_date', 'response.data.transaction_date'], $this->callbackMetadataValue($payload, ['TransactionDate']) ?? $mpesa->transaction_date),
+            'phonenumber' => $this->extract($payload, ['phone_number', 'data.phone_number', 'response.data.phone_number'], $this->callbackMetadataValue($payload, ['PhoneNumber']) ?? $mpesa->phonenumber),
             'payload' => $payload ?: $mpesa->payload,
         ]);
         $mpesa->save();
@@ -33,9 +40,7 @@ class TumaPaymentSync
             return;
         }
 
-        $status = strtolower((string) data_get($mpesa->payload, 'status', $mpesa->status));
-
-        if (!in_array($status, ['completed', 'paid', 'success'], true)) {
+        if (!$this->isSuccessfulPayment($mpesa->payload, $mpesa->status)) {
             return;
         }
 
@@ -56,5 +61,61 @@ class TumaPaymentSync
             $listing->save();
             JourneyMailer::sendListingStatusUpdated($listing, $oldStatus);
         }
+    }
+
+    protected function isSuccessfulPayment(array $payload, mixed $fallbackStatus = null): bool
+    {
+        $status = strtolower((string) $this->extract($payload, [
+            'status',
+            'data.status',
+            'response.data.status',
+            'Body.stkCallback.ResultDesc',
+        ], $fallbackStatus));
+
+        if (in_array($status, ['completed', 'paid', 'success', 'successful', 'succeeded'], true)) {
+            return true;
+        }
+
+        $resultCode = (int) $this->extract($payload, [
+            'result_code',
+            'data.result_code',
+            'response.data.result_code',
+            'Body.stkCallback.ResultCode',
+        ], -1);
+
+        return $resultCode === 0;
+    }
+
+    protected function extract(array $payload, array $keys, mixed $default = null): mixed
+    {
+        foreach ($keys as $key) {
+            $value = data_get($payload, $key);
+            if ($value !== null && $value !== '') {
+                return $value;
+            }
+        }
+
+        return $default;
+    }
+
+    protected function callbackMetadataValue(array $payload, array $names): mixed
+    {
+        $items = data_get($payload, 'Body.stkCallback.CallbackMetadata.Item', []);
+
+        if (!is_array($items)) {
+            return null;
+        }
+
+        foreach ($items as $item) {
+            $name = (string) data_get($item, 'Name');
+            if (in_array($name, $names, true)) {
+                $value = data_get($item, 'Value');
+                if ($value !== null && $value !== '') {
+                    return $value;
+                }
+            }
+        }
+
+        return null;
     }
 }
