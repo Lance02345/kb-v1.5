@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        // Server-to-server payment callback; authenticated by API key in TumaWebhookController.
+        'webhook/tuma',
     ];
 }

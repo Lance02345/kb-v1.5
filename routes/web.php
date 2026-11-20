@@ -135,7 +135,7 @@ Route::get('/login/google/callback', [App\Http\Controllers\Auth\LoginController:
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth:web'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
+Route::group(['middleware' => ['auth:web', 'admin'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get ('/dashboard',  [AdminController::class, 'dashboard'])->name('dashboard');
     Route::resource('category', CategoryController::class);
     Route::resource('package', PackageController::class);
@@ -149,7 +149,6 @@ Route::group(['middleware' => ['auth:web'], 'prefix' => 'admin', 'as' => 'admin.
     Route::get ('listing',  [AdminListingController::class, 'index'])->name('listing.index');
     Route::get ('edit_listing/{listing}',  [AdminListingController::class, 'edit'])->name('listing.edit');
     Route::put ('update_listing/{listing}',  [AdminListingController::class, 'update'])->name('listing.update');
-    Route::get ('listing/{listing}',  [AdminListingController::class, 'delete'])->name('listing.delete');
     Route::get ('vehicle',  [AdminListingController::class, 'vehicles'])->name('listing.vehicles');
     Route::get ('carhirelist',  [AdminListingController::class, 'carhirelist'])->name('listing.carhirelist');
     Route::get ('invoice',  [AdminInvoiceController::class, 'index'])->name('invoice.index');

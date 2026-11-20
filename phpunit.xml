@@ -22,7 +22,8 @@
         <server name="APP_KEY" value="base64:6nXKBxj7PB+L6B1Fd/hv20Yv1xv8OdR7FK7o2Ks5nyQ="/>
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="CACHE_DRIVER" value="array"/>
-        <!-- <server name="DB_DATABASE" value=":memory:"/> -->
+        <!-- Separate database so RefreshDatabase never wipes dev data (Sail creates "testing" automatically). -->
+        <server name="DB_DATABASE" value="testing"/>
         <server name="MAIL_MAILER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>

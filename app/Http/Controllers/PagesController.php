@@ -183,13 +183,6 @@ Public function category (){
     
 }
 
-public function showEventsPage()
-{
-    $carevents = Carevent::all();
-    view()->share('pages.eventspage', $carevents);
- 
-}
-
 Public function single (Vehicle $vehicle){
     $arr['vehicle'] = $vehicle;
     return view ('pages.single')->with($arr);
@@ -499,7 +492,8 @@ Public function login(){
 }
 
 public function events(){
-    return view ('pages.eventspage');
+    $carevents = Carevent::latest()->get();
+    return view('pages.eventspage', compact('carevents'));
 }
 
 public function show($id)
