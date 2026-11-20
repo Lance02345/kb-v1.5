@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class isAdminMiddleware
+class IsAdminMiddleware
 {
     /**
      * Handle an incoming request.

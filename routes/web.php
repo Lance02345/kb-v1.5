@@ -143,7 +143,7 @@ Route::group(['middleware' => ['auth:web', 'admin'], 'prefix' => 'admin', 'as' =
     Route::resource('carmodel', CarmodelController::class);
     Route::resource('city', CityController::class);
     Route::resource('county', CountyController::class);
-    Route::resource('user', Allusercontroller::class);
+    Route::resource('user', AlluserController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
     Route::get ('listing',  [AdminListingController::class, 'index'])->name('listing.index');

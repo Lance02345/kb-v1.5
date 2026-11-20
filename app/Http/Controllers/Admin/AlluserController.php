@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 
-class Allusercontroller extends Controller
+class AlluserController extends Controller
 {
     /**
      * Display a listing of the resource.
